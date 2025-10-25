@@ -6,6 +6,7 @@ import { VoiceRecorder } from '../components/VoiceRecorder';
 import { ImageUploader } from '../components/ImageUploader';
 import { FollowUpQuestion } from '../components/FollowUpQuestion';
 import { usePetStats } from '../hooks/usePetStats';
+import { useStore } from '../hooks/useStore';
 import { supabase } from '../lib/supabase';
 import { extractTopics, generateFollowUpQuestion } from '../lib/openai';
 import { t, getCurrentLocale } from '../lib/lingo';
@@ -21,6 +22,7 @@ export function Teach() {
   const [extractedTopicsList, setExtractedTopicsList] = useState<string[]>([]);
   const [sessionId, setSessionId] = useState('');
   const { profile, addIntelligence, addHealth, updateStreak } = usePetStats();
+  const { isDemoMode } = useStore();
   const navigate = useNavigate();
   const locale = getCurrentLocale();
 
@@ -37,16 +39,20 @@ export function Teach() {
       const topics = await extractTopics(input);
       setExtractedTopicsList(topics);
 
-      const { data: recentSessions } = await supabase
-        .from('teaching_sessions')
-        .select('raw_input, extracted_topics')
-        .eq('user_id', profile.id)
-        .order('created_at', { ascending: false })
-        .limit(5);
+      let recentHistory: string[] = [];
 
-      const recentHistory = recentSessions?.map(s =>
-        `${s.extracted_topics.join(', ')}: ${s.raw_input.substring(0, 100)}...`
-      ) || [];
+      if (!isDemoMode) {
+        const { data: recentSessions } = await supabase
+          .from('teaching_sessions')
+          .select('raw_input, extracted_topics')
+          .eq('user_id', profile.id)
+          .order('created_at', { ascending: false })
+          .limit(5);
+
+        recentHistory = recentSessions?.map(s =>
+          `${s.extracted_topics.join(', ')}: ${s.raw_input.substring(0, 100)}...`
+        ) || [];
+      }
 
       const question = await generateFollowUpQuestion(input, topics, recentHistory);
       setFollowUpQuestion(question);
@@ -54,60 +60,64 @@ export function Teach() {
       const newSessionId = `session-${Date.now()}`;
       setSessionId(newSessionId);
 
-      const { error } = await supabase.from('teaching_sessions').insert([
-        {
-          user_id: profile.id,
-          session_id: newSessionId,
-          input_type: inputMode,
-          raw_input: input,
-          extracted_topics: topics,
-          follow_up_question: question,
-        },
-      ]);
+      if (!isDemoMode) {
+        const { error } = await supabase.from('teaching_sessions').insert([
+          {
+            user_id: profile.id,
+            session_id: newSessionId,
+            input_type: inputMode,
+            raw_input: input,
+            extracted_topics: topics,
+            follow_up_question: question,
+          },
+        ]);
 
-      if (error) throw error;
+        if (error) throw error;
+      }
 
-      for (const topicName of topics) {
-        const { data: existing } = await supabase
-          .from('topics')
-          .select('*')
-          .eq('user_id', profile.id)
-          .eq('topic_name', topicName)
-          .maybeSingle();
-
-        if (existing) {
-          await supabase
+      if (!isDemoMode) {
+        for (const topicName of topics) {
+          const { data: existing } = await supabase
             .from('topics')
-            .update({
-              depth: existing.depth + 1,
-              last_reviewed: new Date().toISOString(),
-            })
-            .eq('id', existing.id);
-        } else {
-          const { data: newTopic } = await supabase
-            .from('topics')
-            .insert([
-              {
-                user_id: profile.id,
-                topic_name: topicName,
-                depth: 1,
-              },
-            ])
-            .select()
-            .single();
+            .select('*')
+            .eq('user_id', profile.id)
+            .eq('topic_name', topicName)
+            .maybeSingle();
 
-          if (newTopic) {
-            const scheduledDate = new Date();
-            scheduledDate.setMinutes(scheduledDate.getMinutes() + 10);
+          if (existing) {
+            await supabase
+              .from('topics')
+              .update({
+                depth: existing.depth + 1,
+                last_reviewed: new Date().toISOString(),
+              })
+              .eq('id', existing.id);
+          } else {
+            const { data: newTopic } = await supabase
+              .from('topics')
+              .insert([
+                {
+                  user_id: profile.id,
+                  topic_name: topicName,
+                  depth: 1,
+                },
+              ])
+              .select()
+              .single();
 
-            await supabase.from('reviews').insert([
-              {
-                user_id: profile.id,
-                topic_id: newTopic.id,
-                scheduled_date: scheduledDate.toISOString(),
-                interval_days: 0,
-              },
-            ]);
+            if (newTopic) {
+              const scheduledDate = new Date();
+              scheduledDate.setMinutes(scheduledDate.getMinutes() + 10);
+
+              await supabase.from('reviews').insert([
+                {
+                  user_id: profile.id,
+                  topic_id: newTopic.id,
+                  scheduled_date: scheduledDate.toISOString(),
+                  interval_days: 0,
+                },
+              ]);
+            }
           }
         }
       }
@@ -129,15 +139,17 @@ export function Teach() {
     if (!profile || !sessionId) return;
 
     try {
-      await supabase
-        .from('teaching_sessions')
-        .update({
-          user_answer: answer,
-          quality_score: qualityScore,
-          intelligence_gain: Math.floor(qualityScore / 10),
-          health_change: qualityScore > 70 ? 3 : 1,
-        })
-        .eq('session_id', sessionId);
+      if (!isDemoMode) {
+        await supabase
+          .from('teaching_sessions')
+          .update({
+            user_answer: answer,
+            quality_score: qualityScore,
+            intelligence_gain: Math.floor(qualityScore / 10),
+            health_change: qualityScore > 70 ? 3 : 1,
+          })
+          .eq('session_id', sessionId);
+      }
 
       const intelligenceGain = Math.floor(qualityScore / 10);
       await addIntelligence(intelligenceGain);
