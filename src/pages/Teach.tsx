@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, Keyboard, Mic, Image as ImageIcon } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
@@ -14,6 +14,13 @@ import { toast } from 'sonner';
 
 type InputMode = 'text' | 'voice' | 'image';
 
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  topics?: string[];
+  timestamp: number;
+}
+
 export function Teach() {
   const [inputMode, setInputMode] = useState<InputMode>('text');
   const [input, setInput] = useState('');
@@ -21,10 +28,16 @@ export function Teach() {
   const [followUpQuestion, setFollowUpQuestion] = useState('');
   const [extractedTopicsList, setExtractedTopicsList] = useState<string[]>([]);
   const [sessionId, setSessionId] = useState('');
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const { profile, addIntelligence, addHealth, updateStreak } = usePetStats();
   const { isDemoMode } = useStore();
   const navigate = useNavigate();
   const locale = getCurrentLocale();
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatHistory]);
 
   async function handleSubmit(e?: React.FormEvent) {
     e?.preventDefault();
@@ -59,6 +72,12 @@ export function Teach() {
 
       const newSessionId = `session-${Date.now()}`;
       setSessionId(newSessionId);
+
+      setChatHistory(prev => [
+        ...prev,
+        { role: 'user', content: input, topics, timestamp: Date.now() },
+        { role: 'assistant', content: question, timestamp: Date.now() + 1 }
+      ]);
 
       if (!isDemoMode) {
         const { error } = await supabase.from('teaching_sessions').insert([
@@ -160,8 +179,16 @@ export function Teach() {
 
       toast.success(`Amazing! +${intelligenceGain} Intelligence! 🎉`);
 
+      setChatHistory(prev => [
+        ...prev,
+        { role: 'user', content: answer, timestamp: Date.now() }
+      ]);
+
       setTimeout(() => {
-        navigate('/summary');
+        setFollowUpQuestion('');
+        setInput('');
+        setExtractedTopicsList([]);
+        setSessionId('');
       }, 2000);
     } catch (error) {
       console.error('Error saving answer:', error);
@@ -196,6 +223,51 @@ export function Teach() {
           </div>
           <PetAvatar size="small" />
         </div>
+
+        {chatHistory.length > 0 && (
+          <div className="mb-6 bg-white rounded-2xl shadow-lg shadow-orange-100 p-6 max-h-96 overflow-y-auto">
+            <h3 className="font-bold text-lg text-brown-700 mb-4 flex items-center gap-2">
+              <span className="text-xl">💬</span>
+              Conversation History
+            </h3>
+            <div className="space-y-4">
+              {chatHistory.map((message, index) => (
+                <div
+                  key={index}
+                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div
+                    className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                      message.role === 'user'
+                        ? 'bg-orange-500 text-white'
+                        : 'bg-gray-100 text-brown-700'
+                    }`}
+                  >
+                    {message.role === 'assistant' && (
+                      <div className="font-semibold text-sm mb-1 flex items-center gap-1">
+                        <span>🐶</span> Aomigo
+                      </div>
+                    )}
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                    {message.topics && message.topics.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {message.topics.map((topic, i) => (
+                          <span
+                            key={i}
+                            className="bg-orange-600 text-white text-xs px-2 py-1 rounded-full"
+                          >
+                            {topic}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+              <div ref={chatEndRef} />
+            </div>
+          </div>
+        )}
 
         {!followUpQuestion ? (
           <div className="bg-white rounded-2xl shadow-lg shadow-orange-100 p-6">
