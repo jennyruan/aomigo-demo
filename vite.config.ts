@@ -7,9 +7,17 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  resolve: {
+    alias: {
+      'next/navigation': '/src/lib/next-shims/navigation.ts',
+      'next/router': '/src/lib/next-shims/router.ts',
+      'next/link': '/src/lib/next-shims/link.tsx',
+      'next/headers': '/src/lib/next-shims/headers.ts',
+    },
+  },
   build: {
     rollupOptions: {
-      external: ['next/navigation', 'next/router', 'next/link', 'next/headers'],
+      external: [],
     },
   },
 });
