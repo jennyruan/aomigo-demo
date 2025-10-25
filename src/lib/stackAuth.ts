@@ -78,3 +78,65 @@ export async function signOut(): Promise<void> {
     console.error('[Stack Auth] Sign out error:', error);
   }
 }
+
+export async function signUpWithPassword(email: string, password: string): Promise<StackUser> {
+  if (!stackApp) {
+    console.log('[Stack Auth] Demo mode: simulating sign up');
+    const demoUser: StackUser = {
+      id: 'demo-' + Date.now(),
+      email,
+      displayName: email.split('@')[0],
+      primaryEmail: email,
+    };
+    localStorage.setItem('aomigo_stack_demo_user', JSON.stringify(demoUser));
+    return demoUser;
+  }
+
+  try {
+    const result = await stackApp.signUpWithCredential({
+      email,
+      password,
+    });
+
+    return {
+      id: result.id,
+      email: result.primaryEmail || email,
+      displayName: result.displayName || email.split('@')[0],
+      primaryEmail: result.primaryEmail || email,
+    };
+  } catch (error: any) {
+    console.error('[Stack Auth] Sign up error:', error);
+    throw error;
+  }
+}
+
+export async function signInWithPassword(email: string, password: string): Promise<StackUser> {
+  if (!stackApp) {
+    console.log('[Stack Auth] Demo mode: simulating sign in');
+    const demoUser: StackUser = {
+      id: 'demo-' + Date.now(),
+      email,
+      displayName: email.split('@')[0],
+      primaryEmail: email,
+    };
+    localStorage.setItem('aomigo_stack_demo_user', JSON.stringify(demoUser));
+    return demoUser;
+  }
+
+  try {
+    const result = await stackApp.signInWithCredential({
+      email,
+      password,
+    });
+
+    return {
+      id: result.id,
+      email: result.primaryEmail || email,
+      displayName: result.displayName || email.split('@')[0],
+      primaryEmail: result.primaryEmail || email,
+    };
+  } catch (error: any) {
+    console.error('[Stack Auth] Sign in error:', error);
+    throw error;
+  }
+}

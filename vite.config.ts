@@ -7,4 +7,9 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  build: {
+    rollupOptions: {
+      external: ['next/navigation', 'next/router', 'next/link', 'next/headers'],
+    },
+  },
 });
