@@ -41,6 +41,11 @@ export function useStore() {
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        const demoData = localStorage.getItem('aomigo_demo_profile');
+        if (demoData) {
+          return;
+        }
+
         setUser(session?.user ?? null);
         if (session?.user) {
           await loadProfile(session.user.id);

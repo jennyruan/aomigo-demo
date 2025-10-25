@@ -9,10 +9,11 @@ if (publishableKey) {
     stackApp = new StackClientApp({ publishableClientKey: publishableKey });
     console.log('[Stack Auth] Initialized with API key');
   } catch (error) {
-    console.error('[Stack Auth] Initialization error:', error);
+    console.warn('[Stack Auth] Initialization skipped:', error instanceof Error ? error.message : 'Unknown error');
+    stackApp = null;
   }
 } else {
-  console.log('[Stack Auth] No API key provided, using demo mode');
+  console.log('[Stack Auth] No API key provided, Stack Auth disabled');
 }
 
 export { stackApp };
