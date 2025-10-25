@@ -29,18 +29,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="bg-white shadow-md shadow-orange-100 sticky top-0 z-50">
+    <div className="min-h-screen flex flex-col bg-yellow-300">
+      <header className="bg-orange-400 cartoon-border sticky top-0 z-50 mb-4 mx-4 mt-4 rounded-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link to="/home" className="flex items-center gap-2">
+          <div className="flex items-center justify-between h-20">
+            <Link to="/home" className="flex items-center gap-2 cartoon-button bg-yellow-200 px-4 py-2 rounded-full">
               <span className="text-3xl">🐶</span>
-              <span className="text-2xl font-bold text-orange-600">
+              <span className="text-2xl font-bold text-gray-900">
                 {t('app.title', locale)}
               </span>
             </Link>
 
-            <nav className="hidden md:flex items-center gap-2">
+            <nav className="hidden md:flex items-center gap-3">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
@@ -48,10 +48,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all ${
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full font-bold cartoon-button ${
                       isActive
-                        ? 'bg-orange-500 text-white'
-                        : 'text-brown-700 hover:bg-orange-100'
+                        ? 'bg-white text-gray-900'
+                        : 'bg-orange-300 text-gray-900'
                     }`}
                   >
                     <Icon className="w-5 h-5" />
@@ -64,25 +64,25 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-2">
               <button
                 onClick={toggleLocale}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-full cartoon-button bg-blue-400 text-white font-bold"
               >
                 <Globe className="w-5 h-5" />
-                <span className="font-medium">{locale === 'en' ? '中文' : 'EN'}</span>
+                <span>{locale === 'en' ? '中文' : 'EN'}</span>
               </button>
 
               <button
                 onClick={handleSignOut}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-full cartoon-button bg-red-500 text-white font-bold"
               >
                 <LogOut className="w-5 h-5" />
-                <span className="hidden sm:inline font-medium">Sign Out</span>
+                <span className="hidden sm:inline">Sign Out</span>
               </button>
             </div>
           </div>
         </div>
 
-        <div className="md:hidden border-t border-orange-100">
-          <div className="flex items-center justify-around py-2">
+        <div className="md:hidden border-t-4 border-black">
+          <div className="flex items-center justify-around py-3 bg-orange-300">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
@@ -90,14 +90,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${
+                  className={`flex flex-col items-center gap-1 px-2 py-2 rounded-xl ${
                     isActive
-                      ? 'text-orange-600'
-                      : 'text-brown-600 hover:text-orange-500'
+                      ? 'bg-white text-gray-900 cartoon-border'
+                      : 'text-gray-900'
                   }`}
                 >
-                  <Icon className="w-5 h-5" />
-                  <span className="text-xs font-medium">{item.label}</span>
+                  <Icon className="w-6 h-6" />
+                  <span className="text-xs font-bold">{item.label}</span>
                 </Link>
               );
             })}
@@ -105,10 +105,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 px-4">{children}</main>
 
-      <footer className="bg-white border-t border-orange-100 py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-brown-600">
+      <footer className="bg-orange-400 cartoon-border mx-4 mb-4 rounded-2xl py-4 mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-900 font-bold">
           <p>🐶 Aomigo - Your AI Learning Companion 🐶</p>
           <p className="mt-1">Built with love for learners everywhere</p>
         </div>

@@ -49,28 +49,28 @@ export function PetAvatar({ size = 'medium', showName = false }: PetAvatarProps)
   const animation = mood !== 'sleepy' ? moodAnimations[mood] : '';
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-4">
       <div
-        className={`${sizeClasses[size]} rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg shadow-orange-200 border-4 border-orange-100 relative ${animation}`}
+        className={`${sizeClasses[size]} rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center cartoon-border relative ${animation}`}
         style={{ animationDuration: '2s' }}
       >
         <span>{emoji}</span>
 
-        <div className="absolute -top-2 -right-2">
-          <span className="text-2xl">🎃</span>
+        <div className="absolute -top-4 -right-4 cartoon-border bg-orange-500 rounded-full p-2">
+          <span className="text-3xl">🎃</span>
         </div>
 
         {mood === 'energized' && (
           <>
-            <div className="absolute -top-1 -left-1 text-yellow-400 animate-ping">✨</div>
-            <div className="absolute -bottom-1 -right-1 text-yellow-400 animate-ping" style={{ animationDelay: '0.5s' }}>✨</div>
+            <div className="absolute -top-2 -left-2 text-yellow-300 animate-ping text-3xl">✨</div>
+            <div className="absolute -bottom-2 -right-2 text-yellow-300 animate-ping text-3xl" style={{ animationDelay: '0.5s' }}>✨</div>
           </>
         )}
       </div>
 
       {showName && (
-        <div className="bg-orange-100 px-4 py-1 rounded-full">
-          <span className="text-brown-700 font-semibold">{profile.pet_name}</span>
+        <div className="cartoon-border bg-white px-6 py-2 rounded-full">
+          <span className="text-gray-900 font-bold text-lg">{profile.pet_name}</span>
         </div>
       )}
     </div>

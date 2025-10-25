@@ -34,26 +34,26 @@ export function Home() {
   const healthPercent = profile.health;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-cream-50 to-purple-50">
+    <div className="min-h-screen">
       <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-brown-700">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+            <div className="cartoon-border bg-white px-6 py-4 rounded-3xl">
+              <h1 className="text-3xl font-bold text-gray-900">
                 {greeting}! 👋
               </h1>
-              <p className="text-brown-600 mt-1">{t('home.welcome', locale)}</p>
+              <p className="text-gray-700 mt-1 font-semibold">{t('home.welcome', locale)}</p>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2 bg-orange-100 px-4 py-2 rounded-full">
-                <Flame className="w-5 h-5 text-orange-600" />
-                <span className="font-bold text-brown-700">{profile.day_streak}</span>
-                <span className="text-sm text-brown-600">{t('home.dayStreak', locale)}</span>
+              <div className="flex items-center gap-3 cartoon-border bg-orange-400 px-5 py-3 rounded-full">
+                <Flame className="w-6 h-6 text-red-600" />
+                <span className="font-bold text-gray-900 text-xl">{profile.day_streak}</span>
+                <span className="text-sm text-gray-900 font-bold">{t('home.dayStreak', locale)}</span>
               </div>
 
-              <div className="bg-purple-100 px-4 py-2 rounded-full">
-                <span className="font-bold text-purple-700">
+              <div className="cartoon-border bg-purple-500 px-5 py-3 rounded-full">
+                <span className="font-bold text-white text-lg">
                   {t('home.level', locale)} {profile.level}
                 </span>
               </div>
@@ -61,36 +61,36 @@ export function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white rounded-2xl shadow-lg shadow-orange-100 p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-brown-700">
+            <div className="bg-blue-300 rounded-3xl cartoon-border p-5">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-base font-bold text-gray-900">
                   🧠 {t('pet.intelligence', locale)}
                 </span>
-                <span className="text-sm font-bold text-orange-600">
+                <span className="text-base font-bold text-gray-900">
                   {profile.intelligence}/1000
                 </span>
               </div>
-              <div className="w-full bg-orange-100 rounded-full h-3">
+              <div className="w-full bg-white rounded-full h-4 border-2 border-black">
                 <div
-                  className="bg-gradient-to-r from-orange-500 to-orange-600 h-3 rounded-full transition-all duration-500"
+                  className="bg-gradient-to-r from-orange-400 to-orange-500 h-full rounded-full transition-all duration-500 border-r-2 border-black"
                   style={{ width: `${intelligencePercent}%` }}
                 />
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-lg shadow-orange-100 p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-brown-700">
+            <div className="bg-pink-300 rounded-3xl cartoon-border p-5">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-base font-bold text-gray-900">
                   ❤️ {t('pet.health', locale)}
                 </span>
-                <span className="text-sm font-bold text-red-600">
+                <span className="text-base font-bold text-gray-900">
                   {profile.health}/100
                 </span>
               </div>
-              <div className="w-full bg-red-100 rounded-full h-3">
+              <div className="w-full bg-white rounded-full h-4 border-2 border-black">
                 <div
-                  className={`h-3 rounded-full transition-all duration-500 ${
-                    healthPercent > 70 ? 'bg-green-500' : healthPercent > 40 ? 'bg-yellow-500' : 'bg-red-500'
+                  className={`h-full rounded-full transition-all duration-500 border-r-2 border-black ${
+                    healthPercent > 70 ? 'bg-green-400' : healthPercent > 40 ? 'bg-yellow-400' : 'bg-red-500'
                   }`}
                   style={{ width: `${healthPercent}%` }}
                 />
@@ -108,65 +108,65 @@ export function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Link
                 to="/teach"
-                className="bg-white rounded-2xl shadow-lg shadow-orange-100 p-6 hover:scale-105 transition-transform group"
+                className="bg-green-400 rounded-3xl cartoon-button p-6"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <BookOpen className="w-6 h-6 text-orange-600" />
-                  <h3 className="text-xl font-bold text-brown-700">
+                  <BookOpen className="w-8 h-8 text-gray-900" strokeWidth={3} />
+                  <h3 className="text-2xl font-bold text-gray-900">
                     {t('nav.teach', locale)}
                   </h3>
                 </div>
-                <p className="text-brown-600 text-sm">
+                <p className="text-gray-800 text-sm font-semibold">
                   {t('home.teachButton', locale)}
                 </p>
               </Link>
 
               <Link
                 to="/summary"
-                className="bg-white rounded-2xl shadow-lg shadow-orange-100 p-6 hover:scale-105 transition-transform group"
+                className="bg-blue-400 rounded-3xl cartoon-button p-6"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <Map className="w-6 h-6 text-purple-600" />
-                  <h3 className="text-xl font-bold text-brown-700">
+                  <Map className="w-8 h-8 text-gray-900" strokeWidth={3} />
+                  <h3 className="text-2xl font-bold text-gray-900">
                     {t('nav.summary', locale)}
                   </h3>
                 </div>
-                <p className="text-brown-600 text-sm">
+                <p className="text-gray-800 text-sm font-semibold">
                   {t('home.summaryButton', locale)}
                 </p>
               </Link>
 
               <Link
                 to="/community"
-                className="bg-white rounded-2xl shadow-lg shadow-orange-100 p-6 hover:scale-105 transition-transform group"
+                className="bg-pink-400 rounded-3xl cartoon-button p-6"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <Users className="w-6 h-6 text-orange-600" />
-                  <h3 className="text-xl font-bold text-brown-700">
+                  <Users className="w-8 h-8 text-gray-900" strokeWidth={3} />
+                  <h3 className="text-2xl font-bold text-gray-900">
                     {t('nav.community', locale)}
                   </h3>
                 </div>
-                <p className="text-brown-600 text-sm">
+                <p className="text-gray-800 text-sm font-semibold">
                   {t('home.communityButton', locale)}
                 </p>
               </Link>
 
               <Link
                 to="/reviews"
-                className="bg-white rounded-2xl shadow-lg shadow-orange-100 p-6 hover:scale-105 transition-transform group relative"
+                className="bg-purple-400 rounded-3xl cartoon-button p-6 relative"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <Clock className="w-6 h-6 text-purple-600" />
-                  <h3 className="text-xl font-bold text-brown-700">
+                  <Clock className="w-8 h-8 text-gray-900" strokeWidth={3} />
+                  <h3 className="text-2xl font-bold text-gray-900">
                     {t('nav.reviews', locale)}
                   </h3>
                   {dueReviews.length > 0 && (
-                    <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full border-2 border-black">
                       {dueReviews.length}
                     </span>
                   )}
                 </div>
-                <p className="text-brown-600 text-sm">
+                <p className="text-gray-800 text-sm font-semibold">
                   Complete your spaced repetition reviews
                 </p>
               </Link>
@@ -175,19 +175,19 @@ export function Home() {
         </div>
 
         {dueReviews.length > 0 && (
-          <div className="bg-gradient-to-r from-orange-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🐶</span>
+          <div className="bg-orange-400 rounded-3xl cartoon-border p-6">
+            <div className="flex items-center gap-4 mb-4">
+              <span className="text-5xl">🐶</span>
               <div>
-                <h3 className="text-xl font-bold">Time to Review!</h3>
-                <p className="text-orange-100">
+                <h3 className="text-2xl font-bold text-gray-900">Time to Review!</h3>
+                <p className="text-gray-800 font-semibold">
                   You have {dueReviews.length} topic{dueReviews.length !== 1 ? 's' : ''} ready for review
                 </p>
               </div>
             </div>
             <Link
               to="/reviews"
-              className="inline-block bg-white text-orange-600 px-6 py-2 rounded-xl font-semibold hover:scale-105 transition-transform"
+              className="inline-block bg-white text-gray-900 px-8 py-3 rounded-full font-bold cartoon-button"
             >
               Start Reviewing
             </Link>

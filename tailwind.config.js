@@ -50,7 +50,7 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Fredoka', 'system-ui', 'sans-serif'],
       },
       animation: {
         'bounce': 'bounce 2s infinite',
