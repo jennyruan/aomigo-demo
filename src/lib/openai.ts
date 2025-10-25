@@ -51,8 +51,20 @@ export async function generateFollowUpQuestion(
       }),
     });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('OpenAI API error response:', errorData);
+      throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
+    }
+
     const data = await response.json();
-    return data.choices[0]?.message?.content || 'Tell me more about what you learned!';
+
+    if (!data.choices || !data.choices[0]?.message?.content) {
+      console.error('Invalid OpenAI response structure:', data);
+      return 'Tell me more about what you learned!';
+    }
+
+    return data.choices[0].message.content;
   } catch (error) {
     console.error('OpenAI API error:', error);
     throw error;
@@ -91,8 +103,23 @@ export async function evaluateAnswer(
       }),
     });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('OpenAI API error response:', errorData);
+      throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
+    }
+
     const data = await response.json();
-    const content = data.choices[0]?.message?.content || '{}';
+
+    if (!data.choices || !data.choices[0]?.message?.content) {
+      console.error('Invalid OpenAI response structure:', data);
+      return {
+        evaluation: 'Great effort! You\'re learning so well!',
+        qualityScore: 75,
+      };
+    }
+
+    const content = data.choices[0].message.content;
 
     try {
       const parsed = JSON.parse(content);
@@ -141,8 +168,20 @@ export async function extractTopics(input: string): Promise<string[]> {
       }),
     });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('OpenAI API error response:', errorData);
+      throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
+    }
+
     const data = await response.json();
-    const content = data.choices[0]?.message?.content || '[]';
+
+    if (!data.choices || !data.choices[0]?.message?.content) {
+      console.error('Invalid OpenAI response structure:', data);
+      return ['learning'];
+    }
+
+    const content = data.choices[0].message.content;
 
     try {
       const topics = JSON.parse(content);
@@ -188,8 +227,24 @@ export async function evaluateReview(
       }),
     });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('OpenAI API error response:', errorData);
+      throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
+    }
+
     const data = await response.json();
-    const content = data.choices[0]?.message?.content || '{}';
+
+    if (!data.choices || !data.choices[0]?.message?.content) {
+      console.error('Invalid OpenAI response structure:', data);
+      return {
+        feedback: 'Great effort! Keep learning!',
+        result: 'good',
+        qualityScore: 75,
+      };
+    }
+
+    const content = data.choices[0].message.content;
 
     try {
       const parsed = JSON.parse(content);
