@@ -5,6 +5,7 @@ import { PetAvatar } from '../components/PetAvatar';
 import { usePetStats } from '../hooks/usePetStats';
 import { useReviews } from '../hooks/useReviews';
 import { supabase } from '../lib/supabase';
+import { evaluateReview } from '../lib/openai';
 import type { Topic } from '../types';
 import { toast } from 'sonner';
 
@@ -17,6 +18,7 @@ export function Review() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState<'good' | 'poor' | null>(null);
+  const [feedback, setFeedback] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,10 +51,10 @@ export function Review() {
     setIsSubmitting(true);
 
     try {
-      const answerQuality =
-        userAnswer.length > 50 ? 'good' : userAnswer.length > 20 ? 'good' : 'poor';
+      const evaluation = await evaluateReview(currentTopic.topic_name, userAnswer);
 
-      setResult(answerQuality);
+      setResult(evaluation.result);
+      setFeedback(evaluation.feedback);
       setShowResult(true);
 
       const currentReview = dueReviews[currentReviewIndex];
@@ -60,32 +62,33 @@ export function Review() {
 
       await completeReview(
         currentReview.id,
-        answerQuality,
+        evaluation.result,
         currentTopic.id,
         intervalIndex
       );
 
-      if (answerQuality === 'good') {
+      if (evaluation.result === 'good') {
         await addIntelligence(5);
         await addHealth(3);
-        toast.success('+5 Intelligence! Great review! 🎉');
+        toast.success('+5 Intelligence! Great review!');
       } else {
         await addIntelligence(2);
-        toast.success('+2 Intelligence! Keep practicing! 💪');
+        toast.success('+2 Intelligence! Keep practicing!');
       }
 
       setTimeout(() => {
         setShowResult(false);
         setUserAnswer('');
         setResult(null);
+        setFeedback('');
 
         if (currentReviewIndex + 1 < dueReviews.length) {
           setCurrentReviewIndex(currentReviewIndex + 1);
         } else {
           navigate('/home');
-          toast.success('All reviews completed! Well done! 🌟');
+          toast.success('All reviews completed! Well done!');
         }
-      }, 2000);
+      }, 3500);
     } catch (error) {
       console.error('Error submitting review:', error);
       toast.error('Something went wrong. Please try again.');
@@ -220,20 +223,18 @@ export function Review() {
                 : 'bg-gradient-to-r from-yellow-500 to-yellow-600'
             }`}
           >
-            <div className="flex items-center gap-4 mb-4">
+            <div className="flex items-start gap-4">
               {result === 'good' ? (
-                <CheckCircle className="w-16 h-16" />
+                <CheckCircle className="w-12 h-12 flex-shrink-0 mt-1" />
               ) : (
-                <XCircle className="w-16 h-16" />
+                <XCircle className="w-12 h-12 flex-shrink-0 mt-1" />
               )}
-              <div>
-                <h3 className="text-2xl font-bold mb-1">
-                  {result === 'good' ? 'Excellent! 🎉' : 'Keep Practicing! 💪'}
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold mb-3">
+                  {result === 'good' ? 'Excellent!' : 'Keep Practicing!'}
                 </h3>
-                <p className="text-white/90">
-                  {result === 'good'
-                    ? 'You demonstrated good understanding!'
-                    : 'Try to provide more details next time!'}
+                <p className="text-white/95 text-lg leading-relaxed">
+                  {feedback}
                 </p>
               </div>
             </div>
