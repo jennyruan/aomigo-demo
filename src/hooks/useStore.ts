@@ -2,13 +2,41 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import type { UserProfile } from '../types';
 
+function getInitialDemoState() {
+  try {
+    const demoData = localStorage.getItem('aomigo_demo_profile');
+    if (demoData) {
+      const profile = JSON.parse(demoData);
+      return {
+        user: { id: profile.id },
+        profile,
+        loading: false,
+        isDemoMode: true,
+      };
+    }
+  } catch (error) {
+    console.error('Error reading demo data:', error);
+  }
+  return {
+    user: null,
+    profile: null,
+    loading: true,
+    isDemoMode: false,
+  };
+}
+
 export function useStore() {
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [isDemoMode, setIsDemoMode] = useState(false);
+  const initial = getInitialDemoState();
+  const [user, setUser] = useState<any>(initial.user);
+  const [profile, setProfile] = useState<UserProfile | null>(initial.profile);
+  const [loading, setLoading] = useState(initial.loading);
+  const [isDemoMode, setIsDemoMode] = useState(initial.isDemoMode);
 
   useEffect(() => {
+    if (initial.isDemoMode) {
+      return;
+    }
+
     checkUser();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -29,17 +57,21 @@ export function useStore() {
 
   async function checkUser() {
     try {
+      const demoData = localStorage.getItem('aomigo_demo_profile');
+      if (demoData) {
+        const demoProfile = JSON.parse(demoData);
+        setProfile(demoProfile);
+        setUser({ id: demoProfile.id });
+        setIsDemoMode(true);
+        setLoading(false);
+        return;
+      }
+
       const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
 
       if (session?.user) {
         await loadProfile(session.user.id);
-      } else {
-        const demoData = localStorage.getItem('aomigo_demo_profile');
-        if (demoData) {
-          setProfile(JSON.parse(demoData));
-          setIsDemoMode(true);
-        }
       }
     } catch (error) {
       console.error('Error checking user:', error);
