@@ -8,13 +8,18 @@ interface FollowUpResponse {
 
 export async function generateFollowUpQuestion(
   input: string,
-  topics: string[]
+  topics: string[],
+  recentHistory?: string[]
 ): Promise<string> {
   if (!OPENAI_API_KEY) {
     return getMockFollowUpQuestion(topics);
   }
 
   try {
+    const historyContext = recentHistory && recentHistory.length > 0
+      ? `\n\nRecent learning history:\n${recentHistory.map((h, i) => `${i + 1}. ${h}`).join('\n')}`
+      : '';
+
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -22,19 +27,19 @@ export async function generateFollowUpQuestion(
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: 'gpt-4-turbo-preview',
         messages: [
           {
             role: 'system',
-            content: 'You are Aomigo, a friendly AI pet learning companion. Ask ONE insightful follow-up question to test understanding. Keep it concise, friendly, and encouraging.',
+            content: 'You are an expert learning assistant. Based on what the user just shared, generate ONE insightful follow-up question that:\n1. Tests their understanding of the concepts they explained\n2. Encourages deeper thinking or application\n3. Relates to their actual learning content (NOT about you or the learning app)\n4. Is specific to what they taught\n5. Can connect to their previous learning if relevant\n\nKeep the question concise, clear, and engaging. Focus entirely on the subject matter they are learning.',
           },
           {
             role: 'user',
-            content: `The user just taught me about: ${topics.join(', ')}. Here's what they said: "${input}". Ask me ONE follow-up question to test their understanding.`,
+            content: `The user is learning about: ${topics.join(', ')}.\n\nWhat they just explained:\n"${input}"${historyContext}\n\nGenerate ONE follow-up question about the concepts they explained (NOT about the learning process or app).`,
           },
         ],
-        max_tokens: 150,
-        temperature: 0.7,
+        max_tokens: 200,
+        temperature: 0.8,
       }),
     });
 
@@ -62,18 +67,18 @@ export async function evaluateAnswer(
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: 'gpt-4-turbo-preview',
         messages: [
           {
             role: 'system',
-            content: 'You are Aomigo. Evaluate the user\'s answer and provide encouraging feedback. Return a JSON object with "evaluation" (friendly feedback) and "qualityScore" (0-100).',
+            content: 'You are an expert learning evaluator. Evaluate the user\'s answer objectively and provide constructive, encouraging feedback. Return ONLY a JSON object with:\n- "evaluation": 2-3 sentences of friendly, specific feedback about their answer\n- "qualityScore": number from 0-100 based on accuracy, depth, and understanding\n\nBe encouraging but honest. Highlight what they did well and gently suggest improvements if needed.',
           },
           {
             role: 'user',
-            content: `Question: ${question}\nAnswer: ${answer}\n\nEvaluate this answer.`,
+            content: `Question: ${question}\nAnswer: ${answer}\n\nEvaluate this answer and return JSON only.`,
           },
         ],
-        max_tokens: 200,
+        max_tokens: 250,
         temperature: 0.7,
       }),
     });
@@ -126,18 +131,18 @@ export async function extractTopics(input: string): Promise<string[]> {
         'Authorization': `Bearer ${OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: 'gpt-4-turbo-preview',
         messages: [
           {
             role: 'system',
-            content: 'Extract 2-5 key topics or concepts from the user\'s input. Return as a JSON array of strings.',
+            content: 'Extract 2-5 key topics or concepts from the user\'s learning content. Return ONLY a JSON array of strings with the main topics/concepts they are explaining. Be specific and concise.',
           },
           {
             role: 'user',
             content: input,
           },
         ],
-        max_tokens: 100,
+        max_tokens: 150,
         temperature: 0.5,
       }),
     });

@@ -37,7 +37,18 @@ export function Teach() {
       const topics = await extractTopics(input);
       setExtractedTopicsList(topics);
 
-      const question = await generateFollowUpQuestion(input, topics);
+      const { data: recentSessions } = await supabase
+        .from('teaching_sessions')
+        .select('raw_input, extracted_topics')
+        .eq('user_id', profile.id)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      const recentHistory = recentSessions?.map(s =>
+        `${s.extracted_topics.join(', ')}: ${s.raw_input.substring(0, 100)}...`
+      ) || [];
+
+      const question = await generateFollowUpQuestion(input, topics, recentHistory);
       setFollowUpQuestion(question);
 
       const newSessionId = `session-${Date.now()}`;
