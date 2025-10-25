@@ -108,7 +108,7 @@ function getMockFollowUpQuestion(topics: string[]): string {
 
 function getMockEvaluation(): { evaluation: string; qualityScore: number } {
   return {
-    evaluation: 'Great job! You\'re showing good understanding. Keep it up! 🐾',
+    evaluation: 'Great job! You\'re showing good understanding. Keep it up! 🐶',
     qualityScore: Math.floor(Math.random() * 20) + 70,
   };
 }

@@ -177,7 +177,7 @@ export function Home() {
         {dueReviews.length > 0 && (
           <div className="bg-gradient-to-r from-orange-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white">
             <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🐾</span>
+              <span className="text-3xl">🐶</span>
               <div>
                 <h3 className="text-xl font-bold">Time to Review!</h3>
                 <p className="text-orange-100">

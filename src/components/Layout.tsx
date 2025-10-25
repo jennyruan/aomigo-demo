@@ -34,7 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link to="/home" className="flex items-center gap-2">
-              <span className="text-3xl">🐾</span>
+              <span className="text-3xl">🐶</span>
               <span className="text-2xl font-bold text-orange-600">
                 {t('app.title', locale)}
               </span>
@@ -109,7 +109,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       <footer className="bg-white border-t border-orange-100 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-brown-600">
-          <p>🎃 Aomigo - Your AI Learning Companion 🎃</p>
+          <p>🐶 Aomigo - Your AI Learning Companion 🐶</p>
           <p className="mt-1">Built with love for learners everywhere</p>
         </div>
       </footer>

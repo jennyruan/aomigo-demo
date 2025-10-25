@@ -244,7 +244,7 @@ export function Teach() {
                     </>
                   ) : (
                     <>
-                      {t('teach.submit', locale)} 🐾
+                      {t('teach.submit', locale)} 🐶
                     </>
                   )}
                 </button>
@@ -264,7 +264,7 @@ export function Teach() {
                     </>
                   ) : (
                     <>
-                      {t('teach.submit', locale)} 🐾
+                      {t('teach.submit', locale)} 🐶
                     </>
                   )}
                 </button>

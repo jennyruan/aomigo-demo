@@ -39,7 +39,7 @@ export function PetAvatar({ size = 'medium', showName = false }: PetAvatarProps)
   if (!profile) {
     return (
       <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center`}>
-        <span className="text-6xl">🐾</span>
+        <span className="text-6xl">🐶</span>
       </div>
     );
   }
