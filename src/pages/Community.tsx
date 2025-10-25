@@ -4,7 +4,7 @@ import { PetAvatar } from '../components/PetAvatar';
 import { usePetStats } from '../hooks/usePetStats';
 import { supabase } from '../lib/supabase';
 import type { CommunityPost, TeachingSession } from '../types';
-import { t, getCurrentLocale } from '../lib/i18n';
+import { t, getCurrentLocale } from '../lib/lingo';
 import { toast } from 'sonner';
 
 export function Community() {

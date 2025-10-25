@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, BookOpen, Map, Users, Clock, LogOut, Globe } from 'lucide-react';
+import { Home, BookOpen, Map, Users, Clock, LogOut, Globe, Settings } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
-import { t, getCurrentLocale, setLocale } from '../lib/i18n';
+import { t, getCurrentLocale, setLocale } from '../lib/lingo';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -25,6 +25,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { path: '/summary', icon: Map, label: t('nav.summary', locale) },
     { path: '/community', icon: Users, label: t('nav.community', locale) },
     { path: '/reviews', icon: Clock, label: t('nav.reviews', locale) },
+    { path: '/settings', icon: Settings, label: t('nav.settings', locale) },
   ];
 
   return (

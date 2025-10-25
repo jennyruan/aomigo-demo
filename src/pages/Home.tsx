@@ -4,7 +4,7 @@ import { BookOpen, Map, Users, Clock, Flame } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
 import { usePetStats } from '../hooks/usePetStats';
 import { useReviews } from '../hooks/useReviews';
-import { t, getCurrentLocale } from '../lib/i18n';
+import { t, getCurrentLocale } from '../lib/lingo';
 
 export function Home() {
   const { profile, updateStreak } = usePetStats();

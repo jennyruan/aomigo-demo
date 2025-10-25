@@ -8,7 +8,7 @@ import { FollowUpQuestion } from '../components/FollowUpQuestion';
 import { usePetStats } from '../hooks/usePetStats';
 import { supabase } from '../lib/supabase';
 import { extractTopics, generateFollowUpQuestion } from '../lib/openai';
-import { t, getCurrentLocale } from '../lib/i18n';
+import { t, getCurrentLocale } from '../lib/lingo';
 import { toast } from 'sonner';
 
 type InputMode = 'text' | 'voice' | 'image';

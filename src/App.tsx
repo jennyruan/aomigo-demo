@@ -8,6 +8,7 @@ import { Teach } from './pages/Teach';
 import { Summary } from './pages/Summary';
 import { Community } from './pages/Community';
 import { Review } from './pages/Review';
+import { Settings } from './pages/Settings';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useStore();
@@ -73,6 +74,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Review />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
               </ProtectedRoute>
             }
           />

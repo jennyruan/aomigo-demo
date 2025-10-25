@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useStore } from '../hooks/useStore';
-import { t, getCurrentLocale } from '../lib/i18n';
+import { t, getCurrentLocale } from '../lib/lingo';
 import { PetAvatar } from '../components/PetAvatar';
 
 export function Auth() {
