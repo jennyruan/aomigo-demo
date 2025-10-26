@@ -1,5 +1,5 @@
 # 🐾 Aomigo - AI-Powered Learning Companion
-www.aomigo.com/home
+**Live Demo:** [aomigo.com](https://aomigo.com)
 An innovative learning platform where users teach their virtual pet daily to enhance memory, discover knowledge gaps, and build consistent learning habits through spaced repetition.
 
 ## 🎃 Halloween Theme
