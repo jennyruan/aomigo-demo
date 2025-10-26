@@ -59,6 +59,36 @@ export interface CommunityPost {
   post_date: string;
   likes_count: number;
   created_at: string;
+  content?: string;
+  image_url?: string;
+  privacy?: 'public' | 'friends' | 'private';
+  comment_count?: number;
+  reaction_counts?: Record<string, number>;
+}
+
+export interface PostComment {
+  id: string;
+  post_id: string;
+  user_id: string;
+  pet_name: string;
+  content: string;
+  likes_count: number;
+  created_at: string;
+}
+
+export interface PostLike {
+  id: string;
+  post_id: string;
+  user_id: string;
+  created_at: string;
+}
+
+export interface PostReaction {
+  id: string;
+  post_id: string;
+  user_id: string;
+  reaction_type: 'celebrate' | 'applause' | 'thinking' | 'idea' | 'love';
+  created_at: string;
 }
 
 export interface Achievement {
