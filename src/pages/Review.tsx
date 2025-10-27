@@ -113,8 +113,11 @@ export function Review() {
           <h2 className="text-2xl font-bold text-brown-700 mt-6 mb-2">
             All Caught Up! 🎉
           </h2>
-          <p className="text-brown-600 mb-6">
+          <p className="text-brown-600 mb-4">
             No reviews due right now. Come back later!
+          </p>
+          <p className="text-xl font-bold text-orange-600 mb-6">
+            Together We Got This 🐶
           </p>
           <button
             onClick={() => navigate('/home')}

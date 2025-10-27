@@ -9,6 +9,7 @@ import { Summary } from './pages/Summary';
 import { Community } from './pages/Community';
 import { Review } from './pages/Review';
 import { Settings } from './pages/Settings';
+import { Shop } from './pages/Shop';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useStore();
@@ -82,6 +83,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/shop"
+            element={
+              <ProtectedRoute>
+                <Shop />
               </ProtectedRoute>
             }
           />

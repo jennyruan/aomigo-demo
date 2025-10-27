@@ -154,6 +154,9 @@ const TUTORIAL_PAGES = [
           Miss a day? I'll get sad 😢<br />
           <span className="text-sm">(But don't worry, I'll always forgive you!)</span>
         </p>
+        <p className="text-2xl font-bold text-orange-600 mt-6">
+          Together We Got This 🐶
+        </p>
       </div>
     ),
   },

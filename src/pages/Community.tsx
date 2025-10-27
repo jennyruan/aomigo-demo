@@ -375,8 +375,11 @@ export function Community() {
             <h3 className="text-xl font-bold text-brown-700 mb-2">
               No posts yet
             </h3>
-            <p className="text-brown-600 mb-6">
+            <p className="text-brown-600 mb-4">
               Be the first to share your learning journey!
+            </p>
+            <p className="text-xl font-bold text-orange-600 mb-6">
+              Together We Got This 🐶
             </p>
             <button
               onClick={() => setIsModalOpen(true)}

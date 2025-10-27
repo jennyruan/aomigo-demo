@@ -100,8 +100,13 @@ export function Home() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          <div className="lg:col-span-1 flex justify-center">
+          <div className="lg:col-span-1 flex flex-col items-center gap-4">
             <PetAvatar size="large" showName />
+            <div className="text-center">
+              <p className="text-2xl font-bold text-orange-600">
+                Together We Got This 🐶
+              </p>
+            </div>
           </div>
 
           <div className="lg:col-span-2">
