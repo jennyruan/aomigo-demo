@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, Keyboard, Mic, Image as ImageIcon } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
+import { ForgettingCurve } from '../components/ForgettingCurve';
 import { VoiceRecorder } from '../components/VoiceRecorder';
 import { ImageUploader } from '../components/ImageUploader';
 import { FollowUpQuestion } from '../components/FollowUpQuestion';
@@ -390,6 +391,10 @@ export function Teach() {
             />
           </div>
         )}
+
+        <div className="mt-8">
+          <ForgettingCurve compact />
+        </div>
       </div>
     </div>
   );

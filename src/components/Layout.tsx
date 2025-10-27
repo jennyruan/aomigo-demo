@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, BookOpen, Map, Users, Clock, LogOut, Globe, Settings, HelpCircle, ShoppingBag, MessageCircle } from 'lucide-react';
+import { Home, BookOpen, Map, Users, Clock, LogOut, Globe, Settings, HelpCircle, ShoppingBag, MessageCircle, User } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
+import { usePetStats } from '../hooks/usePetStats';
 import { t, getCurrentLocale, setLocale } from '../lib/lingo';
 import { TutorialModal } from './TutorialModal';
 
@@ -9,8 +10,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { signOut } = useStore();
+  const { profile } = usePetStats();
   const locale = getCurrentLocale();
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
+
+  const accountType = 'student';
+  const accountBadge = accountType === 'student' ? '🎓' : accountType === 'parent' ? '👨‍👩‍👧' : '👨‍🏫';
+  const accountLabel = accountType === 'student' ? 'Student' : accountType === 'parent' ? 'Parent' : 'Teacher';
 
   useEffect(() => {
     const isFirstVisit = !localStorage.getItem('tutorialCompleted');
@@ -74,6 +81,53 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </nav>
 
             <div className="flex items-center gap-2">
+              <div className="relative">
+                <button
+                  onClick={() => setShowAccountMenu(!showAccountMenu)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full cartoon-button bg-white border-3 border-black hover:bg-yellow-100 transition-colors"
+                  title="Account Type"
+                >
+                  <span className="text-xl">{accountBadge}</span>
+                  <span className="hidden md:inline font-bold text-gray-900">{accountLabel}</span>
+                </button>
+
+                {showAccountMenu && (
+                  <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border-3 border-black z-50 overflow-hidden">
+                    <div className="p-4 bg-gradient-to-r from-orange-400 to-purple-400">
+                      <div className="flex items-center gap-3">
+                        <span className="text-3xl">{accountBadge}</span>
+                        <div>
+                          <h3 className="font-bold text-white">{accountLabel} Account</h3>
+                          <p className="text-sm text-white opacity-90">{profile?.pet_name || 'AOMIGO User'}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4 space-y-2 text-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="text-brown-600">🔥 Streak:</span>
+                        <span className="font-bold text-brown-700">{profile?.day_streak || 0} days</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-brown-600">⭐ Level:</span>
+                        <span className="font-bold text-brown-700">{profile?.level || 1}</span>
+                      </div>
+                    </div>
+                    <div className="border-t border-orange-100">
+                      <button
+                        onClick={() => {
+                          setShowAccountMenu(false);
+                          navigate('/settings');
+                        }}
+                        className="w-full p-3 text-left hover:bg-orange-50 transition-colors flex items-center gap-2 font-semibold text-brown-700"
+                      >
+                        <Settings className="w-4 h-4" />
+                        Account Settings
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <button
                 onClick={() => setIsTutorialOpen(true)}
                 className="flex items-center gap-2 px-4 py-2 rounded-full cartoon-button bg-purple-400 text-white font-bold"

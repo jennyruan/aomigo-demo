@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, Map, Users, Clock, Flame } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
+import { ForgettingCurve } from '../components/ForgettingCurve';
 import { usePetStats } from '../hooks/usePetStats';
 import { useReviews } from '../hooks/useReviews';
 import { t, getCurrentLocale } from '../lib/lingo';
@@ -180,7 +181,7 @@ export function Home() {
         </div>
 
         {dueReviews.length > 0 && (
-          <div className="bg-orange-400 rounded-3xl cartoon-border p-6">
+          <div className="bg-orange-400 rounded-3xl cartoon-border p-6 mb-8">
             <div className="flex items-center gap-4 mb-4">
               <span className="text-5xl">🐶</span>
               <div>
@@ -198,6 +199,10 @@ export function Home() {
             </Link>
           </div>
         )}
+
+        <div className="mt-8">
+          <ForgettingCurve />
+        </div>
       </div>
     </div>
   );

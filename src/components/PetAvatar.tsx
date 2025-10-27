@@ -95,7 +95,17 @@ export function PetAvatar({ size = 'medium', showName = false }: PetAvatarProps)
       >
         <span>{emoji}</span>
 
-        <div className="absolute -top-4 -right-4 cartoon-border bg-orange-500 rounded-full p-2">
+        <div
+          className="absolute -top-4 -right-4 cartoon-border bg-orange-500 rounded-full flex items-center justify-center"
+          style={{
+            width: '56px',
+            height: '56px',
+            minWidth: '56px',
+            minHeight: '56px',
+            borderRadius: '50%',
+            aspectRatio: '1 / 1',
+          }}
+        >
           <span className="text-3xl">🎃</span>
         </div>
 
