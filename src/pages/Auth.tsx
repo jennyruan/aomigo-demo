@@ -65,7 +65,7 @@ export function Auth() {
           .from('users_profile')
           .insert([{
             id: user.id,
-            pet_name: 'Aomigo',
+            pet_name: 'AOMIGO',
             intelligence: 0,
             health: 100,
             level: 1,
@@ -74,7 +74,7 @@ export function Auth() {
 
         if (profileError) console.error('Profile creation error:', profileError);
 
-        toast.success('Welcome to Aomigo! 🐾');
+        toast.success('Welcome to AOMIGO! 🐾');
         navigate('/home');
       } else {
         await signInWithPassword(email, password);
@@ -117,7 +117,7 @@ export function Auth() {
             <PetAvatar size="large" />
           </div>
           <h1 className="text-4xl font-bold text-orange-600 mb-2">
-            Aomigo
+            AOMIGO
           </h1>
           <p className="text-brown-700 text-lg">
             Your Learning Buddy! 🐾

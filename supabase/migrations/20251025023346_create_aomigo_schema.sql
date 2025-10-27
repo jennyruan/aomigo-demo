@@ -1,14 +1,14 @@
 /*
-  # Aomigo Database Schema
+  # AOMIGO Database Schema
 
   ## Overview
-  Complete database schema for Aomigo - an AI-powered learning companion app
+  Complete database schema for AOMIGO - an AI-powered learning companion app
   with spaced repetition, knowledge mapping, and pet development features.
 
   ## Tables Created
   
   ### 1. users_profile
-  Extended user profile for Aomigo users
+  Extended user profile for AOMIGO users
   - id (uuid, FK to auth.users)
   - pet_name (text) - Name of user's pet companion
   - intelligence (integer) - Pet intelligence score (0-1000)
@@ -87,7 +87,7 @@
 -- Create users_profile table
 CREATE TABLE IF NOT EXISTS users_profile (
   id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-  pet_name text DEFAULT 'Aomigo',
+  pet_name text DEFAULT 'AOMIGO',
   intelligence integer DEFAULT 0 CHECK (intelligence >= 0 AND intelligence <= 1000),
   health integer DEFAULT 100 CHECK (health >= 0 AND health <= 100),
   level integer DEFAULT 1 CHECK (level >= 1 AND level <= 10),
@@ -211,7 +211,7 @@ CREATE POLICY "Users can update own reviews"
 CREATE TABLE IF NOT EXISTS community_posts (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-  pet_name text DEFAULT 'Aomigo',
+  pet_name text DEFAULT 'AOMIGO',
   summary_text text NOT NULL,
   topics_learned text[] DEFAULT '{}',
   post_date date DEFAULT CURRENT_DATE,

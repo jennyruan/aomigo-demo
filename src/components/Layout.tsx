@@ -1,13 +1,23 @@
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, BookOpen, Map, Users, Clock, LogOut, Globe, Settings } from 'lucide-react';
+import { Home, BookOpen, Map, Users, Clock, LogOut, Globe, Settings, HelpCircle } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { t, getCurrentLocale, setLocale } from '../lib/lingo';
+import { TutorialModal } from './TutorialModal';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { signOut } = useStore();
   const locale = getCurrentLocale();
+  const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+
+  useEffect(() => {
+    const isFirstVisit = !localStorage.getItem('tutorialCompleted');
+    if (isFirstVisit && location.pathname === '/home') {
+      setIsTutorialOpen(true);
+    }
+  }, [location.pathname]);
 
   async function handleSignOut() {
     await signOut();
@@ -63,6 +73,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
             <div className="flex items-center gap-2">
               <button
+                onClick={() => setIsTutorialOpen(true)}
+                className="flex items-center gap-2 px-4 py-2 rounded-full cartoon-button bg-purple-400 text-white font-bold"
+                title="Help"
+              >
+                <HelpCircle className="w-5 h-5" />
+                <span className="hidden sm:inline">Help</span>
+              </button>
+
+              <button
                 onClick={toggleLocale}
                 className="flex items-center gap-2 px-4 py-2 rounded-full cartoon-button bg-blue-400 text-white font-bold"
               >
@@ -109,10 +128,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       <footer className="bg-orange-400 cartoon-border mx-4 mb-4 rounded-2xl py-4 mt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-900 font-bold">
-          <p>🐶 Aomigo - Your AI Learning Companion 🐶</p>
+          <p>🐶 AOMIGO - Your AI Learning Companion 🐶</p>
           <p className="mt-1">Built with love for learners everywhere</p>
         </div>
       </footer>
+
+      <TutorialModal
+        isOpen={isTutorialOpen}
+        onClose={() => setIsTutorialOpen(false)}
+      />
     </div>
   );
 }

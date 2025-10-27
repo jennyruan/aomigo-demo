@@ -28,9 +28,9 @@ const moodAnimations: Record<PetMood, string> = {
 };
 
 const sizeClasses = {
-  small: 'w-16 h-16 text-3xl',
-  medium: 'w-32 h-32 text-6xl',
-  large: 'w-48 h-48 text-8xl',
+  small: 'w-16 h-16 text-3xl aspect-square',
+  medium: 'w-32 h-32 text-6xl aspect-square',
+  large: 'w-48 h-48 text-8xl aspect-square sm:w-56 sm:h-56',
 };
 
 export function PetAvatar({ size = 'medium', showName = false }: PetAvatarProps) {

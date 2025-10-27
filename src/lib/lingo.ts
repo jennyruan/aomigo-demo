@@ -10,7 +10,7 @@ interface Translations {
 }
 
 const FALLBACK_TRANSLATIONS: Translations = {
-  'app.title': { en: 'Aomigo', zh: 'Aomigo' },
+  'app.title': { en: 'AOMIGO', zh: 'AOMIGO' },
   'nav.home': { en: '🏠 Home', zh: '🏠 首页' },
   'nav.teach': { en: '📚 Teach', zh: '📚 教学' },
   'nav.summary': { en: '🗺️ Summary', zh: '🗺️ 总结' },

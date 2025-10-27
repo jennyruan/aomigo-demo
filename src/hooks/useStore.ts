@@ -101,7 +101,7 @@ export function useStore() {
       if (!data) {
         const newProfile: Omit<UserProfile, 'created_at' | 'updated_at'> = {
           id: userId,
-          pet_name: 'Aomigo',
+          pet_name: 'AOMIGO',
           intelligence: 0,
           health: 100,
           level: 1,
@@ -161,7 +161,7 @@ export function useStore() {
 
     const demoProfile: UserProfile = {
       id: generateUUID(),
-      pet_name: 'Aomigo',
+      pet_name: 'AOMIGO',
       intelligence: 50,
       health: 100,
       level: 1,

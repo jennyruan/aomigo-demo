@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS post_comments (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   post_id uuid REFERENCES community_posts(id) ON DELETE CASCADE NOT NULL,
   user_id uuid REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-  pet_name text DEFAULT 'Aomigo',
+  pet_name text DEFAULT 'AOMIGO',
   content text NOT NULL CHECK (length(content) <= 200),
   likes_count integer DEFAULT 0,
   created_at timestamptz DEFAULT now()
