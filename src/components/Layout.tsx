@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, BookOpen, Map, Users, Clock, LogOut, Globe, Settings, HelpCircle, ShoppingBag } from 'lucide-react';
+import { Home, BookOpen, Map, Users, Clock, LogOut, Globe, Settings, HelpCircle, ShoppingBag, MessageCircle } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { t, getCurrentLocale, setLocale } from '../lib/lingo';
 import { TutorialModal } from './TutorialModal';
@@ -34,6 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { path: '/teach', icon: BookOpen, label: t('nav.teach', locale) },
     { path: '/summary', icon: Map, label: t('nav.summary', locale) },
     { path: '/community', icon: Users, label: t('nav.community', locale) },
+    { path: '/messages', icon: MessageCircle, label: '💬 Messages' },
     { path: '/shop', icon: ShoppingBag, label: '🛍️ Shop' },
     { path: '/reviews', icon: Clock, label: t('nav.reviews', locale) },
     { path: '/settings', icon: Settings, label: t('nav.settings', locale) },

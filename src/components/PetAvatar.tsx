@@ -27,10 +27,37 @@ const moodAnimations: Record<PetMood, string> = {
   energized: 'animate-bounce',
 };
 
+const sizeStyles = {
+  small: {
+    width: '64px',
+    height: '64px',
+    minWidth: '64px',
+    minHeight: '64px',
+    maxWidth: '64px',
+    maxHeight: '64px',
+  },
+  medium: {
+    width: '128px',
+    height: '128px',
+    minWidth: '128px',
+    minHeight: '128px',
+    maxWidth: '128px',
+    maxHeight: '128px',
+  },
+  large: {
+    width: '200px',
+    height: '200px',
+    minWidth: '200px',
+    minHeight: '200px',
+    maxWidth: '200px',
+    maxHeight: '200px',
+  },
+};
+
 const sizeClasses = {
-  small: 'w-16 h-16 text-3xl aspect-square',
-  medium: 'w-32 h-32 text-6xl aspect-square',
-  large: 'w-48 h-48 text-8xl aspect-square sm:w-56 sm:h-56',
+  small: 'text-3xl',
+  medium: 'text-6xl',
+  large: 'text-8xl',
 };
 
 export function PetAvatar({ size = 'medium', showName = false }: PetAvatarProps) {
@@ -38,7 +65,14 @@ export function PetAvatar({ size = 'medium', showName = false }: PetAvatarProps)
 
   if (!profile) {
     return (
-      <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center`}>
+      <div
+        className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center`}
+        style={{
+          ...sizeStyles[size],
+          borderRadius: '50%',
+          aspectRatio: '1 / 1',
+        }}
+      >
         <span className="text-6xl">🐶</span>
       </div>
     );
@@ -52,7 +86,12 @@ export function PetAvatar({ size = 'medium', showName = false }: PetAvatarProps)
     <div className="flex flex-col items-center gap-4">
       <div
         className={`${sizeClasses[size]} rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center cartoon-border relative ${animation}`}
-        style={{ animationDuration: '2s' }}
+        style={{
+          ...sizeStyles[size],
+          borderRadius: '50%',
+          aspectRatio: '1 / 1',
+          animationDuration: '2s',
+        }}
       >
         <span>{emoji}</span>
 

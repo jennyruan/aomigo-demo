@@ -9,51 +9,66 @@ import type { CommunityPost, PostComment } from '../types';
 import { t, getCurrentLocale } from '../lib/lingo';
 import { toast } from 'sonner';
 
-const SAMPLE_POSTS: Partial<CommunityPost>[] = [
+interface ExamplePost extends Partial<CommunityPost> {
+  user_type?: 'student' | 'parent' | 'teacher';
+  user_details?: string;
+}
+
+const SAMPLE_POSTS: ExamplePost[] = [
   {
-    pet_name: 'Whiskers',
-    content: 'Today I learned about photosynthesis! Plants are so cool - they make their own food from sunlight.',
-    summary_text: 'Whiskers learned about photosynthesis!',
-    topics_learned: ['Science', 'Biology'],
-    likes_count: 15,
-    comment_count: 3,
+    pet_name: 'Luna',
+    user_type: 'student',
+    user_details: 'Sarah Martinez, 13',
+    content: 'Just learned about photosynthesis! 🌱 Plants make their own food from sunlight! Mind blown 🤯\n\nAnyone else studying biology? Would love to quiz each other before the test!',
+    summary_text: 'Luna learned about photosynthesis!',
+    topics_learned: ['Biology', 'Science'],
+    likes_count: 24,
+    comment_count: 8,
     created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
   },
   {
+    pet_name: 'Mama Ruan\'s Pet',
+    user_type: 'parent',
+    user_details: 'Lisa Chen',
+    content: 'My daughter has been so stressed about finals 😰 She studies 4-5 hours a day but feels like she\'s not retaining anything. Any advice from other parents?\n\nI want to help but don\'t want to add more pressure...',
+    summary_text: 'Parent seeking advice about study stress',
+    topics_learned: ['Parenting', 'Education'],
+    likes_count: 47,
+    comment_count: 23,
+    created_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    pet_name: 'Ms. Johnson',
+    user_type: 'teacher',
+    user_details: 'Verified Math Teacher',
+    content: '💡 Study Tip Tuesday! 💡\n\nWhen you\'re stuck on a problem, try this:\n\n1️⃣ Explain it to your AOMIGO pet out loud\n2️⃣ If you can\'t explain it, you don\'t fully understand\n3️⃣ The act of teaching reveals your knowledge gaps!\n\nThis is called the "Feynman Technique" and it WORKS! 🎯\n\nTry it with your next homework problem! 📝',
+    summary_text: 'Teacher shares study technique',
+    topics_learned: ['Study Skills', 'Education'],
+    likes_count: 312,
+    comment_count: 67,
+    created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    pet_name: 'Mochi',
+    user_type: 'student',
+    user_details: 'Alex Chen, 14',
+    content: '📚 STUDY GROUP FORMING! 📚\n\nSubject: Biology (Chapter 6-8)\nWhen: Saturday 2:00 PM PST\nWhere: Video call (link in group chat)\n\nWe\'re 3 people so far. Need 2-3 more!\n\nTopics: Cell structure, photosynthesis, respiration\n\nComment below if you want to join! 🙋',
+    summary_text: 'Student forming study group',
+    topics_learned: ['Biology', 'Collaboration'],
+    likes_count: 18,
+    comment_count: 12,
+    created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+  },
+  {
     pet_name: 'Buddy',
-    content: 'Finally mastered long division! My human taught me the steps and now I can solve any problem.',
+    user_type: 'student',
+    user_details: 'Emma Wilson, 12',
+    content: 'Finally mastered long division! My human taught me the steps and now I can solve any problem. 🎉\n\nPractice really does make perfect!',
     summary_text: 'Buddy mastered long division!',
     topics_learned: ['Math'],
     likes_count: 23,
     comment_count: 7,
     created_at: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    pet_name: 'Luna',
-    content: 'Explored the solar system today! Did you know Jupiter has 79 moons?!',
-    summary_text: 'Luna explored the solar system!',
-    topics_learned: ['Science', 'Space'],
-    likes_count: 31,
-    comment_count: 12,
-    created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    pet_name: 'Max',
-    content: 'Learned about the American Revolution. So many interesting facts about the founding fathers!',
-    summary_text: 'Max learned about the American Revolution!',
-    topics_learned: ['History'],
-    likes_count: 18,
-    comment_count: 5,
-    created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-  },
-  {
-    pet_name: 'Mittens',
-    content: 'Practice makes perfect! Did 20 Spanish vocabulary words today. ¡Hola amigos!',
-    summary_text: 'Mittens practiced Spanish vocabulary!',
-    topics_learned: ['Language', 'Spanish'],
-    likes_count: 27,
-    comment_count: 9,
-    created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
   },
 ];
 
@@ -395,6 +410,10 @@ export function Community() {
               const isOwnPost = post.user_id === profile.id;
               const isLiked = userLikes.has(post.id);
               const isExpanded = expandedComments.has(post.id);
+              const examplePost = post as ExamplePost;
+              const userBadge = examplePost.user_type === 'teacher' ? '🎓' :
+                               examplePost.user_type === 'parent' ? '👨‍👩‍👧' : '🎓';
+              const userIcon = examplePost.user_type === 'teacher' ? '🎓' : '🐶';
 
               return (
                 <div
@@ -407,17 +426,26 @@ export function Community() {
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center text-2xl">
-                          {isOwnPost ? '🐯' : '🐶'}
+                          {isOwnPost ? '🐯' : userIcon}
                         </div>
                         <div>
-                          <h3 className="font-bold text-brown-700 flex items-center gap-2">
-                            {post.pet_name} learned something!
+                          <h3 className="font-bold text-brown-700 flex items-center gap-2 flex-wrap">
+                            {userBadge} {post.pet_name}
+                            {examplePost.user_type === 'teacher' && (
+                              <span className="text-xs">✅</span>
+                            )}
                             {isOwnPost && (
                               <span className="text-xs bg-orange-500 text-white px-2 py-1 rounded-full">
                                 Your Post
                               </span>
                             )}
                           </h3>
+                          {examplePost.user_details && (
+                            <p className="text-xs text-brown-600 mb-1">
+                              {examplePost.user_details} · {examplePost.user_type === 'student' ? 'Student' :
+                               examplePost.user_type === 'parent' ? 'Parent' : 'Teacher'}
+                            </p>
+                          )}
                           <p className="text-sm text-brown-600">
                             Posted {formatTimeAgo(post.created_at)}
                           </p>
