@@ -1,4 +1,5 @@
-const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY || import.meta.env.OPENAI_API_KEY || '';
+const GROK_API_KEY = import.meta.env.VITE_GROK_API_KEY || '';
+const API_BASE_URL = 'https://api.x.ai/v1';
 
 interface FollowUpResponse {
   question: string;
@@ -19,8 +20,8 @@ export async function generateFollowUpQuestion(
   topics: string[],
   recentHistory?: string[]
 ): Promise<string> {
-  if (!OPENAI_API_KEY) {
-    throw new Error('OpenAI API key is required for Aomigo to communicate');
+  if (!GROK_API_KEY) {
+    throw new Error('Grok API key is required for Aomigo to communicate');
   }
 
   try {
@@ -28,14 +29,14 @@ export async function generateFollowUpQuestion(
       ? `\n\nRecent learning history:\n${recentHistory.map((h, i) => `${i + 1}. ${h}`).join('\n')}`
       : '';
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch(`${API_BASE_URL}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${GROK_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'grok-beta',
         messages: [
           {
             role: 'system',
@@ -53,20 +54,20 @@ export async function generateFollowUpQuestion(
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('OpenAI API error response:', errorData);
-      throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
+      console.error('Grok API error response:', errorData);
+      throw new Error(`Grok API error: ${errorData.error?.message || response.statusText}`);
     }
 
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error('Invalid OpenAI response structure:', data);
+      console.error('Invalid Grok response structure:', data);
       return 'Tell me more about what you learned!';
     }
 
     return data.choices[0].message.content;
   } catch (error) {
-    console.error('OpenAI API error:', error);
+    console.error('Grok API error:', error);
     throw error;
   }
 }
@@ -75,19 +76,19 @@ export async function evaluateAnswer(
   question: string,
   answer: string
 ): Promise<{ evaluation: string; qualityScore: number }> {
-  if (!OPENAI_API_KEY) {
-    throw new Error('OpenAI API key is required for Aomigo to communicate');
+  if (!GROK_API_KEY) {
+    throw new Error('Grok API key is required for Aomigo to communicate');
   }
 
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch(`${API_BASE_URL}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${GROK_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'grok-beta',
         messages: [
           {
             role: 'system',
@@ -105,14 +106,14 @@ export async function evaluateAnswer(
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('OpenAI API error response:', errorData);
-      throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
+      console.error('Grok API error response:', errorData);
+      throw new Error(`Grok API error: ${errorData.error?.message || response.statusText}`);
     }
 
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error('Invalid OpenAI response structure:', data);
+      console.error('Invalid Grok response structure:', data);
       return {
         evaluation: 'Great effort! You\'re learning so well!',
         qualityScore: 75,
@@ -134,25 +135,25 @@ export async function evaluateAnswer(
       };
     }
   } catch (error) {
-    console.error('OpenAI API error:', error);
+    console.error('Grok API error:', error);
     throw error;
   }
 }
 
 export async function extractTopics(input: string): Promise<string[]> {
-  if (!OPENAI_API_KEY) {
-    throw new Error('OpenAI API key is required for Aomigo to communicate');
+  if (!GROK_API_KEY) {
+    throw new Error('Grok API key is required for Aomigo to communicate');
   }
 
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch(`${API_BASE_URL}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${GROK_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'grok-beta',
         messages: [
           {
             role: 'system',
@@ -170,14 +171,14 @@ export async function extractTopics(input: string): Promise<string[]> {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('OpenAI API error response:', errorData);
-      throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
+      console.error('Grok API error response:', errorData);
+      throw new Error(`Grok API error: ${errorData.error?.message || response.statusText}`);
     }
 
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error('Invalid OpenAI response structure:', data);
+      console.error('Invalid Grok response structure:', data);
       return ['learning'];
     }
 
@@ -190,7 +191,7 @@ export async function extractTopics(input: string): Promise<string[]> {
       return ['learning'];
     }
   } catch (error) {
-    console.error('OpenAI API error:', error);
+    console.error('Grok API error:', error);
     throw error;
   }
 }
@@ -199,19 +200,19 @@ export async function evaluateReview(
   topicName: string,
   answer: string
 ): Promise<{ feedback: string; result: 'good' | 'poor'; qualityScore: number }> {
-  if (!OPENAI_API_KEY) {
-    throw new Error('OpenAI API key is required for Aomigo to communicate');
+  if (!GROK_API_KEY) {
+    throw new Error('Grok API key is required for Aomigo to communicate');
   }
 
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch(`${API_BASE_URL}/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${GROK_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'grok-beta',
         messages: [
           {
             role: 'system',
@@ -229,14 +230,14 @@ export async function evaluateReview(
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('OpenAI API error response:', errorData);
-      throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
+      console.error('Grok API error response:', errorData);
+      throw new Error(`Grok API error: ${errorData.error?.message || response.statusText}`);
     }
 
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error('Invalid OpenAI response structure:', data);
+      console.error('Invalid Grok response structure:', data);
       return {
         feedback: 'Great effort! Keep learning!',
         result: 'good',
@@ -261,7 +262,7 @@ export async function evaluateReview(
       };
     }
   } catch (error) {
-    console.error('OpenAI API error:', error);
+    console.error('Grok API error:', error);
     throw error;
   }
 }
