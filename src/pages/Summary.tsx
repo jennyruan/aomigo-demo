@@ -2,42 +2,38 @@ import { useEffect, useState } from 'react';
 import { Brain, TrendingUp, Clock, Award } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
 import { usePetStats } from '../hooks/usePetStats';
-import { isSupabaseConfigured } from '../lib/supabase';
+import { useStore } from '../hooks/useStore.tsx';
 import type { Topic, TeachingSession } from '../types';
 import { t, getCurrentLocale } from '../lib/lingo';
-import { fetchTopicsByUser } from '../lib/database/topics';
-import { fetchTeachingSessionsByUser } from '../lib/database/teachingSessions';
+import { apiClient } from '../lib/api/client';
 
 export function Summary() {
   const { profile } = usePetStats();
+  const { firebaseUser } = useStore();
   const [topics, setTopics] = useState<Topic[]>([]);
   const [sessions, setSessions] = useState<TeachingSession[]>([]);
   const [loading, setLoading] = useState(true);
   const locale = getCurrentLocale();
 
   useEffect(() => {
-    if (profile) {
-      loadData();
+    if (!profile || !firebaseUser) {
+      return;
     }
-  }, [profile]);
+    void loadData();
+  }, [profile, firebaseUser]);
 
   async function loadData() {
-    if (!profile) return;
+    if (!profile || !firebaseUser) return;
 
     try {
-      if (!isSupabaseConfigured) {
-        setTopics([]);
-        setSessions([]);
-        return;
-      }
-
-      const [topicList, sessionList] = await Promise.all([
-        fetchTopicsByUser(profile.id),
-        fetchTeachingSessionsByUser(profile.id, 10),
+      setLoading(true);
+      const [fetchedTopics, fetchedSessions] = await Promise.all([
+        apiClient.withAuth<Topic[]>(firebaseUser, '/api/v1/topics?limit=50'),
+        apiClient.withAuth<TeachingSession[]>(firebaseUser, '/api/v1/sessions/teaching?limit=10'),
       ]);
 
-      setTopics(topicList);
-      setSessions(sessionList);
+      setTopics(fetchedTopics ?? []);
+      setSessions(fetchedSessions ?? []);
     } catch (error) {
       console.error('[Summary] Failed to load summary data', error);
     } finally {

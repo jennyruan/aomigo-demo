@@ -4,15 +4,16 @@ import { Clock, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
 import { usePetStats } from '../hooks/usePetStats';
 import { useReviews } from '../hooks/useReviews';
-import { isSupabaseConfigured } from '../lib/supabase';
+import { useStore } from '../hooks/useStore.tsx';
 import { evaluateReview } from '../lib/openai';
 import type { Topic } from '../types';
 import { toast } from 'sonner';
-import { fetchTopicById } from '../lib/database/topics';
+import { apiClient } from '../lib/api/client';
 
 export function Review() {
   const { profile, addIntelligence, addHealth } = usePetStats();
   const { dueReviews, completeReview } = useReviews(profile?.id || null);
+  const { firebaseUser } = useStore();
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
   const [currentTopic, setCurrentTopic] = useState<Topic | null>(null);
   const [userAnswer, setUserAnswer] = useState('');
@@ -32,12 +33,15 @@ export function Review() {
     if (!dueReviews[currentReviewIndex]) return;
 
     try {
-      if (!isSupabaseConfigured) {
+      if (!firebaseUser) {
         setCurrentTopic(null);
         return;
       }
 
-      const topic = await fetchTopicById(dueReviews[currentReviewIndex].topic_id);
+      const topic = await apiClient.withAuth<Topic>(
+        firebaseUser,
+        `/api/v1/topics/${dueReviews[currentReviewIndex].topic_id}`
+      );
 
       if (topic) {
         setCurrentTopic(topic);
@@ -65,7 +69,6 @@ export function Review() {
       await completeReview(
         currentReview.id,
         evaluation.result,
-        currentTopic.id,
         intervalIndex
       );
 

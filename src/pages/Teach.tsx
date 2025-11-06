@@ -6,17 +6,12 @@ import { VoiceRecorder } from '../components/VoiceRecorder';
 import { ImageUploader } from '../components/ImageUploader';
 import { FollowUpQuestion } from '../components/FollowUpQuestion';
 import { usePetStats } from '../hooks/usePetStats';
-import { useStore } from '../hooks/useStore';
-import { isSupabaseConfigured } from '../lib/supabase';
+import { useStore } from '../hooks/useStore.tsx';
 import { extractTopics, generateFollowUpQuestion } from '../lib/openai';
 import { t, getCurrentLocale } from '../lib/lingo';
 import { toast } from 'sonner';
-import {
-  fetchRecentTeachingHistory,
-  recordTeachingSession,
-  upsertTopicWithInitialReview,
-  updateTeachingSessionAnswer,
-} from '../lib/database/teachingSessions';
+import { apiClient } from '../lib/api/client';
+import type { TeachingSession } from '../types';
 
 type InputMode = 'text' | 'voice' | 'image';
 
@@ -34,9 +29,10 @@ export function Teach() {
   const [followUpQuestion, setFollowUpQuestion] = useState('');
   const [extractedTopicsList, setExtractedTopicsList] = useState<string[]>([]);
   const [sessionId, setSessionId] = useState('');
+  const [sessionPrimaryId, setSessionPrimaryId] = useState<string | null>(null);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const { profile, addIntelligence, addHealth, updateStreak } = usePetStats();
-  const { isDemoMode } = useStore();
+  const { isDemoMode, firebaseUser } = useStore();
   const locale = getCurrentLocale();
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -59,18 +55,27 @@ export function Teach() {
 
       let recentHistory: string[] = [];
 
-      if (!isDemoMode && isSupabaseConfigured) {
-        const recentSessions = await fetchRecentTeachingHistory(profile.id, 5);
-        recentHistory = recentSessions.map((session) =>
-          `${session.extracted_topics.join(', ')}: ${session.raw_input.substring(0, 100)}...`
-        );
+      if (!isDemoMode && firebaseUser) {
+        try {
+          const recentSessions = await apiClient.withAuth<TeachingSession[]>(
+            firebaseUser,
+            '/api/v1/sessions/teaching?limit=5'
+          );
+
+          recentHistory = (recentSessions ?? []).map((session) =>
+            `${session.extracted_topics.join(', ')}: ${session.raw_input.substring(0, 100)}...`
+          );
+        } catch (historyError) {
+          console.warn('[Teach] Failed to load recent teaching history', historyError);
+        }
       }
 
       const question = await generateFollowUpQuestion(input, topics, recentHistory);
       setFollowUpQuestion(question);
 
-      const newSessionId = `session-${Date.now()}`;
-      setSessionId(newSessionId);
+      const fallbackSessionId = `session-${Date.now()}`;
+      setSessionId(fallbackSessionId);
+      setSessionPrimaryId(null);
 
       setChatHistory(prev => [
         ...prev,
@@ -78,23 +83,26 @@ export function Teach() {
         { role: 'assistant', content: question, timestamp: Date.now() + 1 }
       ]);
 
-      if (!isDemoMode && isSupabaseConfigured) {
-        await recordTeachingSession({
-          userId: profile.id,
-          sessionId: newSessionId,
-          inputType: inputMode,
-          rawInput: input,
-          extractedTopics: topics,
-          followUpQuestion: question,
-        });
-      }
+      if (!isDemoMode && firebaseUser) {
+        try {
+          const createdSession = await apiClient.withAuth<TeachingSession>(
+            firebaseUser,
+            '/api/v1/sessions/teaching',
+            'POST',
+            {
+              input_type: inputMode,
+              raw_input: input,
+              extracted_topics: topics,
+              follow_up_question: question,
+            }
+          );
 
-      if (!isDemoMode && isSupabaseConfigured) {
-        for (const topicName of topics) {
-          await upsertTopicWithInitialReview({
-            userId: profile.id,
-            topicName,
-          });
+          if (createdSession) {
+            setSessionPrimaryId(createdSession.id ?? null);
+            setSessionId(createdSession.session_id ?? createdSession.id ?? fallbackSessionId);
+          }
+        } catch (sessionError) {
+          console.error('[Teach] Failed to record teaching session', sessionError);
         }
       }
 
@@ -112,15 +120,36 @@ export function Teach() {
   }
 
   async function handleAnswerSubmit(answer: string, qualityScore: number) {
-    if (!profile || !sessionId) return;
+    if (!profile || (!sessionId && !sessionPrimaryId)) return;
 
     try {
-      if (!isDemoMode && isSupabaseConfigured) {
-        await updateTeachingSessionAnswer({
-          sessionId,
-          answer,
-          qualityScore,
-        });
+      if (!isDemoMode && firebaseUser) {
+        const identifier = sessionPrimaryId ?? sessionId;
+
+        if (identifier) {
+          try {
+            await apiClient.withAuth(
+              firebaseUser,
+              `/api/v1/sessions/teaching/${identifier}`,
+              'PATCH',
+              {
+                user_answer: answer,
+                quality_score: qualityScore,
+              }
+            );
+          } catch (updateError) {
+            console.warn('[Teach] PATCH update failed, retrying via answer endpoint', updateError);
+            await apiClient.withAuth(
+              firebaseUser,
+              `/api/v1/sessions/teaching/${identifier}/answer`,
+              'POST',
+              {
+                user_answer: answer,
+                quality_score: qualityScore,
+              }
+            );
+          }
+        }
       }
 
       const intelligenceGain = Math.floor(qualityScore / 10);
@@ -142,6 +171,7 @@ export function Teach() {
         setInput('');
         setExtractedTopicsList([]);
         setSessionId('');
+        setSessionPrimaryId(null);
       }, 2000);
     } catch (error) {
       console.error('[Teach] Failed to submit answer', error);

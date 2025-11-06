@@ -1,35 +1,49 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+import { getNextReviewDate, isReviewOverdue, scheduleFirstReview } from '../lib/forgettingCurve';
+import { apiClient } from '../lib/api/client';
 import type { Review } from '../types';
-import { getNextReviewDate, isReviewOverdue } from '../lib/forgettingCurve';
-import {
-  completeReviewEntry,
-  fetchOpenReviews,
-  insertReview,
-  REVIEW_INTERVALS,
-  touchTopicLastReviewed,
-} from '../lib/database/reviews';
-import { isSupabaseConfigured } from '../lib/supabase';
+import { useStore } from './useStore.tsx';
+
+const DEFAULT_INTERVALS = [0, 1, 3, 7, 14, 30, 60];
 
 export function useReviews(userId: string | null) {
+  const { firebaseUser } = useStore();
+  const authUser = useMemo(() => firebaseUser, [firebaseUser]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [dueReviews, setDueReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const [intervals, setIntervals] = useState<number[]>(DEFAULT_INTERVALS);
 
   useEffect(() => {
-    if (userId) {
-      loadReviews();
+    loadIntervals();
+  }, []);
+
+  useEffect(() => {
+    if (userId && authUser) {
+      void loadReviews();
+    } else {
+      setLoading(false);
     }
-  }, [userId]);
+  }, [userId, authUser]);
+
+  async function loadIntervals() {
+    try {
+      const fetched = await apiClient.request<number[]>('/api/v1/reviews/intervals');
+      if (Array.isArray(fetched) && fetched.length > 0) {
+        setIntervals(fetched);
+      }
+    } catch (error) {
+      console.warn('[Reviews] Failed to load interval configuration', error);
+    }
+  }
 
   async function loadReviews() {
-    if (!userId) return;
-    if (!isSupabaseConfigured) {
-      setLoading(false);
-      return;
-    }
+    if (!userId || !authUser) return;
 
     try {
-      const openReviews = await fetchOpenReviews(userId);
+      setLoading(true);
+      const openReviews = await apiClient.withAuth<Review[]>(authUser, '/api/v1/reviews/open');
 
       setReviews(openReviews);
 
@@ -45,23 +59,22 @@ export function useReviews(userId: string | null) {
   }
 
   async function scheduleReview(topicId: string, intervalIndex: number = 0) {
-    if (!userId) return;
-    if (!isSupabaseConfigured) return;
+    if (!userId || !authUser) return;
 
-    const scheduledDate = new Date();
-
+    let scheduledDate: Date;
     if (intervalIndex === 0) {
-      scheduledDate.setMinutes(scheduledDate.getMinutes() + 10);
+      scheduledDate = scheduleFirstReview();
     } else {
-      scheduledDate.setDate(scheduledDate.getDate() + REVIEW_INTERVALS[intervalIndex]);
+      scheduledDate = new Date();
+      const days = intervals[intervalIndex] ?? intervals[intervals.length - 1];
+      scheduledDate.setDate(scheduledDate.getDate() + days);
     }
 
     try {
-      await insertReview({
-        userId,
-        topicId,
-        scheduledDate: scheduledDate.toISOString(),
-        intervalDays: REVIEW_INTERVALS[intervalIndex],
+      await apiClient.withAuth(authUser, '/api/v1/reviews/schedule', 'POST', {
+        topic_id: topicId,
+        scheduled_date: scheduledDate.toISOString(),
+        interval_days: intervals[intervalIndex] ?? intervals[0] ?? 0,
       });
       await loadReviews();
     } catch (error) {
@@ -72,29 +85,22 @@ export function useReviews(userId: string | null) {
   async function completeReview(
     reviewId: string,
     result: 'good' | 'poor',
-    topicId: string,
     currentIntervalIndex: number
   ) {
-    if (!userId) return;
-    if (!isSupabaseConfigured) return;
+    if (!userId || !authUser) return;
 
     try {
       const nextReview = getNextReviewDate(currentIntervalIndex, result);
 
       const newIntervalIndex = result === 'good'
-        ? Math.min(currentIntervalIndex + 1, REVIEW_INTERVALS.length - 1)
+        ? Math.min(currentIntervalIndex + 1, intervals.length - 1)
         : Math.max(0, currentIntervalIndex - 1);
 
-      await completeReviewEntry({
-        reviewId,
+      await apiClient.withAuth(authUser, `/api/v1/reviews/${reviewId}/complete`, 'POST', {
         result,
-        nextReviewDate: nextReview.date.toISOString(),
-        topicId,
-        nextIntervalDays: REVIEW_INTERVALS[newIntervalIndex],
-        userId,
+        next_review_date: nextReview.date.toISOString(),
+        next_interval_days: intervals[newIntervalIndex] ?? nextReview.intervalDays,
       });
-
-      await touchTopicLastReviewed(topicId);
 
       await loadReviews();
     } catch (error) {
@@ -109,5 +115,6 @@ export function useReviews(userId: string | null) {
     scheduleReview,
     completeReview,
     refresh: loadReviews,
+    intervals,
   };
 }

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Users, Plus, Heart, MessageCircle, Share2, Edit2, Trash2 } from 'lucide-react';
 import { PostCreationModal, type PostData } from '../components/PostCreationModal';
 import { usePetStats } from '../hooks/usePetStats';
-import { useStore } from '../hooks/useStore';
+import { useStore } from '../hooks/useStore.tsx';
 import { tryGetSupabaseClient, isSupabaseConfigured } from '../lib/supabase';
 import type { CommunityPost, PostComment } from '../types';
 import { t, getCurrentLocale } from '../lib/lingo';
