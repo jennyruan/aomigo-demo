@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Check, X, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Check, X, Loader2, ArrowLeft } from 'lucide-react';
 import { signUpWithPassword, signInWithPassword } from '../lib/stackAuth';
 import { supabase } from '../lib/supabase';
 import { useStore } from '../hooks/useStore';
@@ -112,6 +112,14 @@ export function Auth() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-cream-50 to-purple-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 text-orange-600 hover:text-orange-700 font-semibold mb-6 transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          Back to Home
+        </button>
+
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <PetAvatar size="large" />

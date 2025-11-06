@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'sonner';
 import { useStore } from './hooks/useStore';
 import { Layout } from './components/Layout';
+import { Landing } from './pages/Landing';
 import { Auth } from './pages/Auth';
 import { Home } from './pages/Home';
 import { Teach } from './pages/Teach';
@@ -27,7 +28,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/auth" replace />;
   }
 
   return <Layout>{children}</Layout>;
@@ -38,7 +39,8 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Auth />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/auth" element={<Auth />} />
           <Route
             path="/home"
             element={
