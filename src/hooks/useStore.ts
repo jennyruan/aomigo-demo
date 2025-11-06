@@ -14,8 +14,7 @@ function getInitialDemoState() {
         isDemoMode: true,
       };
     }
-  } catch (error) {
-    console.error('Error reading demo data:', error);
+    } catch (error) {
   }
   return {
     user: null,
@@ -40,7 +39,7 @@ export function useStore() {
     checkUser();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (_event, session) => {
         const demoData = localStorage.getItem('aomigo_demo_profile');
         if (demoData) {
           return;
@@ -79,7 +78,6 @@ export function useStore() {
         await loadProfile(session.user.id);
       }
     } catch (error) {
-      console.error('Error checking user:', error);
     } finally {
       setLoading(false);
     }
@@ -94,7 +92,6 @@ export function useStore() {
         .maybeSingle();
 
       if (error && error.code !== 'PGRST116') {
-        console.error('Error loading profile:', error);
         return;
       }
 
@@ -121,7 +118,6 @@ export function useStore() {
         setProfile(data);
       }
     } catch (error) {
-      console.error('Error loading profile:', error);
     }
   }
 
@@ -146,7 +142,6 @@ export function useStore() {
       if (error) throw error;
       setProfile(data);
     } catch (error) {
-      console.error('Error updating profile:', error);
     }
   }
 

@@ -1,5 +1,4 @@
 type Locale = 'en' | 'zh';
-
 interface Translations {
   [key: string]: {
     en: string;
@@ -44,7 +43,6 @@ const translations: Translations = {
 export function t(key: string, locale: Locale = 'en'): string {
   const translation = translations[key];
   if (!translation) {
-    console.warn(`Translation missing for key: ${key}`);
     return key;
   }
   return translation[locale] || translation.en;

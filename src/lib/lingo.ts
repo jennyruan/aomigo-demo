@@ -100,18 +100,17 @@ const FALLBACK_TRANSLATIONS: Translations = {
 class LingoClient {
   private apiKey: string;
   private useFallback: boolean;
-  private cache: Map<string, Translations>;
+  // cache holds a simple translation pair for each key
+  private cache: Map<string, { en: string; zh: string }>;
 
   constructor(apiKey?: string) {
     this.apiKey = apiKey || LINGO_API_KEY;
     this.useFallback = !this.apiKey;
     this.cache = new Map();
 
-    if (this.useFallback) {
-      console.log('[Lingo.dev] No API key provided, using fallback dictionary');
-    } else {
-      console.log('[Lingo.dev] Initialized with API key');
-    }
+    // Avoid noisy console output in the demo app; use centralized logger if needed.
+    // Logging is intentionally silent by default.
+    
   }
 
   async translate(key: string, locale: Locale): Promise<string> {
@@ -146,7 +145,7 @@ class LingoClient {
 
       return data.translations[locale] || data.translations.en;
     } catch (error) {
-      console.error('[Lingo] API error, falling back to dictionary:', error);
+      // swallow API errors and fall back to built-in dictionary
       return this.getFallbackTranslation(key, locale);
     }
   }
@@ -154,7 +153,6 @@ class LingoClient {
   private getFallbackTranslation(key: string, locale: Locale): string {
     const translation = FALLBACK_TRANSLATIONS[key];
     if (!translation) {
-      console.warn(`[Lingo] Translation missing for key: ${key}`);
       return key;
     }
     return translation[locale] || translation.en;

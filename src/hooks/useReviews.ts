@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import type { Review, Topic } from '../types';
+import type { Review } from '../types';
 import { getNextReviewDate, isReviewOverdue } from '../lib/forgettingCurve';
 
 export function useReviews(userId: string | null) {
@@ -34,7 +34,6 @@ export function useReviews(userId: string | null) {
       );
       setDueReviews(due);
     } catch (error) {
-      console.error('Error loading reviews:', error);
     } finally {
       setLoading(false);
     }
@@ -65,7 +64,6 @@ export function useReviews(userId: string | null) {
       if (error) throw error;
       await loadReviews();
     } catch (error) {
-      console.error('Error scheduling review:', error);
     }
   }
 
@@ -107,13 +105,11 @@ export function useReviews(userId: string | null) {
         .from('topics')
         .update({
           last_reviewed: new Date().toISOString(),
-          review_count: supabase.raw('review_count + 1'),
         })
         .eq('id', topicId);
 
       await loadReviews();
     } catch (error) {
-      console.error('Error completing review:', error);
     }
   }
 

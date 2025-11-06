@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, BookOpen, Map, Users, Clock, LogOut, Globe, Settings, HelpCircle, ShoppingBag, MessageCircle, User } from 'lucide-react';
+import { Home, BookOpen, Map, Users, Clock, LogOut, Globe, Settings, HelpCircle, ShoppingBag, MessageCircle } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { usePetStats } from '../hooks/usePetStats';
 import { t, getCurrentLocale, setLocale } from '../lib/lingo';

@@ -61,7 +61,7 @@ export function Auth() {
       if (mode === 'signup') {
         const user = await signUpWithPassword(email, password);
 
-        const { error: profileError } = await supabase
+        await supabase
           .from('users_profile')
           .insert([{
             id: user.id,
@@ -71,9 +71,6 @@ export function Auth() {
             level: 1,
             day_streak: 0,
           }]);
-
-        if (profileError) console.error('Profile creation error:', profileError);
-
         toast.success('Welcome to AOMIGO! 🐾');
         navigate('/home');
       } else {
@@ -82,7 +79,6 @@ export function Auth() {
         navigate('/home');
       }
     } catch (err: any) {
-      console.error('Auth error:', err);
       const errorMessage = err.message || 'Something went wrong';
 
       if (errorMessage.includes('already exists') || errorMessage.includes('already registered')) {

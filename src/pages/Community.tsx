@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Users, Plus, Heart, MessageCircle, Share2, Edit2, Trash2 } from 'lucide-react';
-import { PetAvatar } from '../components/PetAvatar';
 import { PostCreationModal, type PostData } from '../components/PostCreationModal';
 import { usePetStats } from '../hooks/usePetStats';
 import { useStore } from '../hooks/useStore';
@@ -121,7 +120,6 @@ export function Community() {
         setPosts(data || []);
       }
     } catch (error) {
-      console.error('Error loading posts:', error);
       toast.error('Failed to load posts');
     } finally {
       setLoading(false);
@@ -140,7 +138,6 @@ export function Community() {
       if (error) throw error;
       setUserLikes(new Set(data?.map(like => like.post_id) || []));
     } catch (error) {
-      console.error('Error loading user likes:', error);
     }
   }
 
@@ -160,7 +157,6 @@ export function Community() {
       if (error) throw error;
       setComments(prev => ({ ...prev, [postId]: data || [] }));
     } catch (error) {
-      console.error('Error loading comments:', error);
     }
   }
 
@@ -207,7 +203,6 @@ export function Community() {
 
       toast.success('Posted!');
     } catch (error) {
-      console.error('Error creating post:', error);
       toast.error('Failed to create post');
       throw error;
     }
@@ -260,7 +255,6 @@ export function Community() {
         ));
       }
     } catch (error) {
-      console.error('Error toggling like:', error);
       toast.error('Failed to update like');
     }
   }
@@ -313,7 +307,6 @@ export function Community() {
       setNewComment(prev => ({ ...prev, [postId]: '' }));
       toast.success('Comment added!');
     } catch (error) {
-      console.error('Error adding comment:', error);
       toast.error('Failed to add comment');
     }
   }

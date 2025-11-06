@@ -1,5 +1,4 @@
 const S2_TOKEN = import.meta.env.VITE_S2_TOKEN || '';
-
 export interface TeachingEvent {
   type: 'teaching_session';
   userId: string;
@@ -33,11 +32,7 @@ class S2Client {
     this.token = token || S2_TOKEN;
     this.useLocalStorage = !this.token;
 
-    if (this.useLocalStorage) {
-      console.log('[S2.dev] No token provided, using localStorage fallback');
-    } else {
-      console.log('[S2.dev] Initialized with API token');
-    }
+    // silent by default; S2 events fall back to localStorage when token is absent
   }
 
   private getLocalStorageKey(userId: string): string {
@@ -49,7 +44,6 @@ class S2Client {
       const stored = localStorage.getItem(this.getLocalStorageKey(userId));
       return stored ? JSON.parse(stored) : [];
     } catch (error) {
-      console.error('[S2] LocalStorage read error:', error);
       return [];
     }
   }
@@ -58,7 +52,6 @@ class S2Client {
     try {
       localStorage.setItem(this.getLocalStorageKey(userId), JSON.stringify(events));
     } catch (error) {
-      console.error('[S2] LocalStorage write error:', error);
     }
   }
 
@@ -67,7 +60,7 @@ class S2Client {
       const events = this.getEventsFromLocalStorage(event.userId);
       events.push(event);
       this.saveEventsToLocalStorage(event.userId, events);
-      console.log('[S2] Event logged to localStorage:', event.type);
+  // event saved to localStorage (silenced)
       return;
     }
 
@@ -85,9 +78,9 @@ class S2Client {
         throw new Error(`S2 API error: ${response.status}`);
       }
 
-      console.log('[S2] Event logged to S2.dev:', event.type);
+      // success (no logs in demo mode)
     } catch (error) {
-      console.error('[S2] API error, falling back to localStorage:', error);
+      // on failure, persist to localStorage silently
       const events = this.getEventsFromLocalStorage(event.userId);
       events.push(event);
       this.saveEventsToLocalStorage(event.userId, events);
@@ -117,23 +110,21 @@ class S2Client {
 
       const data = await response.json();
       return data.events || [];
-    } catch (error) {
-      console.error('[S2] API error, falling back to localStorage:', error);
+    } catch (_error) {
+      // fall back to localStorage silently
       const events = this.getEventsFromLocalStorage(userId);
       return limit ? events.slice(-limit) : events;
     }
   }
 
   subscribeToEvents(
-    userId: string,
-    callback: (event: AppEvent) => void
+    _userId: string,
+    _callback: (event: AppEvent) => void
   ): () => void {
     if (this.useLocalStorage) {
-      console.log('[S2] LocalStorage mode: subscriptions not available');
       return () => {};
     }
 
-    console.log('[S2] Real-time subscriptions not implemented yet');
     return () => {};
   }
 }

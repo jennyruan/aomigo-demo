@@ -41,7 +41,6 @@ export function Review() {
         setCurrentTopic(data);
       }
     } catch (error) {
-      console.error('Error loading topic:', error);
     }
   }
 
@@ -90,7 +89,6 @@ export function Review() {
         }
       }, 3500);
     } catch (error) {
-      console.error('Error submitting review:', error);
       toast.error('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
