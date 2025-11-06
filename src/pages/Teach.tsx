@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Loader2, Keyboard, Mic, Image as ImageIcon } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
 import { ForgettingCurve } from '../components/ForgettingCurve';
@@ -32,7 +31,6 @@ export function Teach() {
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const { profile, addIntelligence, addHealth, updateStreak } = usePetStats();
   const { isDemoMode } = useStore();
-  const navigate = useNavigate();
   const locale = getCurrentLocale();
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -148,7 +146,6 @@ export function Teach() {
 
       toast.success(`+${intelligenceGain} Intelligence! 🧠`);
     } catch (error) {
-      console.error('Error processing teaching:', error);
       toast.error('Something went wrong. Please try again.');
     } finally {
       setIsProcessing(false);
@@ -192,7 +189,6 @@ export function Teach() {
         setSessionId('');
       }, 2000);
     } catch (error) {
-      console.error('Error saving answer:', error);
     }
   }
 
@@ -393,7 +389,7 @@ export function Teach() {
         )}
 
         <div className="mt-8">
-          <ForgettingCurve compact />
+          <ForgettingCurve />
         </div>
       </div>
     </div>

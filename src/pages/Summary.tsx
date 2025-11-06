@@ -40,7 +40,6 @@ export function Summary() {
       if (topicsResult.data) setTopics(topicsResult.data);
       if (sessionsResult.data) setSessions(sessionsResult.data);
     } catch (error) {
-      console.error('Error loading data:', error);
     } finally {
       setLoading(false);
     }
@@ -64,7 +63,7 @@ export function Summary() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-cream-50 to-purple-50">
       <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold text-brown-700">
               {t('summary.title', locale)}

@@ -1,12 +1,6 @@
 const GROK_API_KEY = import.meta.env.VITE_GROK_API_KEY || '';
 const API_BASE_URL = 'https://api.x.ai/v1';
 
-interface FollowUpResponse {
-  question: string;
-  evaluation?: string;
-  qualityScore?: number;
-}
-
 const AOMIGO_PERSONALITY = `You are Aomigo, a friendly and encouraging AI learning companion in the form of a cute puppy. Your personality:
 - Warm, supportive, and enthusiastic about learning
 - Use simple, clear language
@@ -53,23 +47,21 @@ export async function generateFollowUpQuestion(
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Grok API error response:', errorData);
-      throw new Error(`Grok API error: ${errorData.error?.message || response.statusText}`);
+      // swallow API details in the demo app
+      throw new Error(`Grok API error: ${response.status}`);
     }
 
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error('Invalid Grok response structure:', data);
       return 'Tell me more about what you learned!';
     }
 
     return data.choices[0].message.content;
-  } catch (error) {
-    console.error('Grok API error:', error);
-    throw error;
-  }
+    } catch (error) {
+      // hide low-level API errors in demo; bubble a generic error up
+      throw new Error('Grok API request failed');
+    }
 }
 
 export async function evaluateAnswer(
@@ -105,15 +97,12 @@ export async function evaluateAnswer(
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Grok API error response:', errorData);
-      throw new Error(`Grok API error: ${errorData.error?.message || response.statusText}`);
+      throw new Error(`Grok API error: ${response.status}`);
     }
 
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error('Invalid Grok response structure:', data);
       return {
         evaluation: 'Great effort! You\'re learning so well!',
         qualityScore: 75,
@@ -134,10 +123,9 @@ export async function evaluateAnswer(
         qualityScore: 75,
       };
     }
-  } catch (error) {
-    console.error('Grok API error:', error);
-    throw error;
-  }
+    } catch (error) {
+      throw new Error('Grok API request failed');
+    }
 }
 
 export async function extractTopics(input: string): Promise<string[]> {
@@ -170,15 +158,12 @@ export async function extractTopics(input: string): Promise<string[]> {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Grok API error response:', errorData);
-      throw new Error(`Grok API error: ${errorData.error?.message || response.statusText}`);
+      throw new Error(`Grok API error: ${response.status}`);
     }
 
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error('Invalid Grok response structure:', data);
       return ['learning'];
     }
 
@@ -190,10 +175,9 @@ export async function extractTopics(input: string): Promise<string[]> {
     } catch {
       return ['learning'];
     }
-  } catch (error) {
-    console.error('Grok API error:', error);
-    throw error;
-  }
+    } catch (error) {
+      throw new Error('Grok API request failed');
+    }
 }
 
 export async function evaluateReview(
@@ -229,15 +213,12 @@ export async function evaluateReview(
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Grok API error response:', errorData);
-      throw new Error(`Grok API error: ${errorData.error?.message || response.statusText}`);
+      throw new Error(`Grok API error: ${response.status}`);
     }
 
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error('Invalid Grok response structure:', data);
       return {
         feedback: 'Great effort! Keep learning!',
         result: 'good',
@@ -261,8 +242,7 @@ export async function evaluateReview(
         qualityScore: 75,
       };
     }
-  } catch (error) {
-    console.error('Grok API error:', error);
-    throw error;
-  }
+    } catch (error) {
+      throw new Error('Grok API request failed');
+    }
 }
