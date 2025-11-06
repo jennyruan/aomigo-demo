@@ -24,9 +24,6 @@ export async function createProfile(initialProfile: Database['public']['Tables']
   const client = tryGetSupabaseClient();
   if (!client) return null;
 
-  // Use upsert so creating a profile for an existing user won't fail with a
-  // duplicate-key error. This will insert when missing or update the row when
-  // the primary key already exists.
   try {
     const { data, error } = await (client.from('users_profile') as any)
       .upsert(initialProfile, { onConflict: 'id' })
