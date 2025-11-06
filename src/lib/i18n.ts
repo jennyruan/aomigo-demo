@@ -49,11 +49,13 @@ export function t(key: string, locale: Locale = 'en'): string {
 }
 
 export function getCurrentLocale(): Locale {
-  const stored = localStorage.getItem('aomigo_locale');
-  return (stored === 'zh' ? 'zh' : 'en') as Locale;
+  const runtime = (window as any).__AOMIGO_LOCALE as Locale | undefined;
+  if (runtime) return runtime;
+  const nav = typeof navigator !== 'undefined' ? navigator.language : 'en';
+  return nav && nav.startsWith('zh') ? 'zh' : 'en';
 }
 
 export function setLocale(locale: Locale): void {
-  localStorage.setItem('aomigo_locale', locale);
+  (window as any).__AOMIGO_LOCALE = locale;
   window.location.reload();
 }

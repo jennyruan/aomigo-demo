@@ -29,36 +29,25 @@ export interface StackUser {
 }
 
 export function getDemoUser(): StackUser {
-  const stored = localStorage.getItem('aomigo_stack_demo_user');
-  if (stored) {
-    return JSON.parse(stored);
-  }
-
-  const demoUser: StackUser = {
+  // Return a generated demo user for offline/demo mode. We do not persist
+  // demo users to localStorage anymore — this keeps the app free of client
+  // storage.
+  return {
     id: 'demo-' + Date.now(),
     email: 'demo@aomigo.com',
     displayName: 'Demo User',
     primaryEmail: 'demo@aomigo.com',
   };
-
-  localStorage.setItem('aomigo_stack_demo_user', JSON.stringify(demoUser));
-  return demoUser;
 }
 
 export function clearDemoUser() {
-  localStorage.removeItem('aomigo_stack_demo_user');
+  // no-op: demo users are not persisted
 }
 
 export async function signInWithMagicLink(email: string): Promise<void> {
   if (!stackApp) {
   // demo mode simulation (silenced)
-    const demoUser: StackUser = {
-      id: 'demo-' + Date.now(),
-      email,
-      displayName: email.split('@')[0],
-      primaryEmail: email,
-    };
-    localStorage.setItem('aomigo_stack_demo_user', JSON.stringify(demoUser));
+    // no-op in demo mode for magic-link flow
     return;
   }
 
@@ -92,7 +81,6 @@ export async function signUpWithPassword(email: string, password: string): Promi
       displayName: email.split('@')[0],
       primaryEmail: email,
     };
-    localStorage.setItem('aomigo_stack_demo_user', JSON.stringify(demoUser));
     return demoUser;
   }
 
@@ -122,7 +110,6 @@ export async function signInWithPassword(email: string, password: string): Promi
       displayName: email.split('@')[0],
       primaryEmail: email,
     };
-    localStorage.setItem('aomigo_stack_demo_user', JSON.stringify(demoUser));
     return demoUser;
   }
 

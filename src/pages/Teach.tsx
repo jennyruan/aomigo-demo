@@ -7,10 +7,16 @@ import { ImageUploader } from '../components/ImageUploader';
 import { FollowUpQuestion } from '../components/FollowUpQuestion';
 import { usePetStats } from '../hooks/usePetStats';
 import { useStore } from '../hooks/useStore';
-import { supabase } from '../lib/supabase';
+import { isSupabaseConfigured } from '../lib/supabase';
 import { extractTopics, generateFollowUpQuestion } from '../lib/openai';
 import { t, getCurrentLocale } from '../lib/lingo';
 import { toast } from 'sonner';
+import {
+  fetchRecentTeachingHistory,
+  recordTeachingSession,
+  upsertTopicWithInitialReview,
+  updateTeachingSessionAnswer,
+} from '../lib/database/teachingSessions';
 
 type InputMode = 'text' | 'voice' | 'image';
 
@@ -53,17 +59,11 @@ export function Teach() {
 
       let recentHistory: string[] = [];
 
-      if (!isDemoMode) {
-        const { data: recentSessions } = await supabase
-          .from('teaching_sessions')
-          .select('raw_input, extracted_topics')
-          .eq('user_id', profile.id)
-          .order('created_at', { ascending: false })
-          .limit(5);
-
-        recentHistory = recentSessions?.map(s =>
-          `${s.extracted_topics.join(', ')}: ${s.raw_input.substring(0, 100)}...`
-        ) || [];
+      if (!isDemoMode && isSupabaseConfigured) {
+        const recentSessions = await fetchRecentTeachingHistory(profile.id, 5);
+        recentHistory = recentSessions.map((session) =>
+          `${session.extracted_topics.join(', ')}: ${session.raw_input.substring(0, 100)}...`
+        );
       }
 
       const question = await generateFollowUpQuestion(input, topics, recentHistory);
@@ -78,65 +78,23 @@ export function Teach() {
         { role: 'assistant', content: question, timestamp: Date.now() + 1 }
       ]);
 
-      if (!isDemoMode) {
-        const { error } = await supabase.from('teaching_sessions').insert([
-          {
-            user_id: profile.id,
-            session_id: newSessionId,
-            input_type: inputMode,
-            raw_input: input,
-            extracted_topics: topics,
-            follow_up_question: question,
-          },
-        ]);
-
-        if (error) throw error;
+      if (!isDemoMode && isSupabaseConfigured) {
+        await recordTeachingSession({
+          userId: profile.id,
+          sessionId: newSessionId,
+          inputType: inputMode,
+          rawInput: input,
+          extractedTopics: topics,
+          followUpQuestion: question,
+        });
       }
 
-      if (!isDemoMode) {
+      if (!isDemoMode && isSupabaseConfigured) {
         for (const topicName of topics) {
-          const { data: existing } = await supabase
-            .from('topics')
-            .select('*')
-            .eq('user_id', profile.id)
-            .eq('topic_name', topicName)
-            .maybeSingle();
-
-          if (existing) {
-            await supabase
-              .from('topics')
-              .update({
-                depth: existing.depth + 1,
-                last_reviewed: new Date().toISOString(),
-              })
-              .eq('id', existing.id);
-          } else {
-            const { data: newTopic } = await supabase
-              .from('topics')
-              .insert([
-                {
-                  user_id: profile.id,
-                  topic_name: topicName,
-                  depth: 1,
-                },
-              ])
-              .select()
-              .single();
-
-            if (newTopic) {
-              const scheduledDate = new Date();
-              scheduledDate.setMinutes(scheduledDate.getMinutes() + 10);
-
-              await supabase.from('reviews').insert([
-                {
-                  user_id: profile.id,
-                  topic_id: newTopic.id,
-                  scheduled_date: scheduledDate.toISOString(),
-                  interval_days: 0,
-                },
-              ]);
-            }
-          }
+          await upsertTopicWithInitialReview({
+            userId: profile.id,
+            topicName,
+          });
         }
       }
 
@@ -146,6 +104,7 @@ export function Teach() {
 
       toast.success(`+${intelligenceGain} Intelligence! 🧠`);
     } catch (error) {
+      console.error('[Teach] Failed to process teaching session', error);
       toast.error('Something went wrong. Please try again.');
     } finally {
       setIsProcessing(false);
@@ -156,16 +115,12 @@ export function Teach() {
     if (!profile || !sessionId) return;
 
     try {
-      if (!isDemoMode) {
-        await supabase
-          .from('teaching_sessions')
-          .update({
-            user_answer: answer,
-            quality_score: qualityScore,
-            intelligence_gain: Math.floor(qualityScore / 10),
-            health_change: qualityScore > 70 ? 3 : 1,
-          })
-          .eq('session_id', sessionId);
+      if (!isDemoMode && isSupabaseConfigured) {
+        await updateTeachingSessionAnswer({
+          sessionId,
+          answer,
+          qualityScore,
+        });
       }
 
       const intelligenceGain = Math.floor(qualityScore / 10);
@@ -189,6 +144,7 @@ export function Teach() {
         setSessionId('');
       }, 2000);
     } catch (error) {
+      console.error('[Teach] Failed to submit answer', error);
     }
   }
 

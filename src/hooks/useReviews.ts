@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
 import type { Review } from '../types';
 import { getNextReviewDate, isReviewOverdue } from '../lib/forgettingCurve';
+import {
+  completeReviewEntry,
+  fetchOpenReviews,
+  insertReview,
+  REVIEW_INTERVALS,
+  touchTopicLastReviewed,
+} from '../lib/database/reviews';
+import { isSupabaseConfigured } from '../lib/supabase';
 
 export function useReviews(userId: string | null) {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -16,24 +23,22 @@ export function useReviews(userId: string | null) {
 
   async function loadReviews() {
     if (!userId) return;
+    if (!isSupabaseConfigured) {
+      setLoading(false);
+      return;
+    }
 
     try {
-      const { data, error } = await supabase
-        .from('reviews')
-        .select('*')
-        .eq('user_id', userId)
-        .is('completed_at', null)
-        .order('scheduled_date', { ascending: true });
+      const openReviews = await fetchOpenReviews(userId);
 
-      if (error) throw error;
+      setReviews(openReviews);
 
-      setReviews(data || []);
-
-      const due = (data || []).filter(review =>
+      const due = openReviews.filter(review =>
         isReviewOverdue(review.scheduled_date)
       );
       setDueReviews(due);
     } catch (error) {
+      console.error('[Reviews] Failed to load reviews', error);
     } finally {
       setLoading(false);
     }
@@ -41,29 +46,26 @@ export function useReviews(userId: string | null) {
 
   async function scheduleReview(topicId: string, intervalIndex: number = 0) {
     if (!userId) return;
+    if (!isSupabaseConfigured) return;
 
-    const intervals = [0, 1, 3, 7, 14, 30, 60];
     const scheduledDate = new Date();
 
     if (intervalIndex === 0) {
       scheduledDate.setMinutes(scheduledDate.getMinutes() + 10);
     } else {
-      scheduledDate.setDate(scheduledDate.getDate() + intervals[intervalIndex]);
+      scheduledDate.setDate(scheduledDate.getDate() + REVIEW_INTERVALS[intervalIndex]);
     }
 
     try {
-      const { error } = await supabase.from('reviews').insert([
-        {
-          user_id: userId,
-          topic_id: topicId,
-          scheduled_date: scheduledDate.toISOString(),
-          interval_days: intervals[intervalIndex],
-        },
-      ]);
-
-      if (error) throw error;
+      await insertReview({
+        userId,
+        topicId,
+        scheduledDate: scheduledDate.toISOString(),
+        intervalDays: REVIEW_INTERVALS[intervalIndex],
+      });
       await loadReviews();
     } catch (error) {
+      console.error('[Reviews] Failed to schedule review', error);
     }
   }
 
@@ -74,42 +76,29 @@ export function useReviews(userId: string | null) {
     currentIntervalIndex: number
   ) {
     if (!userId) return;
+    if (!isSupabaseConfigured) return;
 
     try {
       const nextReview = getNextReviewDate(currentIntervalIndex, result);
 
-      await supabase
-        .from('reviews')
-        .update({
-          completed_at: new Date().toISOString(),
-          result,
-          next_review_date: nextReview.date.toISOString(),
-        })
-        .eq('id', reviewId);
-
-      const intervals = [0, 1, 3, 7, 14, 30, 60];
       const newIntervalIndex = result === 'good'
-        ? Math.min(currentIntervalIndex + 1, intervals.length - 1)
+        ? Math.min(currentIntervalIndex + 1, REVIEW_INTERVALS.length - 1)
         : Math.max(0, currentIntervalIndex - 1);
 
-      await supabase.from('reviews').insert([
-        {
-          user_id: userId,
-          topic_id: topicId,
-          scheduled_date: nextReview.date.toISOString(),
-          interval_days: intervals[newIntervalIndex],
-        },
-      ]);
+      await completeReviewEntry({
+        reviewId,
+        result,
+        nextReviewDate: nextReview.date.toISOString(),
+        topicId,
+        nextIntervalDays: REVIEW_INTERVALS[newIntervalIndex],
+        userId,
+      });
 
-      await supabase
-        .from('topics')
-        .update({
-          last_reviewed: new Date().toISOString(),
-        })
-        .eq('id', topicId);
+      await touchTopicLastReviewed(topicId);
 
       await loadReviews();
     } catch (error) {
+      console.error('[Reviews] Failed to complete review', error);
     }
   }
 

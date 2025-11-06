@@ -170,11 +170,17 @@ export function t(key: string, locale: Locale = 'en'): string {
 }
 
 export function getCurrentLocale(): Locale {
-  const stored = localStorage.getItem('aomigo_locale');
-  return (stored === 'zh' ? 'zh' : 'en') as Locale;
+  // Prefer a runtime override, then the browser language. We intentionally
+  // avoid localStorage persistence here.
+  const runtime = (window as any).__AOMIGO_LOCALE as Locale | undefined;
+  if (runtime) return runtime;
+  const nav = typeof navigator !== 'undefined' ? navigator.language : 'en';
+  return nav && nav.startsWith('zh') ? 'zh' : 'en';
 }
 
 export function setLocale(locale: Locale): void {
-  localStorage.setItem('aomigo_locale', locale);
+  // Set an in-memory/runtime override and reload so UI updates. This does
+  // not persist to localStorage by design.
+  (window as any).__AOMIGO_LOCALE = locale;
   window.location.reload();
 }

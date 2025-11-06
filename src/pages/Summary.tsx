@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { Brain, TrendingUp, Clock, Award } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
 import { usePetStats } from '../hooks/usePetStats';
-import { supabase } from '../lib/supabase';
+import { isSupabaseConfigured } from '../lib/supabase';
 import type { Topic, TeachingSession } from '../types';
 import { t, getCurrentLocale } from '../lib/lingo';
+import { fetchTopicsByUser } from '../lib/database/topics';
+import { fetchTeachingSessionsByUser } from '../lib/database/teachingSessions';
 
 export function Summary() {
   const { profile } = usePetStats();
@@ -23,23 +25,21 @@ export function Summary() {
     if (!profile) return;
 
     try {
-      const [topicsResult, sessionsResult] = await Promise.all([
-        supabase
-          .from('topics')
-          .select('*')
-          .eq('user_id', profile.id)
-          .order('depth', { ascending: false }),
-        supabase
-          .from('teaching_sessions')
-          .select('*')
-          .eq('user_id', profile.id)
-          .order('created_at', { ascending: false })
-          .limit(10),
+      if (!isSupabaseConfigured) {
+        setTopics([]);
+        setSessions([]);
+        return;
+      }
+
+      const [topicList, sessionList] = await Promise.all([
+        fetchTopicsByUser(profile.id),
+        fetchTeachingSessionsByUser(profile.id, 10),
       ]);
 
-      if (topicsResult.data) setTopics(topicsResult.data);
-      if (sessionsResult.data) setSessions(sessionsResult.data);
+      setTopics(topicList);
+      setSessions(sessionList);
     } catch (error) {
+      console.error('[Summary] Failed to load summary data', error);
     } finally {
       setLoading(false);
     }

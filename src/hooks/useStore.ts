@@ -1,21 +1,14 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { useState, useEffect, useMemo } from 'react';
+import { tryGetSupabaseClient, isSupabaseConfigured } from '../lib/supabase';
+import { onAuthChange, tryGetFirebaseAuth, signOut as firebaseSignOut } from '../lib/firebase';
 import type { UserProfile } from '../types';
+import {
+  createProfile,
+  fetchProfileById,
+  updateProfileById,
+} from '../lib/database/profiles';
 
 function getInitialDemoState() {
-  try {
-    const demoData = localStorage.getItem('aomigo_demo_profile');
-    if (demoData) {
-      const profile = JSON.parse(demoData);
-      return {
-        user: { id: profile.id },
-        profile,
-        loading: false,
-        isDemoMode: true,
-      };
-    }
-    } catch (error) {
-  }
   return {
     user: null,
     profile: null,
@@ -29,7 +22,8 @@ export function useStore() {
   const [user, setUser] = useState<any>(initial.user);
   const [profile, setProfile] = useState<UserProfile | null>(initial.profile);
   const [loading, setLoading] = useState(initial.loading);
-  const [isDemoMode, setIsDemoMode] = useState(initial.isDemoMode);
+  const [isDemoMode] = useState(initial.isDemoMode);
+  const supabase = useMemo(() => tryGetSupabaseClient(), []);
 
   useEffect(() => {
     if (initial.isDemoMode) {
@@ -38,46 +32,43 @@ export function useStore() {
 
     checkUser();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        const demoData = localStorage.getItem('aomigo_demo_profile');
-        if (demoData) {
-          return;
+    const unsubscribe = onAuthChange(async (fbUser) => {
+      if (fbUser) {
+        const uid = fbUser.uid;
+        setUser({ id: uid, email: fbUser.email ?? undefined });
+        try {
+          await loadProfile(uid);
+        } catch (err) {
+          console.error('[Store] Failed to load profile after auth change', err);
         }
-
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await loadProfile(session.user.id);
-        } else {
-          setProfile(null);
-        }
+      } else {
+        setUser(null);
+        setProfile(null);
       }
-    );
+    });
 
     return () => {
-      authListener.subscription.unsubscribe();
+      try {
+        unsubscribe?.();
+      } catch (_) {
+      }
     };
-  }, []);
+  }, [initial.isDemoMode]);
 
   async function checkUser() {
     try {
-      const demoData = localStorage.getItem('aomigo_demo_profile');
-      if (demoData) {
-        const demoProfile = JSON.parse(demoData);
-        setProfile(demoProfile);
-        setUser({ id: demoProfile.id });
-        setIsDemoMode(true);
+      const auth = tryGetFirebaseAuth();
+      const fbUser = auth?.currentUser ?? null;
+      if (!fbUser) {
+        setUser(null);
         setLoading(false);
         return;
       }
 
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-
-      if (session?.user) {
-        await loadProfile(session.user.id);
-      }
+      setUser({ id: fbUser.uid, email: fbUser.email ?? undefined });
+      await loadProfile(fbUser.uid);
     } catch (error) {
+      console.error('[Store] Failed to check user', error);
     } finally {
       setLoading(false);
     }
@@ -85,101 +76,56 @@ export function useStore() {
 
   async function loadProfile(userId: string) {
     try {
-      const { data, error } = await supabase
-        .from('users_profile')
-        .select('*')
-        .eq('id', userId)
-        .maybeSingle();
-
-      if (error && error.code !== 'PGRST116') {
+      if (!supabase || !isSupabaseConfigured) {
+        setProfile(null);
         return;
       }
 
-      if (!data) {
-        const newProfile: Omit<UserProfile, 'created_at' | 'updated_at'> = {
-          id: userId,
-          pet_name: 'AOMIGO',
-          intelligence: 0,
-          health: 100,
-          level: 1,
-          day_streak: 0,
-          last_activity_date: new Date().toISOString().split('T')[0],
-          language_preference: 'en',
-        };
-
-        const { data: inserted } = await supabase
-          .from('users_profile')
-          .insert([newProfile])
-          .select()
-          .single();
-
-        setProfile(inserted || { ...newProfile, created_at: new Date().toISOString(), updated_at: new Date().toISOString() });
-      } else {
-        setProfile(data);
+      const existingProfile = await fetchProfileById(userId);
+      if (existingProfile) {
+        setProfile(existingProfile);
+        return;
       }
+
+      const today = new Date().toISOString().split('T')[0];
+      const timestamp = new Date().toISOString();
+      const newProfile = {
+        id: userId,
+        pet_name: 'AOMIGO',
+        intelligence: 0,
+        health: 100,
+        level: 1,
+        day_streak: 0,
+        last_activity_date: today,
+        language_preference: 'en',
+        created_at: timestamp,
+        updated_at: timestamp,
+      } satisfies Parameters<typeof createProfile>[0];
+
+      const created = await createProfile(newProfile);
+      setProfile(created ?? newProfile);
     } catch (error) {
+      console.error('[Store] Failed to load profile', error);
     }
   }
 
   async function updateProfile(updates: Partial<UserProfile>) {
-    if (isDemoMode) {
-      const updated = { ...profile, ...updates };
-      setProfile(updated as UserProfile);
-      localStorage.setItem('aomigo_demo_profile', JSON.stringify(updated));
-      return;
-    }
-
-    if (!user) return;
+    if (!user || !supabase || !isSupabaseConfigured) return;
 
     try {
-      const { data, error } = await supabase
-        .from('users_profile')
-        .update(updates)
-        .eq('id', user.id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      setProfile(data);
+      const updated = await updateProfileById(user.id, updates);
+      if (updated) {
+        setProfile(updated);
+      }
     } catch (error) {
+      console.error('[Store] Failed to update profile', error);
     }
   }
-
-  async function signInDemo() {
-    function generateUUID() {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0;
-        const v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-      });
-    }
-
-    const demoProfile: UserProfile = {
-      id: generateUUID(),
-      pet_name: 'AOMIGO',
-      intelligence: 50,
-      health: 100,
-      level: 1,
-      day_streak: 2,
-      last_activity_date: new Date().toISOString().split('T')[0],
-      language_preference: 'en',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-
-    localStorage.setItem('aomigo_demo_profile', JSON.stringify(demoProfile));
-    setProfile(demoProfile);
-    setIsDemoMode(true);
-    setUser({ id: demoProfile.id });
-  }
-
   async function signOut() {
-    if (isDemoMode) {
-      localStorage.removeItem('aomigo_demo_profile');
-      setProfile(null);
-      setIsDemoMode(false);
-      setUser(null);
-    } else {
+    const auth = tryGetFirebaseAuth();
+    if (auth) {
+      await firebaseSignOut();
+    } else if (supabase && isSupabaseConfigured) {
       await supabase.auth.signOut();
     }
   }
@@ -190,7 +136,6 @@ export function useStore() {
     loading,
     isDemoMode,
     updateProfile,
-    signInDemo,
     signOut,
   };
 }

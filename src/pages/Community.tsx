@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Users, Plus, Heart, MessageCircle, Share2, Edit2, Trash2 } from 'lucide-react';
 import { PostCreationModal, type PostData } from '../components/PostCreationModal';
 import { usePetStats } from '../hooks/usePetStats';
 import { useStore } from '../hooks/useStore';
-import { supabase } from '../lib/supabase';
+import { tryGetSupabaseClient, isSupabaseConfigured } from '../lib/supabase';
 import type { CommunityPost, PostComment } from '../types';
 import { t, getCurrentLocale } from '../lib/lingo';
 import { toast } from 'sonner';
@@ -82,35 +83,22 @@ export function Community() {
   const [newComment, setNewComment] = useState<Record<string, string>>({});
   const [userLikes, setUserLikes] = useState<Set<string>>(new Set());
   const locale = getCurrentLocale();
+  const supabase = useMemo(() => tryGetSupabaseClient(), []);
 
-  useEffect(() => {
-    loadPosts();
-    if (!isDemoMode && profile) {
-      loadUserLikes();
-    }
-  }, [isDemoMode, profile]);
-
-  async function loadPosts() {
+  const loadPosts = useCallback(async () => {
     try {
       if (isDemoMode) {
-        const hasSampleData = localStorage.getItem('aomigo_sample_posts_loaded');
-        if (!hasSampleData) {
-          const samplePosts = SAMPLE_POSTS.map((post, index) => ({
-            ...post,
-            id: `sample_${index}`,
-            user_id: `sample_user_${index}`,
-            post_date: new Date().toISOString().split('T')[0],
-            privacy: 'public' as const,
-            reaction_counts: {},
-          })) as CommunityPost[];
-          setPosts(samplePosts);
-          localStorage.setItem('aomigo_sample_posts_loaded', 'true');
-        } else {
-          setPosts([]);
-        }
-      } else {
-        const { data, error } = await supabase
-          .from('community_posts')
+        const samplePosts = SAMPLE_POSTS.map((post, index) => ({
+          ...post,
+          id: `sample_${index}`,
+          user_id: `sample_user_${index}`,
+          post_date: new Date().toISOString().split('T')[0],
+          privacy: 'public' as const,
+          reaction_counts: {},
+        })) as CommunityPost[];
+        setPosts(samplePosts);
+      } else if (supabase && isSupabaseConfigured) {
+        const { data, error } = await (supabase.from('community_posts') as any)
           .select('*')
           .eq('privacy', 'public')
           .order('created_at', { ascending: false })
@@ -118,28 +106,39 @@ export function Community() {
 
         if (error) throw error;
         setPosts(data || []);
+      } else {
+        setPosts([]);
       }
     } catch (error) {
       toast.error('Failed to load posts');
+      console.error('[Community] Failed to load posts', error);
     } finally {
       setLoading(false);
     }
-  }
+  }, [isDemoMode, supabase]);
 
-  async function loadUserLikes() {
-    if (!profile) return;
+  const loadUserLikes = useCallback(async () => {
+    if (!profile || !supabase || !isSupabaseConfigured) return;
 
     try {
-      const { data, error } = await supabase
-        .from('post_likes')
+      const { data, error } = await (supabase.from('post_likes') as any)
         .select('post_id')
         .eq('user_id', profile.id);
 
       if (error) throw error;
-      setUserLikes(new Set(data?.map(like => like.post_id) || []));
+      const liked = (data as Array<{ post_id: string }> | null) ?? [];
+      setUserLikes(new Set(liked.map(like => like.post_id)));
     } catch (error) {
+      console.error('[Community] Failed to load likes', error);
     }
-  }
+  }, [profile, supabase]);
+
+  useEffect(() => {
+    loadPosts();
+    if (!isDemoMode && profile) {
+      loadUserLikes();
+    }
+  }, [isDemoMode, profile, loadPosts, loadUserLikes]);
 
   async function loadComments(postId: string) {
     if (isDemoMode) {
@@ -147,9 +146,13 @@ export function Community() {
       return;
     }
 
+    if (!supabase || !isSupabaseConfigured) {
+      setComments(prev => ({ ...prev, [postId]: [] }));
+      return;
+    }
+
     try {
-      const { data, error } = await supabase
-        .from('post_comments')
+      const { data, error } = await (supabase.from('post_comments') as any)
         .select('*')
         .eq('post_id', postId)
         .order('created_at', { ascending: true });
@@ -157,6 +160,7 @@ export function Community() {
       if (error) throw error;
       setComments(prev => ({ ...prev, [postId]: data || [] }));
     } catch (error) {
+      console.error('[Community] Failed to load comments', error);
     }
   }
 
@@ -181,9 +185,8 @@ export function Community() {
           created_at: new Date().toISOString(),
         };
         setPosts(prev => [newPost, ...prev]);
-      } else {
-        const { data, error } = await supabase
-          .from('community_posts')
+      } else if (supabase && isSupabaseConfigured) {
+        const { data, error } = await (supabase.from('community_posts') as any)
           .insert([{
             user_id: profile.id,
             pet_name: profile.pet_name,
@@ -199,11 +202,15 @@ export function Community() {
 
         if (error) throw error;
         setPosts(prev => [data, ...prev]);
+      } else {
+        toast.error('Supabase is not configured');
+        return;
       }
 
       toast.success('Posted!');
     } catch (error) {
       toast.error('Failed to create post');
+      console.error('[Community] Failed to create post', error);
       throw error;
     }
   }
@@ -225,10 +232,9 @@ export function Community() {
           isLiked ? next.delete(postId) : next.add(postId);
           return next;
         });
-      } else {
+      } else if (supabase && isSupabaseConfigured) {
         if (isLiked) {
-          const { error } = await supabase
-            .from('post_likes')
+          const { error } = await (supabase.from('post_likes') as any)
             .delete()
             .eq('post_id', postId)
             .eq('user_id', profile.id);
@@ -240,12 +246,15 @@ export function Community() {
             return next;
           });
         } else {
-          const { error } = await supabase
-            .from('post_likes')
+          const { error } = await (supabase.from('post_likes') as any)
             .insert([{ post_id: postId, user_id: profile.id }]);
 
           if (error) throw error;
-          setUserLikes(prev => new Set(prev).add(postId));
+          setUserLikes(prev => {
+            const next = new Set(prev);
+            next.add(postId);
+            return next;
+          });
         }
 
         setPosts(prev => prev.map(post =>
@@ -253,6 +262,9 @@ export function Community() {
             ? { ...post, likes_count: post.likes_count + (isLiked ? -1 : 1) }
             : post
         ));
+      } else {
+        toast.error('Supabase is not configured');
+        return;
       }
     } catch (error) {
       toast.error('Failed to update like');
@@ -284,9 +296,8 @@ export function Community() {
             ? { ...post, comment_count: (post.comment_count || 0) + 1 }
             : post
         ));
-      } else {
-        const { data, error } = await supabase
-          .from('post_comments')
+      } else if (supabase && isSupabaseConfigured) {
+        const { data, error } = await (supabase.from('post_comments') as any)
           .insert([{
             post_id: postId,
             user_id: profile.id,
@@ -302,12 +313,16 @@ export function Community() {
           ...prev,
           [postId]: [...(prev[postId] || []), data]
         }));
+      } else {
+        toast.error('Supabase is not configured');
+        return;
       }
 
       setNewComment(prev => ({ ...prev, [postId]: '' }));
       toast.success('Comment added!');
     } catch (error) {
       toast.error('Failed to add comment');
+      console.error('[Community] Failed to add comment', error);
     }
   }
 

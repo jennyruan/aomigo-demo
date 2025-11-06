@@ -13,6 +13,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { profile } = usePetStats();
   const locale = getCurrentLocale();
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+  const [hasShownTutorial, setHasShownTutorial] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
 
   const accountType = 'student';
@@ -20,11 +21,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const accountLabel = accountType === 'student' ? 'Student' : accountType === 'parent' ? 'Parent' : 'Teacher';
 
   useEffect(() => {
-    const isFirstVisit = !localStorage.getItem('tutorialCompleted');
-    if (isFirstVisit && location.pathname === '/home') {
+    // Show tutorial once per session when visiting /home. We intentionally
+    // avoid persisting this to localStorage so the app doesn't retain client
+    // storage between sessions.
+    if (!hasShownTutorial && location.pathname === '/home') {
       setIsTutorialOpen(true);
+      setHasShownTutorial(true);
     }
-  }, [location.pathname]);
+  }, [location.pathname, hasShownTutorial]);
 
   async function handleSignOut() {
     await signOut();
