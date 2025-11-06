@@ -2,11 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Check, X, Loader2, ArrowLeft } from 'lucide-react';
 import { signUpWithEmail, signInWithEmail } from '../lib/firebase';
-import { isSupabaseConfigured } from '../lib/supabase';
-import { useStore } from '../hooks/useStore';
 import { PetAvatar } from '../components/PetAvatar';
 import { toast } from 'sonner';
-import { createProfile } from '../lib/database/profiles';
 
 export function Auth() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
@@ -16,7 +13,6 @@ export function Auth() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { } = useStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,22 +56,7 @@ export function Auth() {
 
     try {
       if (mode === 'signup') {
-        const user = await signUpWithEmail(email, password);
-        if (isSupabaseConfigured) {
-          const timestamp = new Date().toISOString();
-          await createProfile({
-            id: user.uid,
-            pet_name: 'AOMIGO',
-            intelligence: 0,
-            health: 100,
-            level: 1,
-            day_streak: 0,
-            last_activity_date: timestamp.split('T')[0],
-            language_preference: 'en',
-            created_at: timestamp,
-            updated_at: timestamp,
-          });
-        }
+        await signUpWithEmail(email, password);
         toast.success('Welcome to AOMIGO! 🐾');
         navigate('/home');
       } else {

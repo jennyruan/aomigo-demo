@@ -24,17 +24,25 @@ export async function createProfile(initialProfile: Database['public']['Tables']
   const client = tryGetSupabaseClient();
   if (!client) return null;
 
-  const { data, error } = await (client.from('users_profile') as any)
-    .insert([initialProfile])
-    .select()
-    .single();
+  // Use upsert so creating a profile for an existing user won't fail with a
+  // duplicate-key error. This will insert when missing or update the row when
+  // the primary key already exists.
+  try {
+    const { data, error } = await (client.from('users_profile') as any)
+      .upsert(initialProfile, { onConflict: 'id' })
+      .select()
+      .maybeSingle();
 
-  if (error) {
-    console.error('[Supabase] Failed to create profile', error);
+    if (error) {
+      console.error('[Supabase] Failed to create/upsert profile', error);
+      return null;
+    }
+
+    return data as UserProfile | null;
+  } catch (err) {
+    console.error('[Supabase] Unexpected error creating profile', err);
     return null;
   }
-
-  return data as UserProfile;
 }
 
 export async function updateProfileById(
