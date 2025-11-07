@@ -350,14 +350,6 @@ export function Landing() {
               </button>
               <span className="text-white font-bold">|</span>
               <button
-                onClick={() => scrollToSection('demo')}
-                className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
-                style={{ color: activeSection === 'demo' ? 'black' : 'white' }}
-              >
-                Demo
-              </button>
-              <span className="text-white font-bold">|</span>
-              <button
                 onClick={() => scrollToSection('story')}
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
                 style={{ color: activeSection === 'story' ? 'black' : 'white' }}
@@ -399,13 +391,6 @@ export function Landing() {
                   style={{ border: '3px solid black' }}
                 >
                   Investor & Collab
-                </button>
-                <button
-                  onClick={() => scrollToSection('demo')}
-                  className="px-4 py-3 font-bold text-lg text-left bg-white rounded-lg"
-                  style={{ border: '3px solid black' }}
-                >
-                  Demo
                 </button>
                 <button
                   onClick={() => scrollToSection('story')}
@@ -1124,30 +1109,6 @@ export function Landing() {
           </div>
         </section>
 
-        <section id="demo" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FFD93D' }}>
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-14">
-              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black' }}>
-                Experience AOMIGO Now
-              </h2>
-              <p className="text-2xl font-black mb-10" style={{ color: '#FF1493' }}>
-                See how your digital companion connects you with others!
-              </p>
-
-              <button
-                onClick={() => toast.info('Demo coming soon!')}
-                className="bg-white px-16 py-6 rounded-full font-black text-3xl transition-all hover:translate-y-[-4px] inline-block"
-                style={{
-                  border: '6px solid black',
-                  boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
-                  color: '#2C3E50',
-                }}
-              >
-                Try AOMIGO Demo
-              </button>
-            </div>
-          </div>
-        </section>
 
         <section id="story" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FF8787' }}>
           <div className="max-w-6xl mx-auto">
