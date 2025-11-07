@@ -321,7 +321,7 @@ export function Landing() {
       <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#B4FF39', border: '4px solid black', transform: 'rotate(3deg)' }}>M</div>
       <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#FF9F40', border: '4px solid black', transform: 'rotate(-7deg)' }}>I</div>
       <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#B39DDB', border: '4px solid black', transform: 'rotate(4deg)' }}>G</div>
-      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#FF8787', border: '4px solid black', transform: 'rotate(-3deg)' }}>O</div>
+      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#FFA040', border: '4px solid black', transform: 'rotate(-3deg)' }}>O</div>
     </div>
   );
 
@@ -492,7 +492,7 @@ export function Landing() {
                         Choose Your Companion
                       </label>
                       <div className="flex items-center gap-4 mb-4">
-                        <div className="w-28 h-28 rounded-full flex flex-col items-center justify-center" style={{ backgroundColor: '#FF8787', border: '4px solid black' }}>
+                        <div className="w-28 h-28 rounded-full flex flex-col items-center justify-center" style={{ backgroundColor: '#FFA040', border: '4px solid black' }}>
                           <div className="text-4xl mb-1">{animalNames[avatarConfig.animal].charAt(0)}</div>
                           <div className="text-xs font-bold" style={{ color: 'black' }}>{animalNames[avatarConfig.animal]}</div>
                         </div>
@@ -733,7 +733,7 @@ export function Landing() {
                   </div>
 
                   <div className="space-y-4">
-                    <div className="flex items-start gap-4 text-left p-5 rounded-lg" style={{ backgroundColor: '#FF8787', border: '4px solid black' }}>
+                    <div className="flex items-start gap-4 text-left p-5 rounded-lg" style={{ backgroundColor: '#FFA040', border: '4px solid black' }}>
                       <input
                         type="checkbox"
                         id="isParent"
@@ -883,7 +883,7 @@ export function Landing() {
                           type="text"
                           value={investorFormData.firstName}
                           onChange={(e) => setInvestorFormData({ ...investorFormData, firstName: e.target.value })}
-                          placeholder="John"
+                          placeholder="Slim"
                           className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
                           style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
                           required
@@ -898,7 +898,7 @@ export function Landing() {
                           type="text"
                           value={investorFormData.lastName}
                           onChange={(e) => setInvestorFormData({ ...investorFormData, lastName: e.target.value })}
-                          placeholder="Doe"
+                          placeholder="Shady"
                           className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
                           style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
                         />
@@ -1105,7 +1105,7 @@ export function Landing() {
         </section>
 
 
-        <section id="story" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FF8787' }}>
+        <section id="story" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FFA040' }}>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-14">
               <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>
@@ -1191,14 +1191,11 @@ export function Landing() {
       <footer className="py-10 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#F26523', borderTop: '4px solid black' }}>
         <div className="max-w-7xl mx-auto text-center">
           <div className="text-3xl font-black mb-4" style={{ color: 'white' }}>AOMIGO</div>
-          <p className="font-black mb-3 text-2xl" style={{ color: 'white' }}>
-            Your Digital Companion
+          <p className="text-2xl font-black mb-3" style={{ color: 'white' }}>
+            We Empower People
           </p>
           <p className="font-semibold text-lg" style={{ color: 'white' }}>
             2025 AOMIGO. All rights reserved.
-          </p>
-          <p className="text-2xl font-black mt-6" style={{ color: 'white' }}>
-            We Empower People
           </p>
         </div>
       </footer>
