@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
   },
   "dependencies": {
-    "firebase": "^10.11.0",
+    "@stackframe/stack": "^2.8.46",
+    "@supabase/supabase-js": "^2.57.4",
     "lucide-react": "^0.469.0",
     "openai": "^6.7.0",
     "react": "^19.0.0",

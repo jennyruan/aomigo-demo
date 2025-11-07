@@ -9,9 +9,6 @@ export interface UserProfile {
   language_preference: 'en' | 'zh';
   created_at: string;
   updated_at: string;
-  display_name?: string | null;
-  organization_name?: string | null;
-  avatar_config?: Record<string, unknown> | null;
 }
 
 export interface TeachingSession {

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { CheckCircle, AlertCircle, Settings as SettingsIcon, Zap, Database, Globe, Cpu } from 'lucide-react';
 import { API_STATUS } from '../lib/config';
-import { t, useLocale } from '../lib/lingo';
+import { t, getCurrentLocale } from '../lib/lingo';
 import { cactusClient } from '../lib/cactus';
 
 export function Settings() {
   const [testing, setTesting] = useState<string | null>(null);
   const [testResults, setTestResults] = useState<Record<string, string>>({});
   const [latency, setLatency] = useState<number | null>(null);
-  const locale = useLocale();
+  const locale = getCurrentLocale();
 
   async function testConnection(service: string) {
     setTesting(service);

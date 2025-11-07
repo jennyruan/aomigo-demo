@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, AlertCircle, CheckCircle } from 'lucide-react';
+import { ChevronDown, ChevronUp, Clock, AlertCircle, CheckCircle } from 'lucide-react';
 
 interface KnowledgeDomain {
   subject: string;
@@ -13,6 +13,7 @@ interface KnowledgeDomain {
 
 interface ForgettingCurveProps {
   domains?: KnowledgeDomain[];
+  compact?: boolean;
 }
 
 const DEFAULT_DOMAINS: KnowledgeDomain[] = [
@@ -74,7 +75,7 @@ const strengthLabels = {
   critical: 'Critical',
 };
 
-export function ForgettingCurve({ domains = DEFAULT_DOMAINS }: ForgettingCurveProps) {
+export function ForgettingCurve({ domains = DEFAULT_DOMAINS, compact = false }: ForgettingCurveProps) {
   const [expandedDomains, setExpandedDomains] = useState<Set<string>>(new Set());
 
   function toggleDomain(subject: string) {
@@ -99,7 +100,9 @@ export function ForgettingCurve({ domains = DEFAULT_DOMAINS }: ForgettingCurvePr
 
       {domains.map((domain) => {
         const isExpanded = expandedDomains.has(domain.subject);
-  const colors = strengthColors[domain.strength];
+        const colors = strengthColors[domain.strength];
+        const maxRetention = Math.max(...domain.retentionPoints.map(p => p.retention));
+        const currentRetention = domain.retentionPoints[domain.retentionPoints.length - 1].retention;
 
         return (
           <div

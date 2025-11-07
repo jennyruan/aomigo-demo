@@ -15,5 +15,5 @@ export const cookies = () => ({
 });
 
 export const headers = () => ({
-  get: (_name: string) => null,
+  get: (name: string) => null,
 });

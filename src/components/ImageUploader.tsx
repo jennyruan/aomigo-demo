@@ -30,6 +30,7 @@ export function ImageUploader({ onTextExtracted }: ImageUploaderProps) {
       onTextExtracted(text);
     } catch (error) {
       alert('Failed to extract text from image. Please try again.');
+      console.error(error);
     } finally {
       setIsProcessing(false);
     }

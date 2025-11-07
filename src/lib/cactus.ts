@@ -28,7 +28,11 @@ class CactusClient {
     this.apiKey = apiKey || CACTUS_API_KEY;
     this.useSimulation = !this.apiKey;
 
-    // silent initialization; simulation mode active when no API key
+    if (this.useSimulation) {
+      console.log('[Cactus Compute] No API key provided, using simulated mode');
+    } else {
+      console.log('[Cactus Compute] Initialized with API key');
+    }
   }
 
   async summarizeText(text: string): Promise<Summary> {
@@ -51,8 +55,10 @@ class CactusClient {
       }
 
       const data = await response.json();
+      console.log('[Cactus] Summary generated');
       return data;
     } catch (error) {
+      console.error('[Cactus] API error, falling back to simulation:', error);
       return this.simulateSummary(text);
     }
   }
@@ -77,8 +83,10 @@ class CactusClient {
       }
 
       const data = await response.json();
+      console.log('[Cactus] Quiz generated');
       return data.questions;
     } catch (error) {
+      console.error('[Cactus] API error, falling back to simulation:', error);
       return this.simulateQuiz(topics);
     }
   }
@@ -103,8 +111,10 @@ class CactusClient {
       }
 
       const data = await response.json();
+      console.log('[Cactus] Quality analysis complete');
       return data;
     } catch (error) {
+      console.error('[Cactus] API error, falling back to simulation:', error);
       return this.simulateQualityAnalysis(text);
     }
   }
@@ -126,6 +136,7 @@ class CactusClient {
 
       return Math.round(performance.now() - start);
     } catch (error) {
+      console.error('[Cactus] Latency measurement error:', error);
       return Math.round(Math.random() * 150 + 250);
     }
   }
