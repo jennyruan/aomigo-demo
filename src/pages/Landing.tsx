@@ -340,7 +340,7 @@ export function Landing() {
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
                 style={{ color: activeSection === 'events' ? 'black' : 'white' }}
               >
-                DOPE Events
+                DOPE EVENTS
               </button>
               <span className="text-white font-bold">|</span>
               <button
@@ -348,7 +348,7 @@ export function Landing() {
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
                 style={{ color: activeSection === 'collab' ? 'black' : 'white' }}
               >
-                VIBE Check
+                VIBE CHECK
               </button>
               <span className="text-white font-bold">|</span>
               <button
@@ -356,7 +356,7 @@ export function Landing() {
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
                 style={{ color: activeSection === 'story' ? 'black' : 'white' }}
               >
-                AOMIGO Story
+                AOMIGO STORY
               </button>
               <span className="text-white font-bold">|</span>
               <button
@@ -385,21 +385,21 @@ export function Landing() {
                   className="px-4 py-3 font-bold text-lg text-left bg-white rounded-lg"
                   style={{ border: '3px solid black' }}
                 >
-                  DOPE Events
+                  DOPE EVENTS
                 </button>
                 <button
                   onClick={() => scrollToSection('collab')}
                   className="px-4 py-3 font-bold text-lg text-left bg-white rounded-lg"
                   style={{ border: '3px solid black' }}
                 >
-                  VIBE Check
+                  VIBE CHECK
                 </button>
                 <button
                   onClick={() => scrollToSection('story')}
                   className="px-4 py-3 font-bold text-lg text-left bg-white rounded-lg"
                   style={{ border: '3px solid black' }}
                 >
-                  AOMIGO Story
+                  AOMIGO STORY
                 </button>
                 <button
                   onClick={() => {
@@ -640,8 +640,8 @@ export function Landing() {
         <section id="events" className="py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FADF0B' }}>
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black' }}>
-                DOPE Events
+              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black', textShadow: '4px 4px 0px rgba(0,0,0,0.3)' }}>
+                DOPE EVENTS
               </h2>
               <h3 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: 'black' }}>
                 Design our logo and win $1024!
@@ -770,7 +770,7 @@ export function Landing() {
                       disabled={isContestSubmitting}
                       className="w-full text-white px-8 py-5 rounded-xl font-black text-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:translate-y-[-2px]"
                       style={{
-                        backgroundColor: '#FF9F40',
+                        backgroundColor: '#F16523',
                         border: '4px solid black',
                         boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                       }}
@@ -793,7 +793,7 @@ export function Landing() {
                         type="button"
                         className="w-full text-white px-6 py-4 rounded-xl font-black text-xl transition-all flex items-center justify-center gap-2 hover:translate-y-[-2px]"
                         style={{
-                          backgroundColor: '#00C8FF',
+                          backgroundColor: '#F16523',
                           border: '4px solid black',
                           boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                         }}
@@ -804,10 +804,9 @@ export function Landing() {
                         type="button"
                         className="w-full text-white px-6 py-4 rounded-xl font-black text-xl transition-all flex items-center justify-center gap-2 hover:translate-y-[-2px]"
                         style={{
-                          backgroundColor: '#B4FF39',
+                          backgroundColor: '#F16523',
                           border: '4px solid black',
                           boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
-                          color: 'black',
                         }}
                       >
                         Group User Demo
@@ -937,8 +936,8 @@ export function Landing() {
 
         <section id="collab" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#00C8FF' }}>
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-5xl sm:text-6xl font-black text-center mb-16" style={{ color: 'black' }}>
-              VIBE Check
+            <h2 className="text-5xl sm:text-6xl font-black text-center mb-16" style={{ color: 'black', textShadow: '4px 4px 0px rgba(0,0,0,0.3)' }}>
+              VIBE CHECK
             </h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
@@ -1102,7 +1101,7 @@ export function Landing() {
                       disabled={isInvestorSubmitting}
                       className="w-full text-white px-8 py-4 rounded-xl font-black text-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:translate-y-[-2px]"
                       style={{
-                        backgroundColor: '#B39DDB',
+                        backgroundColor: '#F16523',
                         border: '4px solid black',
                         boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                       }}
@@ -1182,8 +1181,8 @@ export function Landing() {
         <section id="story" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FF8787' }}>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-14">
-              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black' }}>
-                AOMIGO Story
+              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black', textShadow: '4px 4px 0px rgba(0,0,0,0.3)' }}>
+                AOMIGO STORY
               </h2>
               <p className="text-2xl font-black" style={{ color: 'black' }}>
                 The hearts behind AOMIGO
