@@ -70,7 +70,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <div className="relative w-full min-w-0">
                 <nav
                   aria-label="Primary navigation"
-                  className="flex w-full min-w-0 items-center gap-3 overflow-x-auto overscroll-x-contain whitespace-nowrap py-2 pr-6 lg:pr-10 scrollbar-none snap-x snap-mandatory"
+                  className="flex w-full min-w-0 items-center gap-3 overflow-x-auto overscroll-x-contain py-2 pr-6 lg:pr-10 scrollbar-none snap-x snap-mandatory"
                 >
                   {navItems.map((item) => {
                     const Icon = item.icon;
@@ -80,14 +80,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         key={item.path}
                         to={item.path}
                         aria-current={isActive ? 'page' : undefined}
-                        className={`min-w-[132px] snap-start flex items-center gap-2 rounded-full px-4 py-2 font-bold cartoon-button transition-transform duration-150 ${
+                        className={`flex-shrink-0 min-w-[90px] max-w-[14rem] snap-start flex items-center gap-2 rounded-full px-4 py-2 font-bold cartoon-button transition-transform duration-150 ${
                           isActive
                             ? 'bg-white text-gray-900'
                             : 'bg-orange-300 text-gray-900 hover:bg-orange-200'
                         }`}
                       >
-                        <Icon className="w-5 h-5" />
-                        <span>{item.label}</span>
+                          <Icon className="w-5 h-5 flex-shrink-0" />
+                          <span className="whitespace-normal break-words text-sm text-center">{item.label}</span>
                       </Link>
                     );
                   })}
@@ -182,19 +182,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     key={item.path}
                     to={item.path}
                     aria-current={isActive ? 'page' : undefined}
-                    className={`snap-start flex flex-col items-center justify-center gap-1 px-4 py-2 min-w-[112px] rounded-xl border-4 border-black font-bold transition-colors ${
+                    className={`snap-start flex-shrink-0 flex flex-col items-center justify-center gap-1 px-4 py-2 min-w-[84px] max-w-[9rem] rounded-xl border-4 border-black font-bold transition-colors ${
                       isActive
                         ? 'bg-white text-gray-900 shadow-[4px_4px_0_#000]'
                         : 'bg-orange-200 text-gray-900 shadow-[2px_2px_0_#000] hover:bg-orange-100'
                     }`}
                   >
-                    <Icon className="w-6 h-6" />
-                    <span className="text-xs font-bold">{item.label}</span>
+                      <Icon className="w-6 h-6 flex-shrink-0" />
+                      <span className="text-xs font-bold whitespace-normal break-words text-center">{item.label}</span>
                   </Link>
                 );
               })}
 
-              <div className="snap-start flex items-center gap-2 pl-2 min-w-[220px]">
+              <div className="snap-start flex items-center gap-2 pl-2 flex-shrink-0 min-w-[160px] max-w-[18rem]">
                 <div className="relative">
                   <button
                     onClick={() => setShowAccountMenu(!showAccountMenu)}
