@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useCallback, useEffect, useState } from 'react';
 import { Users, Plus, Heart, MessageCircle, Share2, Edit2, Trash2 } from 'lucide-react';
-import { PetAvatar } from '../components/PetAvatar';
 import { PostCreationModal, type PostData } from '../components/PostCreationModal';
 import { usePetStats } from '../hooks/usePetStats';
-import { useStore } from '../hooks/useStore';
-import { supabase } from '../lib/supabase';
 import type { CommunityPost, PostComment } from '../types';
-import { t, getCurrentLocale } from '../lib/lingo';
+import { t, useLocale } from '../lib/lingo';
 import { toast } from 'sonner';
 
 interface ExamplePost extends Partial<CommunityPost> {
@@ -74,7 +72,6 @@ const SAMPLE_POSTS: ExamplePost[] = [
 
 export function Community() {
   const { profile } = usePetStats();
-  const { isDemoMode } = useStore();
   const [posts, setPosts] = useState<CommunityPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -82,133 +79,65 @@ export function Community() {
   const [comments, setComments] = useState<Record<string, PostComment[]>>({});
   const [newComment, setNewComment] = useState<Record<string, string>>({});
   const [userLikes, setUserLikes] = useState<Set<string>>(new Set());
-  const locale = getCurrentLocale();
+  const locale = useLocale();
 
-  useEffect(() => {
-    loadPosts();
-    if (!isDemoMode && profile) {
-      loadUserLikes();
-    }
-  }, [isDemoMode, profile]);
-
-  async function loadPosts() {
+  const loadPosts = useCallback(() => {
+    setLoading(true);
     try {
-      if (isDemoMode) {
-        const hasSampleData = localStorage.getItem('aomigo_sample_posts_loaded');
-        if (!hasSampleData) {
-          const samplePosts = SAMPLE_POSTS.map((post, index) => ({
-            ...post,
-            id: `sample_${index}`,
-            user_id: `sample_user_${index}`,
-            post_date: new Date().toISOString().split('T')[0],
-            privacy: 'public' as const,
-            reaction_counts: {},
-          })) as CommunityPost[];
-          setPosts(samplePosts);
-          localStorage.setItem('aomigo_sample_posts_loaded', 'true');
-        } else {
-          setPosts([]);
-        }
-      } else {
-        const { data, error } = await supabase
-          .from('community_posts')
-          .select('*')
-          .eq('privacy', 'public')
-          .order('created_at', { ascending: false })
-          .limit(50);
-
-        if (error) throw error;
-        setPosts(data || []);
-      }
-    } catch (error) {
-      console.error('Error loading posts:', error);
-      toast.error('Failed to load posts');
+      const samplePosts = SAMPLE_POSTS.map((post, index) => ({
+        id: `sample_${index}`,
+        user_id: `sample_user_${index}`,
+        pet_name: post.pet_name ?? `Friend ${index + 1}`,
+        content: post.content ?? post.summary_text ?? '',
+        summary_text: post.summary_text ?? post.content?.slice(0, 100) ?? '',
+        topics_learned: post.topics_learned ?? [],
+        post_date: new Date().toISOString().split('T')[0],
+        likes_count: post.likes_count ?? 0,
+        comment_count: post.comment_count ?? 0,
+        reaction_counts: post.reaction_counts ?? {},
+        created_at: post.created_at ?? new Date().toISOString(),
+        privacy: 'public' as const,
+        image_url: post.image_url,
+      })) as CommunityPost[];
+      setPosts(samplePosts);
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
-  async function loadUserLikes() {
-    if (!profile) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('post_likes')
-        .select('post_id')
-        .eq('user_id', profile.id);
-
-      if (error) throw error;
-      setUserLikes(new Set(data?.map(like => like.post_id) || []));
-    } catch (error) {
-      console.error('Error loading user likes:', error);
-    }
-  }
+  useEffect(() => {
+    loadPosts();
+  }, [loadPosts]);
 
   async function loadComments(postId: string) {
-    if (isDemoMode) {
-      setComments(prev => ({ ...prev, [postId]: [] }));
-      return;
-    }
-
-    try {
-      const { data, error } = await supabase
-        .from('post_comments')
-        .select('*')
-        .eq('post_id', postId)
-        .order('created_at', { ascending: true });
-
-      if (error) throw error;
-      setComments(prev => ({ ...prev, [postId]: data || [] }));
-    } catch (error) {
-      console.error('Error loading comments:', error);
-    }
+    setComments(prev => ({ ...prev, [postId]: prev[postId] ?? [] }));
   }
 
   async function handleCreatePost(postData: PostData) {
     if (!profile) return;
 
     try {
-      if (isDemoMode) {
-        const newPost: CommunityPost = {
-          id: `post_${Date.now()}`,
-          user_id: profile.id,
-          pet_name: profile.pet_name,
-          content: postData.content,
-          summary_text: postData.content.substring(0, 100),
-          topics_learned: postData.topics,
-          image_url: postData.image_url,
-          privacy: postData.privacy,
-          post_date: new Date().toISOString().split('T')[0],
-          likes_count: 0,
-          comment_count: 0,
-          reaction_counts: {},
-          created_at: new Date().toISOString(),
-        };
-        setPosts(prev => [newPost, ...prev]);
-      } else {
-        const { data, error } = await supabase
-          .from('community_posts')
-          .insert([{
-            user_id: profile.id,
-            pet_name: profile.pet_name,
-            content: postData.content,
-            summary_text: postData.content.substring(0, 100),
-            topics_learned: postData.topics,
-            image_url: postData.image_url,
-            privacy: postData.privacy,
-            post_date: new Date().toISOString().split('T')[0],
-          }])
-          .select()
-          .single();
-
-        if (error) throw error;
-        setPosts(prev => [data, ...prev]);
-      }
+      const newPost: CommunityPost = {
+        id: `post_${Date.now()}`,
+        user_id: profile.id,
+        pet_name: profile.pet_name,
+        content: postData.content,
+        summary_text: postData.content.substring(0, 100),
+        topics_learned: postData.topics,
+        image_url: postData.image_url,
+        privacy: postData.privacy,
+        post_date: new Date().toISOString().split('T')[0],
+        likes_count: 0,
+        comment_count: 0,
+        reaction_counts: {},
+        created_at: new Date().toISOString(),
+      };
+      setPosts(prev => [newPost, ...prev]);
 
       toast.success('Posted!');
     } catch (error) {
-      console.error('Error creating post:', error);
       toast.error('Failed to create post');
+      console.error('[Community] Failed to create post', error);
       throw error;
     }
   }
@@ -218,51 +147,16 @@ export function Community() {
 
     const isLiked = userLikes.has(postId);
 
-    try {
-      if (isDemoMode) {
-        setPosts(prev => prev.map(post =>
-          post.id === postId
-            ? { ...post, likes_count: post.likes_count + (isLiked ? -1 : 1) }
-            : post
-        ));
-        setUserLikes(prev => {
-          const next = new Set(prev);
-          isLiked ? next.delete(postId) : next.add(postId);
-          return next;
-        });
-      } else {
-        if (isLiked) {
-          const { error } = await supabase
-            .from('post_likes')
-            .delete()
-            .eq('post_id', postId)
-            .eq('user_id', profile.id);
-
-          if (error) throw error;
-          setUserLikes(prev => {
-            const next = new Set(prev);
-            next.delete(postId);
-            return next;
-          });
-        } else {
-          const { error } = await supabase
-            .from('post_likes')
-            .insert([{ post_id: postId, user_id: profile.id }]);
-
-          if (error) throw error;
-          setUserLikes(prev => new Set(prev).add(postId));
-        }
-
-        setPosts(prev => prev.map(post =>
-          post.id === postId
-            ? { ...post, likes_count: post.likes_count + (isLiked ? -1 : 1) }
-            : post
-        ));
-      }
-    } catch (error) {
-      console.error('Error toggling like:', error);
-      toast.error('Failed to update like');
-    }
+    setPosts(prev => prev.map(post =>
+      post.id === postId
+        ? { ...post, likes_count: Math.max(0, post.likes_count + (isLiked ? -1 : 1)) }
+        : post
+    ));
+    setUserLikes(prev => {
+      const next = new Set(prev);
+      isLiked ? next.delete(postId) : next.add(postId);
+      return next;
+    });
   }
 
   async function handleAddComment(postId: string) {
@@ -270,52 +164,27 @@ export function Community() {
 
     const content = newComment[postId].trim();
 
-    try {
-      if (isDemoMode) {
-        const newCommentObj: PostComment = {
-          id: `comment_${Date.now()}`,
-          post_id: postId,
-          user_id: profile.id,
-          pet_name: profile.pet_name,
-          content,
-          likes_count: 0,
-          created_at: new Date().toISOString(),
-        };
-        setComments(prev => ({
-          ...prev,
-          [postId]: [...(prev[postId] || []), newCommentObj]
-        }));
-        setPosts(prev => prev.map(post =>
-          post.id === postId
-            ? { ...post, comment_count: (post.comment_count || 0) + 1 }
-            : post
-        ));
-      } else {
-        const { data, error } = await supabase
-          .from('post_comments')
-          .insert([{
-            post_id: postId,
-            user_id: profile.id,
-            pet_name: profile.pet_name,
-            content
-          }])
-          .select()
-          .single();
+    const newCommentObj: PostComment = {
+      id: `comment_${Date.now()}`,
+      post_id: postId,
+      user_id: profile.id,
+      pet_name: profile.pet_name,
+      content,
+      likes_count: 0,
+      created_at: new Date().toISOString(),
+    };
+    setComments(prev => ({
+      ...prev,
+      [postId]: [...(prev[postId] || []), newCommentObj]
+    }));
+    setPosts(prev => prev.map(post =>
+      post.id === postId
+        ? { ...post, comment_count: (post.comment_count || 0) + 1 }
+        : post
+    ));
 
-        if (error) throw error;
-
-        setComments(prev => ({
-          ...prev,
-          [postId]: [...(prev[postId] || []), data]
-        }));
-      }
-
-      setNewComment(prev => ({ ...prev, [postId]: '' }));
-      toast.success('Comment added!');
-    } catch (error) {
-      console.error('Error adding comment:', error);
-      toast.error('Failed to add comment');
-    }
+    setNewComment(prev => ({ ...prev, [postId]: '' }));
+    toast.success('Comment added!');
   }
 
   function toggleComments(postId: string) {

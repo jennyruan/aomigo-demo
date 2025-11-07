@@ -1,3 +1,5 @@
+import { useSyncExternalStore } from 'react';
+
 const LINGO_API_KEY = import.meta.env.VITE_LINGO_API_KEY || '';
 
 export type Locale = 'en' | 'zh';
@@ -97,21 +99,39 @@ const FALLBACK_TRANSLATIONS: Translations = {
   'settings.lastSync': { en: 'Last sync', zh: '最后同步' },
 };
 
+type LocaleChangeListener = () => void;
+
+const localeListeners = new Set<LocaleChangeListener>();
+
+function notifyLocaleChange() {
+  localeListeners.forEach((listener) => listener());
+}
+
+function readInitialLocale(): Locale {
+  const runtime = typeof window !== 'undefined'
+    ? ((window as any).__AOMIGO_LOCALE as Locale | undefined)
+    : undefined;
+  if (runtime) return runtime;
+  const nav = typeof navigator !== 'undefined' ? navigator.language : 'en';
+  return nav && nav.startsWith('zh') ? 'zh' : 'en';
+}
+
+let currentLocale: Locale = readInitialLocale();
+
 class LingoClient {
   private apiKey: string;
   private useFallback: boolean;
-  private cache: Map<string, Translations>;
+  // cache holds a simple translation pair for each key
+  private cache: Map<string, { en: string; zh: string }>;
 
   constructor(apiKey?: string) {
     this.apiKey = apiKey || LINGO_API_KEY;
     this.useFallback = !this.apiKey;
     this.cache = new Map();
 
-    if (this.useFallback) {
-      console.log('[Lingo.dev] No API key provided, using fallback dictionary');
-    } else {
-      console.log('[Lingo.dev] Initialized with API key');
-    }
+    // Avoid noisy console output in the demo app; use centralized logger if needed.
+    // Logging is intentionally silent by default.
+    
   }
 
   async translate(key: string, locale: Locale): Promise<string> {
@@ -146,7 +166,7 @@ class LingoClient {
 
       return data.translations[locale] || data.translations.en;
     } catch (error) {
-      console.error('[Lingo] API error, falling back to dictionary:', error);
+      // swallow API errors and fall back to built-in dictionary
       return this.getFallbackTranslation(key, locale);
     }
   }
@@ -154,7 +174,6 @@ class LingoClient {
   private getFallbackTranslation(key: string, locale: Locale): string {
     const translation = FALLBACK_TRANSLATIONS[key];
     if (!translation) {
-      console.warn(`[Lingo] Translation missing for key: ${key}`);
       return key;
     }
     return translation[locale] || translation.en;
@@ -172,11 +191,32 @@ export function t(key: string, locale: Locale = 'en'): string {
 }
 
 export function getCurrentLocale(): Locale {
-  const stored = localStorage.getItem('aomigo_locale');
-  return (stored === 'zh' ? 'zh' : 'en') as Locale;
+  return currentLocale;
 }
 
 export function setLocale(locale: Locale): void {
-  localStorage.setItem('aomigo_locale', locale);
-  window.location.reload();
+  if (currentLocale === locale) {
+    return;
+  }
+
+  currentLocale = locale;
+
+  if (typeof window !== 'undefined') {
+    (window as any).__AOMIGO_LOCALE = locale;
+  }
+
+  notifyLocaleChange();
+}
+
+export function useLocale(): Locale {
+  return useSyncExternalStore(
+    (listener) => {
+      localeListeners.add(listener);
+      return () => {
+        localeListeners.delete(listener);
+      };
+    },
+    () => currentLocale,
+    () => currentLocale
+  );
 }

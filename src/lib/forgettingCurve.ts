@@ -30,7 +30,7 @@ export function getNextReviewDate(
   };
 }
 
-export function scheduleFirstReview(topicId: string): Date {
+export function scheduleFirstReview(): Date {
   const date = new Date();
   date.setMinutes(date.getMinutes() + 10);
   return date;
