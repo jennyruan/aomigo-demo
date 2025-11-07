@@ -36,7 +36,7 @@ export async function generateFollowUpQuestion(
         'Authorization': `Bearer ${GROK_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4-fast-reasoning',
+        model: 'grok-beta',
         messages: [
           {
             role: 'system',
@@ -88,7 +88,7 @@ export async function evaluateAnswer(
         'Authorization': `Bearer ${GROK_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4-fast-reasoning',
+        model: 'grok-beta',
         messages: [
           {
             role: 'system',
@@ -153,7 +153,7 @@ export async function extractTopics(input: string): Promise<string[]> {
         'Authorization': `Bearer ${GROK_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4-fast-reasoning',
+        model: 'grok-beta',
         messages: [
           {
             role: 'system',
@@ -212,7 +212,7 @@ export async function evaluateReview(
         'Authorization': `Bearer ${GROK_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4-fast-reasoning',
+        model: 'grok-beta',
         messages: [
           {
             role: 'system',
