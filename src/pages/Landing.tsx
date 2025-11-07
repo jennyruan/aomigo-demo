@@ -787,31 +787,6 @@ export function Landing() {
                         </>
                       )}
                     </button>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <button
-                        type="button"
-                        className="w-full text-white px-6 py-4 rounded-xl font-black text-xl transition-all flex items-center justify-center gap-2 hover:translate-y-[-2px]"
-                        style={{
-                          backgroundColor: '#F16523',
-                          border: '4px solid black',
-                          boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
-                        }}
-                      >
-                        INDIVIDUAL USER DEMO
-                      </button>
-                      <button
-                        type="button"
-                        className="w-full text-white px-6 py-4 rounded-xl font-black text-xl transition-all flex items-center justify-center gap-2 hover:translate-y-[-2px]"
-                        style={{
-                          backgroundColor: '#F16523',
-                          border: '4px solid black',
-                          boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
-                        }}
-                      >
-                        GROUP USER DEMO
-                      </button>
-                    </div>
                   </div>
                 </form>
               )}
@@ -1173,6 +1148,31 @@ export function Landing() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10 max-w-4xl mx-auto">
+              <button
+                type="button"
+                className="w-full text-white px-6 py-4 rounded-xl font-black text-xl transition-all flex items-center justify-center gap-2 hover:translate-y-[-2px]"
+                style={{
+                  backgroundColor: '#F16523',
+                  border: '4px solid black',
+                  boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
+                }}
+              >
+                INDIVIDUAL USER DEMO
+              </button>
+              <button
+                type="button"
+                className="w-full text-white px-6 py-4 rounded-xl font-black text-xl transition-all flex items-center justify-center gap-2 hover:translate-y-[-2px]"
+                style={{
+                  backgroundColor: '#F16523',
+                  border: '4px solid black',
+                  boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
+                }}
+              >
+                GROUP USER DEMO
+              </button>
             </div>
           </div>
         </section>
