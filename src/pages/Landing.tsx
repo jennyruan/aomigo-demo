@@ -333,6 +333,12 @@ export function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
+              <img
+                src="/ios-appstore-1024x1024.png"
+                alt="AOMIGO Logo"
+                className="h-12 w-12 rounded-lg"
+                style={{ border: '2px solid white' }}
+              />
               <div className="text-2xl font-black" style={{ color: 'white' }}>AOMIGO</div>
             </div>
 
@@ -1261,7 +1267,15 @@ export function Landing() {
 
       <footer className="py-10 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#F26523', borderTop: '4px solid black' }}>
         <div className="max-w-7xl mx-auto text-center">
-          <div className="text-3xl font-black mb-4" style={{ color: 'white' }}>AOMIGO</div>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <img
+              src="/ios-appstore-1024x1024.png"
+              alt="AOMIGO Logo"
+              className="h-16 w-16 rounded-lg"
+              style={{ border: '3px solid white' }}
+            />
+            <div className="text-3xl font-black" style={{ color: 'white' }}>AOMIGO</div>
+          </div>
           <p className="text-2xl font-black mb-3" style={{ color: 'white' }}>
             We Empower People
           </p>
