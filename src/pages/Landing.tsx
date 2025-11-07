@@ -313,34 +313,30 @@ export function Landing() {
   }
 
   const LogoComponent = () => (
-    <div className="flex flex-col items-center justify-center" style={{ position: 'relative' }}>
-      <svg width="120" height="140" viewBox="0 0 120 140" style={{ display: 'block' }}>
-        <text x="10" y="30" style={{ fontSize: '32px', fontWeight: '900', fill: '#2C3E50', fontFamily: 'Inter' }}>A</text>
-        <text x="40" y="50" style={{ fontSize: '32px', fontWeight: '900', fill: '#2C3E50', fontFamily: 'Inter' }}>O</text>
-        <text x="70" y="70" style={{ fontSize: '32px', fontWeight: '900', fill: '#2C3E50', fontFamily: 'Inter' }}>M</text>
-        <text x="50" y="90" style={{ fontSize: '32px', fontWeight: '900', fill: '#2C3E50', fontFamily: 'Inter' }}>I</text>
-        <text x="30" y="110" style={{ fontSize: '32px', fontWeight: '900', fill: '#2C3E50', fontFamily: 'Inter' }}>G</text>
-        <text x="60" y="130" style={{ fontSize: '32px', fontWeight: '900', fill: '#2C3E50', fontFamily: 'Inter' }}>O</text>
-        <ellipse cx="55" cy="130" rx="8" ry="8" fill="#FF6B35" />
-      </svg>
-      <div className="text-xl font-black mt-2" style={{ color: '#2C3E50' }}>AOMIGO</div>
+    <div className="flex flex-col items-center justify-center gap-1" style={{ transform: 'rotate(-5deg)' }}>
+      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#00C8FF', border: '4px solid black', transform: 'rotate(8deg)' }}>A</div>
+      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#FF1493', border: '4px solid black', transform: 'rotate(-5deg)' }}>O</div>
+      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#B4FF39', border: '4px solid black', transform: 'rotate(3deg)' }}>M</div>
+      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#FF9F40', border: '4px solid black', transform: 'rotate(-7deg)' }}>I</div>
+      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#B39DDB', border: '4px solid black', transform: 'rotate(4deg)' }}>G</div>
+      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#FF8787', border: '4px solid black', transform: 'rotate(-3deg)' }}>O</div>
     </div>
   );
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#FED766' }} data-version="orange-yellow-theme-v2">
-      <header className="sticky top-0 z-50" style={{ backgroundColor: '#FF6B35', borderBottom: '4px solid black' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#FFD93D' }} data-version="colorful-blocks-v3">
+      <header className="sticky top-0 z-50" style={{ backgroundColor: '#FF1493', borderBottom: '4px solid black' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <div className="text-2xl font-black" style={{ color: '#2C3E50' }}>AOMIGO</div>
+              <div className="text-2xl font-black" style={{ color: 'white' }}>AOMIGO</div>
             </div>
 
             <nav className="hidden lg:flex items-center gap-2">
               <button
                 onClick={() => scrollToSection('events')}
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
-                style={{ color: activeSection === 'events' ? '#2C3E50' : 'white' }}
+                style={{ color: activeSection === 'events' ? 'black' : 'white' }}
               >
                 Events
               </button>
@@ -348,7 +344,7 @@ export function Landing() {
               <button
                 onClick={() => scrollToSection('collab')}
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
-                style={{ color: activeSection === 'collab' ? '#2C3E50' : 'white' }}
+                style={{ color: activeSection === 'collab' ? 'black' : 'white' }}
               >
                 Investor & Collab
               </button>
@@ -356,7 +352,7 @@ export function Landing() {
               <button
                 onClick={() => scrollToSection('demo')}
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
-                style={{ color: activeSection === 'demo' ? '#2C3E50' : 'white' }}
+                style={{ color: activeSection === 'demo' ? 'black' : 'white' }}
               >
                 Demo
               </button>
@@ -364,7 +360,7 @@ export function Landing() {
               <button
                 onClick={() => scrollToSection('story')}
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
-                style={{ color: activeSection === 'story' ? '#2C3E50' : 'white' }}
+                style={{ color: activeSection === 'story' ? 'black' : 'white' }}
               >
                 Story
               </button>
@@ -372,7 +368,7 @@ export function Landing() {
               <button
                 onClick={() => setShowAuthModal(true)}
                 className="px-4 py-2 font-bold text-base bg-white rounded-lg transition-all hover:bg-opacity-90"
-                style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', color: '#2C3E50' }}
+                style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', color: 'black', backgroundColor: '#00C8FF' }}
               >
                 Sign In/Up
               </button>
@@ -439,7 +435,7 @@ export function Landing() {
           <div className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
             <div className="p-6 sm:p-8">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-3xl font-black" style={{ color: '#2C3E50' }}>
+                <h2 className="text-3xl font-black" style={{ color: 'black' }}>
                   {authMode === 'signin' ? 'Sign In' : 'Sign Up'}
                 </h2>
                 <button
@@ -476,7 +472,7 @@ export function Landing() {
                 {authMode === 'signup' && (
                   <>
                     <div className="text-left">
-                      <label className="block font-black mb-2 text-lg" style={{ color: '#2C3E50' }}>
+                      <label className="block font-black mb-2 text-lg" style={{ color: 'black' }}>
                         Name <span className="text-red-600">*</span>
                       </label>
                       <input
@@ -485,13 +481,13 @@ export function Landing() {
                         onChange={(e) => setAuthFormData({ ...authFormData, name: e.target.value })}
                         placeholder="Your name"
                         className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                         required
                       />
                     </div>
 
                     <div className="text-left">
-                      <label className="block font-black mb-2 text-lg" style={{ color: '#2C3E50' }}>
+                      <label className="block font-black mb-2 text-lg" style={{ color: 'black' }}>
                         Organization (Optional)
                       </label>
                       <input
@@ -500,24 +496,24 @@ export function Landing() {
                         onChange={(e) => setAuthFormData({ ...authFormData, organizationName: e.target.value })}
                         placeholder="Your organization"
                         className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                       />
                     </div>
 
                     <div className="text-left">
-                      <label className="block font-black mb-3 text-lg" style={{ color: '#2C3E50' }}>
+                      <label className="block font-black mb-3 text-lg" style={{ color: 'black' }}>
                         Choose Your Companion
                       </label>
                       <div className="flex items-center gap-4 mb-4">
-                        <div className="w-28 h-28 rounded-full flex flex-col items-center justify-center" style={{ backgroundColor: '#FFB3D9', border: '4px solid black' }}>
+                        <div className="w-28 h-28 rounded-full flex flex-col items-center justify-center" style={{ backgroundColor: '#FF8787', border: '4px solid black' }}>
                           <div className="text-4xl mb-1">{animalNames[avatarConfig.animal].charAt(0)}</div>
-                          <div className="text-xs font-bold" style={{ color: '#2C3E50' }}>{animalNames[avatarConfig.animal]}</div>
+                          <div className="text-xs font-bold" style={{ color: 'black' }}>{animalNames[avatarConfig.animal]}</div>
                         </div>
                         <button
                           type="button"
                           onClick={randomizeAvatar}
                           className="px-5 py-3 font-black rounded-lg text-white text-base"
-                          style={{ backgroundColor: '#FF6B35', border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)' }}
+                          style={{ backgroundColor: '#FF9F40', border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)' }}
                         >
                           Randomize
                         </button>
@@ -545,7 +541,7 @@ export function Landing() {
                 )}
 
                 <div className="text-left">
-                  <label className="block font-black mb-2 text-lg" style={{ color: '#2C3E50' }}>
+                  <label className="block font-black mb-2 text-lg" style={{ color: 'black' }}>
                     Email <span className="text-red-600">*</span>
                   </label>
                   <input
@@ -554,13 +550,13 @@ export function Landing() {
                     onChange={(e) => setAuthFormData({ ...authFormData, email: e.target.value })}
                     placeholder="your@email.com"
                     className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4"
-                    style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                    style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                     required
                   />
                 </div>
 
                 <div className="text-left">
-                  <label className="block font-black mb-2 text-lg" style={{ color: '#2C3E50' }}>
+                  <label className="block font-black mb-2 text-lg" style={{ color: 'black' }}>
                     Password <span className="text-red-600">*</span>
                   </label>
                   <div className="relative">
@@ -570,7 +566,7 @@ export function Landing() {
                       onChange={(e) => setAuthFormData({ ...authFormData, password: e.target.value })}
                       placeholder="Enter password"
                       className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4 pr-12"
-                      style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                      style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                       required
                     />
                     <button
@@ -585,7 +581,7 @@ export function Landing() {
 
                 {authMode === 'signup' && (
                   <div className="text-left">
-                    <label className="block font-black mb-2 text-lg" style={{ color: '#2C3E50' }}>
+                    <label className="block font-black mb-2 text-lg" style={{ color: 'black' }}>
                       Confirm Password <span className="text-red-600">*</span>
                     </label>
                     <div className="relative">
@@ -595,7 +591,7 @@ export function Landing() {
                         onChange={(e) => setAuthFormData({ ...authFormData, confirmPassword: e.target.value })}
                         placeholder="Confirm password"
                         className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4 pr-12"
-                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                         required
                       />
                       <button
@@ -619,7 +615,7 @@ export function Landing() {
                       className="w-5 h-5 rounded cursor-pointer"
                       style={{ border: '3px solid black' }}
                     />
-                    <label htmlFor="rememberMe" className="font-bold text-lg cursor-pointer" style={{ color: '#2C3E50' }}>
+                    <label htmlFor="rememberMe" className="font-bold text-lg cursor-pointer" style={{ color: 'black' }}>
                       Remember me
                     </label>
                   </div>
@@ -630,7 +626,7 @@ export function Landing() {
                   disabled={isAuthSubmitting}
                   className="w-full text-white px-8 py-4 rounded-xl font-black text-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:translate-y-[-2px]"
                   style={{
-                    backgroundColor: '#FF6B35',
+                    backgroundColor: '#FF9F40',
                     border: '4px solid black',
                     boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                   }}
@@ -654,16 +650,16 @@ export function Landing() {
       )}
 
       <main>
-        <section id="events" className="py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FED766' }}>
+        <section id="events" className="py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FFD93D' }}>
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: '#2C3E50' }}>
+              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black' }}>
                 Make our logo and win $1024!
               </h2>
-              <p className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#FF6B35' }}>
+              <p className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#FF1493' }}>
                 Turn A-O-M-I-G-O into our new logo!
               </p>
-              <p className="text-2xl font-black mb-8" style={{ color: '#2C3E50' }}>
+              <p className="text-2xl font-black mb-8" style={{ color: 'black' }}>
                 Why $1024? Because 10/24 is AOMIGO's birthday!
               </p>
             </div>
@@ -671,19 +667,19 @@ export function Landing() {
             <div className="bg-white rounded-2xl p-8 sm:p-10 mb-10 max-w-2xl mx-auto" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
               {isContestSubmitted ? (
                 <div className="text-center py-8">
-                  <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#A8E6CF', border: '4px solid black' }}>
-                    <Check className="w-16 h-16" style={{ color: '#2C3E50' }} />
+                  <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#B4FF39', border: '4px solid black' }}>
+                    <Check className="w-16 h-16" style={{ color: 'black' }} />
                   </div>
-                  <h3 className="text-3xl font-black mb-4" style={{ color: '#2C3E50' }}>
+                  <h3 className="text-3xl font-black mb-4" style={{ color: 'black' }}>
                     You're in the contest!
                   </h3>
-                  <p className="text-xl font-semibold mb-6" style={{ color: '#2C3E50' }}>
+                  <p className="text-xl font-semibold mb-6" style={{ color: 'black' }}>
                     Check your email for submission details!
                   </p>
                   <button
                     onClick={() => setIsContestSubmitted(false)}
                     className="font-bold underline text-xl"
-                    style={{ color: '#FF6B35' }}
+                    style={{ color: '#FF1493' }}
                   >
                     Add another entry
                   </button>
@@ -691,7 +687,7 @@ export function Landing() {
               ) : (
                 <form onSubmit={handleContestSubmit} className="space-y-6">
                   <div className="text-left">
-                    <label className="block font-black mb-3 text-xl" style={{ color: '#2C3E50' }}>
+                    <label className="block font-black mb-3 text-xl" style={{ color: 'black' }}>
                       Name <span className="text-red-600">*</span>
                     </label>
                     <input
@@ -700,13 +696,13 @@ export function Landing() {
                       onChange={(e) => setContestFormData({ ...contestFormData, name: e.target.value })}
                       placeholder="Your name"
                       className="w-full px-5 py-4 rounded-lg text-xl font-semibold focus:outline-none focus:ring-4"
-                      style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                      style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                       required
                     />
                   </div>
 
                   <div className="text-left">
-                    <label className="block font-black mb-3 text-xl" style={{ color: '#2C3E50' }}>
+                    <label className="block font-black mb-3 text-xl" style={{ color: 'black' }}>
                       Email <span className="text-red-600">*</span>
                     </label>
                     <input
@@ -715,13 +711,13 @@ export function Landing() {
                       onChange={(e) => setContestFormData({ ...contestFormData, email: e.target.value })}
                       placeholder="your@email.com"
                       className="w-full px-5 py-4 rounded-lg text-xl font-semibold focus:outline-none focus:ring-4"
-                      style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                      style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                       required
                     />
                   </div>
 
                   <div className="text-left">
-                    <label className="block font-black mb-3 text-xl" style={{ color: '#2C3E50' }}>
+                    <label className="block font-black mb-3 text-xl" style={{ color: 'black' }}>
                       Phone Number (Optional)
                     </label>
                     <input
@@ -730,12 +726,12 @@ export function Landing() {
                       onChange={(e) => setContestFormData({ ...contestFormData, phoneNumber: e.target.value })}
                       placeholder="+1 (555) 123-4567"
                       className="w-full px-5 py-4 rounded-lg text-xl font-semibold focus:outline-none focus:ring-4"
-                      style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                      style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                     />
                   </div>
 
                   <div className="space-y-4">
-                    <div className="flex items-start gap-4 text-left p-5 rounded-lg" style={{ backgroundColor: '#FFB3D9', border: '4px solid black' }}>
+                    <div className="flex items-start gap-4 text-left p-5 rounded-lg" style={{ backgroundColor: '#FF8787', border: '4px solid black' }}>
                       <input
                         type="checkbox"
                         id="isParent"
@@ -744,12 +740,12 @@ export function Landing() {
                         className="w-6 h-6 mt-1 rounded cursor-pointer flex-shrink-0"
                         style={{ border: '3px solid black' }}
                       />
-                      <label htmlFor="isParent" className="font-bold cursor-pointer text-lg" style={{ color: '#2C3E50' }}>
+                      <label htmlFor="isParent" className="font-bold cursor-pointer text-lg" style={{ color: 'black' }}>
                         I'm a parent interested in AOMIGO for my child
                       </label>
                     </div>
 
-                    <div className="flex items-start gap-4 text-left p-5 rounded-lg" style={{ backgroundColor: '#B3D4FF', border: '4px solid black' }}>
+                    <div className="flex items-start gap-4 text-left p-5 rounded-lg" style={{ backgroundColor: '#00C8FF', border: '4px solid black' }}>
                       <input
                         type="checkbox"
                         id="isOrganization"
@@ -758,12 +754,12 @@ export function Landing() {
                         className="w-6 h-6 mt-1 rounded cursor-pointer flex-shrink-0"
                         style={{ border: '3px solid black' }}
                       />
-                      <label htmlFor="isOrganization" className="font-bold cursor-pointer text-lg" style={{ color: '#2C3E50' }}>
+                      <label htmlFor="isOrganization" className="font-bold cursor-pointer text-lg" style={{ color: 'black' }}>
                         I'm interested in AOMIGO for my organization
                       </label>
                     </div>
 
-                    <div className="flex items-start gap-4 text-left p-5 rounded-lg" style={{ backgroundColor: '#A8E6CF', border: '4px solid black' }}>
+                    <div className="flex items-start gap-4 text-left p-5 rounded-lg" style={{ backgroundColor: '#B4FF39', border: '4px solid black' }}>
                       <input
                         type="checkbox"
                         id="wantsMoreEvents"
@@ -772,7 +768,7 @@ export function Landing() {
                         className="w-6 h-6 mt-1 rounded cursor-pointer flex-shrink-0"
                         style={{ border: '3px solid black' }}
                       />
-                      <label htmlFor="wantsMoreEvents" className="font-bold cursor-pointer text-lg" style={{ color: '#2C3E50' }}>
+                      <label htmlFor="wantsMoreEvents" className="font-bold cursor-pointer text-lg" style={{ color: 'black' }}>
                         I want to participate in more events like this!
                       </label>
                     </div>
@@ -783,7 +779,7 @@ export function Landing() {
                     disabled={isContestSubmitting}
                     className="w-full text-white px-8 py-5 rounded-xl font-black text-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:translate-y-[-2px]"
                     style={{
-                      backgroundColor: '#FF6B35',
+                      backgroundColor: '#FF9F40',
                       border: '4px solid black',
                       boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                     }}
@@ -805,30 +801,30 @@ export function Landing() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-              <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#B3D4FF', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
+              <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#00C8FF', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="text-5xl mb-4">+</div>
-                <h4 className="font-black text-2xl mb-3" style={{ color: '#2C3E50' }}>
+                <h4 className="font-black text-2xl mb-3" style={{ color: 'black' }}>
                   For Everyone
                 </h4>
-                <p className="font-semibold text-lg" style={{ color: '#2C3E50' }}>
+                <p className="font-semibold text-lg" style={{ color: 'black' }}>
                   All ages welcome!
                 </p>
               </div>
-              <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#FFB3D9', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
+              <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#FF8787', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="text-5xl mb-4">^</div>
-                <h4 className="font-black text-2xl mb-3" style={{ color: '#2C3E50' }}>
+                <h4 className="font-black text-2xl mb-3" style={{ color: 'black' }}>
                   Easy Upload
                 </h4>
-                <p className="font-semibold text-lg" style={{ color: '#2C3E50' }}>
+                <p className="font-semibold text-lg" style={{ color: 'black' }}>
                   Photo, drawing, or digital
                 </p>
               </div>
-              <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#A8E6CF', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
+              <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#B4FF39', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="text-5xl mb-4">$</div>
-                <h4 className="font-black text-2xl mb-3" style={{ color: '#2C3E50' }}>
+                <h4 className="font-black text-2xl mb-3" style={{ color: 'black' }}>
                   $1024 Prize
                 </h4>
-                <p className="font-semibold text-lg" style={{ color: '#2C3E50' }}>
+                <p className="font-semibold text-lg" style={{ color: 'black' }}>
                   Cash or your choice!
                 </p>
               </div>
@@ -839,7 +835,7 @@ export function Landing() {
                 onClick={() => setShowRules(!showRules)}
                 className="w-full p-6 flex items-center justify-between hover:bg-gray-50 transition-colors"
               >
-                <span className="text-2xl font-black" style={{ color: '#2C3E50' }}>
+                <span className="text-2xl font-black" style={{ color: 'black' }}>
                   Contest Rules
                 </span>
                 <ChevronDown className={`w-7 h-7 transition-transform ${showRules ? 'rotate-180' : ''}`} />
@@ -850,43 +846,43 @@ export function Landing() {
                   <ul className="space-y-4 mt-6">
                     <li className="flex items-start gap-4">
                       <span className="text-2xl flex-shrink-0">+</span>
-                      <span className="font-semibold text-lg" style={{ color: '#2C3E50' }}>
+                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
                         Use letters A, O, M, I, G, O as shapes
                       </span>
                     </li>
                     <li className="flex items-start gap-4">
                       <span className="text-2xl flex-shrink-0">+</span>
-                      <span className="font-semibold text-lg" style={{ color: '#2C3E50' }}>
+                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
                         Submit through your AOMIGO account portal
                       </span>
                     </li>
                     <li className="flex items-start gap-4">
                       <span className="text-2xl flex-shrink-0">+</span>
-                      <span className="font-semibold text-lg" style={{ color: '#2C3E50' }}>
+                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
                         Accepts: images, photos, PDF, Word docs
                       </span>
                     </li>
                     <li className="flex items-start gap-4">
                       <span className="text-2xl flex-shrink-0">+</span>
-                      <span className="font-semibold text-lg" style={{ color: '#2C3E50' }}>
+                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
                         Posts appear in forum for likes and comments
                       </span>
                     </li>
                     <li className="flex items-start gap-4">
                       <span className="text-2xl flex-shrink-0">-</span>
-                      <span className="font-semibold text-lg" style={{ color: '#2C3E50' }}>
+                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
                         Deadline: Nov 30, 11:59 PM
                       </span>
                     </li>
                     <li className="flex items-start gap-4">
                       <span className="text-2xl flex-shrink-0">*</span>
-                      <span className="font-semibold text-lg" style={{ color: '#2C3E50' }}>
+                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
                         Winner announced: Dec 14, 11:59 PM
                       </span>
                     </li>
                     <li className="flex items-start gap-4">
                       <span className="text-2xl flex-shrink-0">^</span>
-                      <span className="font-semibold text-lg" style={{ color: '#2C3E50' }}>
+                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
                         Prizes: Grand Prize $1024, Funniest, Most Creative, Rainbow Colors, Youngest Artist awards
                       </span>
                     </li>
@@ -896,57 +892,57 @@ export function Landing() {
             </div>
 
             <div className="bg-white rounded-2xl p-8 text-center" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-              <h3 className="text-3xl font-black mb-6" style={{ color: '#2C3E50' }}>
+              <h3 className="text-3xl font-black mb-6" style={{ color: 'black' }}>
                 Contest Ends In:
               </h3>
               <div className="grid grid-cols-4 gap-4">
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#FF6B35', border: '4px solid black' }}>
-                  <div className="text-5xl font-black text-white mb-2">{timeLeft.days}</div>
-                  <div className="text-base font-black" style={{ color: '#2C3E50' }}>DAYS</div>
+                <div className="p-6 rounded-xl" style={{ backgroundColor: '#00C8FF', border: '4px solid black' }}>
+                  <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.days}</div>
+                  <div className="text-base font-black" style={{ color: 'black' }}>DAYS</div>
                 </div>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#B39DDB', border: '4px solid black' }}>
-                  <div className="text-5xl font-black text-white mb-2">{timeLeft.hours}</div>
-                  <div className="text-base font-black" style={{ color: '#2C3E50' }}>HOURS</div>
+                <div className="p-6 rounded-xl" style={{ backgroundColor: '#FF1493', border: '4px solid black' }}>
+                  <div className="text-5xl font-black mb-2" style={{ color: 'white' }}>{timeLeft.hours}</div>
+                  <div className="text-base font-black" style={{ color: 'white' }}>HOURS</div>
                 </div>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#FFB3D9', border: '4px solid black' }}>
-                  <div className="text-5xl font-black text-white mb-2">{timeLeft.minutes}</div>
-                  <div className="text-base font-black" style={{ color: '#2C3E50' }}>MIN</div>
+                <div className="p-6 rounded-xl" style={{ backgroundColor: '#FF9F40', border: '4px solid black' }}>
+                  <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.minutes}</div>
+                  <div className="text-base font-black" style={{ color: 'black' }}>MIN</div>
                 </div>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#A8E6CF', border: '4px solid black' }}>
-                  <div className="text-5xl font-black text-white mb-2">{timeLeft.seconds}</div>
-                  <div className="text-base font-black" style={{ color: '#2C3E50' }}>SEC</div>
+                <div className="p-6 rounded-xl" style={{ backgroundColor: '#B4FF39', border: '4px solid black' }}>
+                  <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.seconds}</div>
+                  <div className="text-base font-black" style={{ color: 'black' }}>SEC</div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="collab" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#B39DDB' }}>
+        <section id="collab" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#00C8FF' }}>
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-5xl sm:text-6xl font-black text-center mb-16" style={{ color: 'white' }}>
+            <h2 className="text-5xl sm:text-6xl font-black text-center mb-16" style={{ color: 'black' }}>
               Investor & Collab Inquiry
             </h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="flex items-center gap-4 mb-8">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#B3D4FF', border: '4px solid black' }}>
-                    <Users className="w-8 h-8" style={{ color: '#2C3E50' }} />
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF1493', border: '4px solid black' }}>
+                    <Users className="w-8 h-8" style={{ color: 'white' }} />
                   </div>
-                  <h3 className="text-3xl font-black" style={{ color: '#2C3E50' }}>
+                  <h3 className="text-3xl font-black" style={{ color: 'black' }}>
                     Get In Touch
                   </h3>
                 </div>
 
                 {isInvestorSubmitted ? (
                   <div className="text-center py-10">
-                    <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#A8E6CF', border: '4px solid black' }}>
-                      <Check className="w-14 h-14" style={{ color: '#2C3E50' }} />
+                    <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#B4FF39', border: '4px solid black' }}>
+                      <Check className="w-14 h-14" style={{ color: 'black' }} />
                     </div>
-                    <h4 className="text-3xl font-black mb-4" style={{ color: '#2C3E50' }}>
+                    <h4 className="text-3xl font-black mb-4" style={{ color: 'black' }}>
                       Thank you!
                     </h4>
-                    <p className="font-semibold mb-6 text-xl" style={{ color: '#2C3E50' }}>
+                    <p className="font-semibold mb-6 text-xl" style={{ color: 'black' }}>
                       We'll be in touch soon!
                     </p>
                     <button
@@ -961,7 +957,7 @@ export function Landing() {
                   <form onSubmit={handleInvestorSubmit} className="space-y-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div className="text-left">
-                        <label className="block font-black mb-2 text-xl" style={{ color: '#2C3E50' }}>
+                        <label className="block font-black mb-2 text-xl" style={{ color: 'black' }}>
                           First Name <span className="text-red-600">*</span>
                         </label>
                         <input
@@ -970,13 +966,13 @@ export function Landing() {
                           onChange={(e) => setInvestorFormData({ ...investorFormData, firstName: e.target.value })}
                           placeholder="John"
                           className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                          style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                          style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                           required
                         />
                       </div>
 
                       <div className="text-left">
-                        <label className="block font-black mb-2 text-xl" style={{ color: '#2C3E50' }}>
+                        <label className="block font-black mb-2 text-xl" style={{ color: 'black' }}>
                           Last Name
                         </label>
                         <input
@@ -985,13 +981,13 @@ export function Landing() {
                           onChange={(e) => setInvestorFormData({ ...investorFormData, lastName: e.target.value })}
                           placeholder="Doe"
                           className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                          style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                          style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                         />
                       </div>
                     </div>
 
                     <div className="text-left">
-                      <label className="block font-black mb-2 text-xl" style={{ color: '#2C3E50' }}>
+                      <label className="block font-black mb-2 text-xl" style={{ color: 'black' }}>
                         Email <span className="text-red-600">*</span>
                       </label>
                       <input
@@ -1000,13 +996,13 @@ export function Landing() {
                         onChange={(e) => setInvestorFormData({ ...investorFormData, email: e.target.value })}
                         placeholder="investor@example.com"
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                         required
                       />
                     </div>
 
                     <div className="text-left">
-                      <label className="block font-black mb-2 text-xl" style={{ color: '#2C3E50' }}>
+                      <label className="block font-black mb-2 text-xl" style={{ color: 'black' }}>
                         Phone
                       </label>
                       <input
@@ -1015,12 +1011,12 @@ export function Landing() {
                         onChange={(e) => setInvestorFormData({ ...investorFormData, phoneNumber: e.target.value })}
                         placeholder="+1 (555) 123-4567"
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                       />
                     </div>
 
                     <div className="text-left">
-                      <label className="block font-black mb-2 text-xl" style={{ color: '#2C3E50' }}>
+                      <label className="block font-black mb-2 text-xl" style={{ color: 'black' }}>
                         LinkedIn URL
                       </label>
                       <input
@@ -1029,12 +1025,12 @@ export function Landing() {
                         onChange={(e) => setInvestorFormData({ ...investorFormData, linkedinUrl: e.target.value })}
                         placeholder="linkedin.com/in/yourprofile"
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                       />
                     </div>
 
                     <div className="text-left">
-                      <label className="block font-black mb-2 text-xl" style={{ color: '#2C3E50' }}>
+                      <label className="block font-black mb-2 text-xl" style={{ color: 'black' }}>
                         Message
                       </label>
                       <textarea
@@ -1043,7 +1039,7 @@ export function Landing() {
                         placeholder="Tell us about your interest..."
                         rows={4}
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4 resize-none"
-                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
                       />
                     </div>
 
@@ -1075,50 +1071,50 @@ export function Landing() {
 
               <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="flex items-center gap-4 mb-8">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF6B35', border: '4px solid black' }}>
-                    <Sparkles className="w-8 h-8 text-white" />
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#B4FF39', border: '4px solid black' }}>
+                    <Sparkles className="w-8 h-8 text-black" />
                   </div>
-                  <h3 className="text-3xl font-black" style={{ color: '#2C3E50' }}>
+                  <h3 className="text-3xl font-black" style={{ color: 'black' }}>
                     Our Mission
                   </h3>
                 </div>
 
                 <div className="space-y-6">
-                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FED766', border: '4px solid black' }}>
-                    <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: '#2C3E50' }}>
+                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FFD93D', border: '4px solid black' }}>
+                    <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: 'black' }}>
                       <Users className="w-7 h-7" />
                       Community & Companion
                     </h4>
-                    <p className="font-semibold text-lg leading-relaxed" style={{ color: '#2C3E50' }}>
+                    <p className="font-semibold text-lg leading-relaxed" style={{ color: 'black' }}>
                       AOMIGO is a digital companion ecosystem that shadows verified users' real identity,
                       providing a friendly and safe community for everybody to connect.
                     </p>
                   </div>
 
-                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FED766', border: '4px solid black' }}>
-                    <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: '#2C3E50' }}>
+                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FFD93D', border: '4px solid black' }}>
+                    <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: 'black' }}>
                       <Shield className="w-7 h-7" />
                       Connecting People
                     </h4>
-                    <p className="font-semibold text-lg leading-relaxed" style={{ color: '#2C3E50' }}>
+                    <p className="font-semibold text-lg leading-relaxed" style={{ color: 'black' }}>
                       Help people express their needs bravely and connect them with effective support timely.
                       Our digital companion's 24/7 presence is the backup plan after the encouraged real-life connections.
                     </p>
                   </div>
 
-                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FED766', border: '4px solid black' }}>
-                    <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: '#2C3E50' }}>
+                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FFD93D', border: '4px solid black' }}>
+                    <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: 'black' }}>
                       <Sparkles className="w-7 h-7" />
                       Our Vision
                     </h4>
-                    <p className="font-semibold text-lg leading-relaxed" style={{ color: '#2C3E50' }}>
+                    <p className="font-semibold text-lg leading-relaxed" style={{ color: 'black' }}>
                       Building a lifestyle brand with IoT integration and enterprise solutions for educational
                       institutions as CRM and security systems.
                     </p>
                   </div>
 
                   <div className="text-center pt-4 border-t-4 border-black">
-                    <p className="text-2xl font-black" style={{ color: '#FF6B35' }}>
+                    <p className="text-2xl font-black" style={{ color: '#FF1493' }}>
                       We Empower People
                     </p>
                   </div>
@@ -1128,13 +1124,13 @@ export function Landing() {
           </div>
         </section>
 
-        <section id="demo" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FED766' }}>
+        <section id="demo" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FFD93D' }}>
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-14">
-              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: '#2C3E50' }}>
+              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black' }}>
                 Experience AOMIGO Now
               </h2>
-              <p className="text-2xl font-black mb-10" style={{ color: '#FF6B35' }}>
+              <p className="text-2xl font-black mb-10" style={{ color: '#FF1493' }}>
                 See how your digital companion connects you with others!
               </p>
 
@@ -1153,13 +1149,13 @@ export function Landing() {
           </div>
         </section>
 
-        <section id="story" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FFB3D9' }}>
+        <section id="story" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FF8787' }}>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-14">
-              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: '#2C3E50' }}>
+              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black' }}>
                 Meet Our Founders
               </h2>
-              <p className="text-2xl font-black" style={{ color: '#2C3E50' }}>
+              <p className="text-2xl font-black" style={{ color: 'black' }}>
                 The hearts behind AOMIGO
               </p>
             </div>
@@ -1167,26 +1163,26 @@ export function Landing() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="flex items-start gap-6 mb-6">
-                  <div className="w-24 h-24 rounded-full flex items-center justify-center flex-shrink-0 text-4xl font-black" style={{ backgroundColor: '#FF6B35', border: '4px solid black', color: 'white' }}>
+                  <div className="w-24 h-24 rounded-full flex items-center justify-center flex-shrink-0 text-4xl font-black" style={{ backgroundColor: '#00C8FF', border: '4px solid black', color: 'black' }}>
                     J
                   </div>
                   <div>
-                    <h3 className="text-4xl font-black mb-2" style={{ color: '#2C3E50' }}>
+                    <h3 className="text-4xl font-black mb-2" style={{ color: 'black' }}>
                       Jenny
                     </h3>
-                    <p className="text-xl font-bold" style={{ color: '#FF6B35' }}>
+                    <p className="text-xl font-bold" style={{ color: '#00C8FF' }}>
                       Co-Founder
                     </p>
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
+                  <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
                     Growing up, I experienced firsthand the power of having someone who truly listens. As an educator and technologist, I witnessed countless students struggle not because they lacked ability, but because they lacked support and connection.
                   </p>
-                  <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
+                  <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
                     AOMIGO was born from a simple belief: everyone deserves a companion who's always there, who understands them, and who helps them find their community. Technology should bring us together, not isolate us further.
                   </p>
-                  <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
+                  <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
                     Through AOMIGO, we're building bridges between people, creating safe spaces for authentic expression, and empowering individuals to reach out for the support they need.
                   </p>
                 </div>
@@ -1194,26 +1190,26 @@ export function Landing() {
 
               <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="flex items-start gap-6 mb-6">
-                  <div className="w-24 h-24 rounded-full flex items-center justify-center flex-shrink-0 text-4xl font-black" style={{ backgroundColor: '#B39DDB', border: '4px solid black', color: 'white' }}>
+                  <div className="w-24 h-24 rounded-full flex items-center justify-center flex-shrink-0 text-4xl font-black" style={{ backgroundColor: '#FF1493', border: '4px solid black', color: 'white' }}>
                     J
                   </div>
                   <div>
-                    <h3 className="text-4xl font-black mb-2" style={{ color: '#2C3E50' }}>
+                    <h3 className="text-4xl font-black mb-2" style={{ color: 'black' }}>
                       Jessi
                     </h3>
-                    <p className="text-xl font-bold" style={{ color: '#B39DDB' }}>
+                    <p className="text-xl font-bold" style={{ color: '#FF1493' }}>
                       Co-Founder
                     </p>
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
+                  <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
                     My journey in community building and mental health advocacy showed me that many people suffer in silence, not because help isn't available, but because taking that first step feels overwhelming.
                   </p>
-                  <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
+                  <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
                     With AOMIGO, we're creating a gentle introduction to connection. Your digital companion is always ready to listen, never judges, and helps you build the confidence to reach out to real people when you're ready.
                   </p>
-                  <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
+                  <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
                     We're not replacing human connection—we're facilitating it. We're giving people the courage to be vulnerable, the platform to express themselves, and the community to support them.
                   </p>
                 </div>
@@ -1221,14 +1217,14 @@ export function Landing() {
             </div>
 
             <div className="mt-10 bg-white rounded-2xl p-10 text-center" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-              <Heart className="w-16 h-16 mx-auto mb-6" style={{ color: '#FF6B35' }} />
-              <h3 className="text-4xl font-black mb-4" style={{ color: '#2C3E50' }}>
+              <Heart className="w-16 h-16 mx-auto mb-6" style={{ color: '#FF1493' }} />
+              <h3 className="text-4xl font-black mb-4" style={{ color: 'black' }}>
                 Join Our Journey
               </h3>
-              <p className="text-2xl font-semibold leading-relaxed mb-6" style={{ color: '#2C3E50' }}>
+              <p className="text-2xl font-semibold leading-relaxed mb-6" style={{ color: 'black' }}>
                 We're building AOMIGO with love, care, and a deep commitment to empowering people everywhere. Whether you're a user, investor, or partner, you're part of this movement.
               </p>
-              <p className="text-3xl font-black" style={{ color: '#FF6B35' }}>
+              <p className="text-3xl font-black" style={{ color: '#FF1493' }}>
                 We Empower People
               </p>
             </div>
@@ -1236,7 +1232,7 @@ export function Landing() {
         </section>
       </main>
 
-      <footer className="py-10 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FF6B35', borderTop: '4px solid black' }}>
+      <footer className="py-10 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FF1493', borderTop: '4px solid black' }}>
         <div className="max-w-7xl mx-auto text-center">
           <div className="text-3xl font-black mb-4" style={{ color: 'white' }}>AOMIGO</div>
           <p className="font-black mb-3 text-2xl" style={{ color: 'white' }}>
