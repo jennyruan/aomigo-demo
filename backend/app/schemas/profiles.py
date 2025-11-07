@@ -19,3 +19,6 @@ class ProfileRead(ProfileBase):
 
 class ProfileUpdate(ProfileBase):
     pass
+
+class ProfileCreate(ProfileBase):
+    pass
