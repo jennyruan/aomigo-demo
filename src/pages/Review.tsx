@@ -4,10 +4,10 @@ import { Clock, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
 import { usePetStats } from '../hooks/usePetStats';
 import { useReviews } from '../hooks/useReviews';
+import { supabase } from '../lib/supabase';
 import { evaluateReview } from '../lib/openai';
 import type { Topic } from '../types';
 import { toast } from 'sonner';
-import { apiClient } from '../lib/api/client';
 
 export function Review() {
   const { profile, addIntelligence, addHealth } = usePetStats();
@@ -31,15 +31,17 @@ export function Review() {
     if (!dueReviews[currentReviewIndex]) return;
 
     try {
-      const topic = await apiClient.request<Topic>(
-        `/api/v1/topics/${dueReviews[currentReviewIndex].topic_id}`
-      );
+      const { data } = await supabase
+        .from('topics')
+        .select('*')
+        .eq('id', dueReviews[currentReviewIndex].topic_id)
+        .single();
 
-      if (topic) {
-        setCurrentTopic(topic);
+      if (data) {
+        setCurrentTopic(data);
       }
     } catch (error) {
-      console.error('[Review] Failed to load topic', error);
+      console.error('Error loading topic:', error);
     }
   }
 
@@ -61,6 +63,7 @@ export function Review() {
       await completeReview(
         currentReview.id,
         evaluation.result,
+        currentTopic.id,
         intervalIndex
       );
 
@@ -87,7 +90,7 @@ export function Review() {
         }
       }, 3500);
     } catch (error) {
-      console.error('[Review] Failed to submit review', error);
+      console.error('Error submitting review:', error);
       toast.error('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);

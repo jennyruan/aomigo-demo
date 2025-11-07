@@ -179,32 +179,6 @@ All tables have Row Level Security (RLS) enabled for data privacy.
 - **Responsive**: Works on mobile, tablet, and desktop
 - **Encouraging**: Positive reinforcement throughout
 
-## 🧱 Architecture & Structure
-
-### Landing Experience
-- `src/pages/Home.tsx` now composes modular neo-brutalist primitives from `src/components/landing`.
-- `LandingSection`, `ActionTile`, `StatMeter`, and `SupportCard` provide focused layout wrappers with bold Tailwind tokens so new sections can be added without bespoke styling.
-- Shared typography, rounded borders, and shadow utilities keep visual identity consistent across cards, reminders, and stats.
-
-### Supabase Integration Layer
-- `src/lib/database` centralizes typed Supabase helpers (`client.ts`, `profiles.ts`, `reviews.ts`, `topics.ts`, `teachingSessions.ts`).
-- `isSupabaseConfigured`, `getSupabaseClient`, and `tryGetSupabaseClient` guard all network calls, enabling graceful fallbacks in demo mode and when env vars are missing.
-- Hooks (`useStore`, `useReviews`, `usePetStats`) and pages now request data exclusively through these helpers, removing duplicated query logic.
-
-### State & Hooks
-- `useStore` bootstraps demo profiles from localStorage, subscribes to Supabase auth when available, and routes profile CRUD through the database helpers.
-- `useReviews` schedules and completes reviews with shared spacing intervals so the forgetting-curve logic lives in one place.
-- Community, Teach, Review, and Summary pages each fan out through `useCallback` loaders that consume the new services, keeping UI components declarative.
-
-### Environment & Configuration
-- `.env.example` documents required Supabase keys along with optional API integrations so onboarding mirrors Vercel/Netlify expectations.
-- `src/lib/supabase.ts` re-exports the guarded client helpers for legacy imports while encouraging the new abstraction.
-
-### Maintainability Notes
-- Database helpers return typed domain models (`UserProfile`, `Review`, `Topic`, `TeachingSession`), limiting unchecked `any` usage to the Supabase client boundary.
-- Pages handle missing configuration by short-circuiting to demo data and logging structured errors, which keeps linting actionable.
-- Future work: migrate lingering `any` types and legacy helpers (for OCR, StackAuth, etc.) into the same pattern for a fully typed service layer.
-
 ## 🔧 API Integrations
 
 ### Optional Enhancements

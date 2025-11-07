@@ -24,6 +24,7 @@ export function useEvents(userId: string | null) {
       const fetchedEvents = await s2Client.getEvents(userId);
       setEvents(fetchedEvents);
     } catch (err) {
+      console.error('[useEvents] Error loading events:', err);
       setError('Failed to load events');
     } finally {
       setLoading(false);
@@ -43,6 +44,7 @@ export function useEvents(userId: string | null) {
         await s2Client.logEvent(fullEvent);
         setEvents(prev => [...prev, fullEvent]);
       } catch (err) {
+        console.error('[useEvents] Error adding event:', err);
         throw err;
       }
     },

@@ -1,4 +1,5 @@
 const S2_TOKEN = import.meta.env.VITE_S2_TOKEN || '';
+
 export interface TeachingEvent {
   type: 'teaching_session';
   userId: string;
@@ -27,35 +28,46 @@ export type AppEvent = TeachingEvent | ReviewEvent;
 class S2Client {
   private token: string;
   private useLocalStorage: boolean;
-  // Memory-only fallback when S2 token is not provided. This keeps events
-  // in-memory for the session instead of persisting to localStorage.
-  private memoryStore: Map<string, AppEvent[]>;
 
   constructor(token?: string) {
     this.token = token || S2_TOKEN;
     this.useLocalStorage = !this.token;
-    this.memoryStore = new Map();
 
-    // silent by default; S2 events fall back to localStorage when token is absent
+    if (this.useLocalStorage) {
+      console.log('[S2.dev] No token provided, using localStorage fallback');
+    } else {
+      console.log('[S2.dev] Initialized with API token');
+    }
   }
 
-  // no persistence key needed; memory-based storage used when token is absent
-
-  private getEventsFromMemory(userId: string): AppEvent[] {
-    const events = this.memoryStore.get(userId);
-    return events ? [...events] : [];
+  private getLocalStorageKey(userId: string): string {
+    return `s2_events_${userId}`;
   }
 
-  private saveEventsToMemory(userId: string, events: AppEvent[]): void {
-    this.memoryStore.set(userId, [...events]);
+  private getEventsFromLocalStorage(userId: string): AppEvent[] {
+    try {
+      const stored = localStorage.getItem(this.getLocalStorageKey(userId));
+      return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      console.error('[S2] LocalStorage read error:', error);
+      return [];
+    }
+  }
+
+  private saveEventsToLocalStorage(userId: string, events: AppEvent[]): void {
+    try {
+      localStorage.setItem(this.getLocalStorageKey(userId), JSON.stringify(events));
+    } catch (error) {
+      console.error('[S2] LocalStorage write error:', error);
+    }
   }
 
   async logEvent(event: AppEvent): Promise<void> {
     if (this.useLocalStorage) {
-      const events = this.getEventsFromMemory(event.userId);
+      const events = this.getEventsFromLocalStorage(event.userId);
       events.push(event);
-      this.saveEventsToMemory(event.userId, events);
-      // event saved in-memory for this session (silenced)
+      this.saveEventsToLocalStorage(event.userId, events);
+      console.log('[S2] Event logged to localStorage:', event.type);
       return;
     }
 
@@ -73,18 +85,18 @@ class S2Client {
         throw new Error(`S2 API error: ${response.status}`);
       }
 
-      // success (no logs in demo mode)
+      console.log('[S2] Event logged to S2.dev:', event.type);
     } catch (error) {
-      // on failure, persist to in-memory store silently
-      const events = this.getEventsFromMemory(event.userId);
+      console.error('[S2] API error, falling back to localStorage:', error);
+      const events = this.getEventsFromLocalStorage(event.userId);
       events.push(event);
-      this.saveEventsToMemory(event.userId, events);
+      this.saveEventsToLocalStorage(event.userId, events);
     }
   }
 
   async getEvents(userId: string, limit?: number): Promise<AppEvent[]> {
     if (this.useLocalStorage) {
-      const events = this.getEventsFromMemory(userId);
+      const events = this.getEventsFromLocalStorage(userId);
       return limit ? events.slice(-limit) : events;
     }
 
@@ -105,18 +117,23 @@ class S2Client {
 
       const data = await response.json();
       return data.events || [];
-    } catch (_error) {
-      // fall back to in-memory store silently
-      const events = this.getEventsFromMemory(userId);
+    } catch (error) {
+      console.error('[S2] API error, falling back to localStorage:', error);
+      const events = this.getEventsFromLocalStorage(userId);
       return limit ? events.slice(-limit) : events;
     }
   }
 
   subscribeToEvents(
-    _userId: string,
-    _callback: (event: AppEvent) => void
+    userId: string,
+    callback: (event: AppEvent) => void
   ): () => void {
-    // No-op subscription in memory mode or when no remote subscription exists.
+    if (this.useLocalStorage) {
+      console.log('[S2] LocalStorage mode: subscriptions not available');
+      return () => {};
+    }
+
+    console.log('[S2] Real-time subscriptions not implemented yet');
     return () => {};
   }
 }

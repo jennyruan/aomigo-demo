@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, BookOpen, Map, Users, Clock, LogOut, Globe, Settings, HelpCircle, ShoppingBag, MessageCircle } from 'lucide-react';
+import { Home, BookOpen, Map, Users, Clock, LogOut, Globe, Settings, HelpCircle, ShoppingBag, MessageCircle, User } from 'lucide-react';
 import { useStore } from '../hooks/useStore';
 import { usePetStats } from '../hooks/usePetStats';
-import { t, useLocale, setLocale } from '../lib/lingo';
+import { t, getCurrentLocale, setLocale } from '../lib/lingo';
 import { TutorialModal } from './TutorialModal';
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -11,9 +11,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const { signOut } = useStore();
   const { profile } = usePetStats();
-  const locale = useLocale();
+  const locale = getCurrentLocale();
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
-  const [hasShownTutorial, setHasShownTutorial] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
 
   const accountType = 'student';
@@ -21,14 +20,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const accountLabel = accountType === 'student' ? 'Student' : accountType === 'parent' ? 'Parent' : 'Teacher';
 
   useEffect(() => {
-    // Show tutorial once per session when visiting /home. We intentionally
-    // avoid persisting this to localStorage so the app doesn't retain client
-    // storage between sessions.
-    if (!hasShownTutorial && location.pathname === '/home') {
+    const isFirstVisit = !localStorage.getItem('tutorialCompleted');
+    if (isFirstVisit && location.pathname === '/home') {
       setIsTutorialOpen(true);
-      setHasShownTutorial(true);
     }
-  }, [location.pathname, hasShownTutorial]);
+  }, [location.pathname]);
 
   async function handleSignOut() {
     await signOut();

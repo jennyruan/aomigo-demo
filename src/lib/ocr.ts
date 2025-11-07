@@ -6,8 +6,8 @@ export async function extractTextFromImage(file: File): Promise<string> {
     const { data: { text } } = await worker.recognize(file);
     await worker.terminate();
     return text.trim();
-  } catch (_error) {
-    // hide low-level OCR errors in demo mode
+  } catch (error) {
+    console.error('OCR error:', error);
     throw new Error('Failed to extract text from image');
   }
 }

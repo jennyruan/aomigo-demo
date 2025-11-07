@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ShoppingCart, Package } from 'lucide-react';
+import { PetAvatar } from '../components/PetAvatar';
 import { usePetStats } from '../hooks/usePetStats';
 import { toast } from 'sonner';
 
