@@ -17,7 +17,9 @@ class TopicsRepository:
             .maybe_single()
             .execute()
         )
-        return response.data
+        if not response:
+            return None
+        return getattr(response, "data", None)
 
     async def list_for_user(self, user_id: str, limit: int | None = None) -> list[dict[str, Any]]:
         query = self.client.table(TOPICS_TABLE).select("*").eq("user_id", user_id).order("depth", desc=True)
@@ -34,30 +36,57 @@ class TopicsRepository:
             .maybe_single()
             .execute()
         )
-        return response.data
+        if not response:
+            return None
+        return getattr(response, "data", None)
 
     async def update_topic(self, topic_id: str, updates: dict[str, Any]) -> dict[str, Any]:
         response = (
             self.client.table(TOPICS_TABLE)
             .update(updates)
             .eq("id", topic_id)
-            .select("*")
-            .single()
             .execute()
         )
-        return response.data
+
+        data = getattr(response, "data", None)
+        if isinstance(data, list) and data:
+            return data[0]
+        if isinstance(data, dict) and data:
+            return data
+
+        refreshed = await self.get_by_id(topic_id)
+        if not refreshed:
+            raise RuntimeError("Topic update succeeded but record could not be retrieved")
+        return refreshed
 
     async def create(self, payload: dict[str, Any]) -> dict[str, Any]:
-        response = self.client.table(TOPICS_TABLE).insert(payload).select("*").single().execute()
-        return response.data
+        response = self.client.table(TOPICS_TABLE).insert(payload).execute()
+        data = getattr(response, "data", None)
+        if isinstance(data, list) and data:
+            return data[0]
+        if isinstance(data, dict) and data:
+            return data
+
+        created = await self.find_by_name(payload["user_id"], payload["topic_name"])
+        if not created:
+            raise RuntimeError("Topic insertion succeeded but record could not be retrieved")
+        return created
 
     async def touch_last_reviewed(self, topic_id: str, timestamp: str) -> dict[str, Any]:
         response = (
             self.client.table(TOPICS_TABLE)
             .update({"last_reviewed": timestamp})
             .eq("id", topic_id)
-            .select("*")
-            .single()
             .execute()
         )
-        return response.data
+
+        data = getattr(response, "data", None)
+        if isinstance(data, list) and data:
+            return data[0]
+        if isinstance(data, dict) and data:
+            return data
+
+        refreshed = await self.get_by_id(topic_id)
+        if not refreshed:
+            raise RuntimeError("Topic update succeeded but record could not be retrieved")
+        return refreshed

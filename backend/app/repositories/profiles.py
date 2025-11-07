@@ -49,8 +49,16 @@ class ProfilesRepository:
             self.client.table(PROFILE_TABLE)
             .update(updates)
             .eq("id", user_id)
-            .select("*")
-            .single()
             .execute()
         )
-        return response.data
+
+        data = getattr(response, "data", None)
+        if isinstance(data, list) and data:
+            return data[0]
+        if isinstance(data, dict) and data:
+            return data
+
+        updated = await self.get_by_id(user_id)
+        if not updated:
+            raise RuntimeError("Profile update succeeded but record could not be retrieved")
+        return updated
