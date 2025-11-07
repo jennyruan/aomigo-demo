@@ -7,6 +7,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
 import { ApiError, apiClient } from '../lib/api/client';
 import type { UserProfile } from '../types';
 import { getAuth, signOut as firebaseSignOut } from '../lib/firebase';
@@ -48,10 +49,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<BasicUser>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
 
   const buildAuthHeaders = useCallback((activeUser?: BasicUser): Record<string, string> => {
     let source = activeUser ?? user;
@@ -102,6 +99,55 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       console.error('[Store] Failed to load profile', error);
     }
   }, [buildAuthHeaders, user]);
+
+  useEffect(() => {
+    const auth = getAuth();
+
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
+
+    let isActive = true;
+
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!isActive) {
+        return;
+      }
+
+      if (!firebaseUser) {
+        setUser(null);
+        setProfile(null);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+
+      const nextUser: BasicUser = {
+        id: firebaseUser.uid,
+        email: firebaseUser.email ?? undefined,
+      };
+
+      setUser((prev) => {
+        if (prev && prev.id === nextUser.id && prev.email === nextUser.email) {
+          return prev;
+        }
+        return nextUser;
+      });
+
+      await fetchProfile(nextUser);
+
+      if (isActive) {
+        setLoading(false);
+      }
+    });
+
+    return () => {
+      isActive = false;
+      unsubscribe();
+    };
+  }, [fetchProfile]);
 
   const createProfile = useCallback(async (defaults?: Partial<UserProfile>) => {
     try {
