@@ -2,45 +2,41 @@ import { useEffect, useState } from 'react';
 import { Brain, TrendingUp, Clock, Award } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
 import { usePetStats } from '../hooks/usePetStats';
-import { supabase } from '../lib/supabase';
 import type { Topic, TeachingSession } from '../types';
-import { t, getCurrentLocale } from '../lib/lingo';
+import { t, useLocale } from '../lib/lingo';
+import { apiClient } from '../lib/api/client';
 
 export function Summary() {
   const { profile } = usePetStats();
   const [topics, setTopics] = useState<Topic[]>([]);
   const [sessions, setSessions] = useState<TeachingSession[]>([]);
   const [loading, setLoading] = useState(true);
-  const locale = getCurrentLocale();
+  const locale = useLocale();
 
   useEffect(() => {
-    if (profile) {
-      loadData();
+    if (!profile) {
+      setLoading(false);
+      return;
     }
+
+    void loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
   async function loadData() {
     if (!profile) return;
 
     try {
-      const [topicsResult, sessionsResult] = await Promise.all([
-        supabase
-          .from('topics')
-          .select('*')
-          .eq('user_id', profile.id)
-          .order('depth', { ascending: false }),
-        supabase
-          .from('teaching_sessions')
-          .select('*')
-          .eq('user_id', profile.id)
-          .order('created_at', { ascending: false })
-          .limit(10),
+      setLoading(true);
+      const [fetchedTopics, fetchedSessions] = await Promise.all([
+        apiClient.request<Topic[]>('/api/v1/topics?limit=50'),
+        apiClient.request<TeachingSession[]>('/api/v1/sessions/teaching?limit=10'),
       ]);
 
-      if (topicsResult.data) setTopics(topicsResult.data);
-      if (sessionsResult.data) setSessions(sessionsResult.data);
+      setTopics(fetchedTopics ?? []);
+      setSessions(fetchedSessions ?? []);
     } catch (error) {
-      console.error('Error loading data:', error);
+      console.error('[Summary] Failed to load summary data', error);
     } finally {
       setLoading(false);
     }
@@ -64,7 +60,7 @@ export function Summary() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-cream-50 to-purple-50">
       <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold text-brown-700">
               {t('summary.title', locale)}

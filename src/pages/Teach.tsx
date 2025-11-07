@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Loader2, Keyboard, Mic, Image as ImageIcon } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
 import { ForgettingCurve } from '../components/ForgettingCurve';
@@ -7,11 +6,11 @@ import { VoiceRecorder } from '../components/VoiceRecorder';
 import { ImageUploader } from '../components/ImageUploader';
 import { FollowUpQuestion } from '../components/FollowUpQuestion';
 import { usePetStats } from '../hooks/usePetStats';
-import { useStore } from '../hooks/useStore';
-import { supabase } from '../lib/supabase';
 import { extractTopics, generateFollowUpQuestion } from '../lib/openai';
-import { t, getCurrentLocale } from '../lib/lingo';
+import { t, useLocale } from '../lib/lingo';
 import { toast } from 'sonner';
+import { apiClient } from '../lib/api/client';
+import type { TeachingSession } from '../types';
 
 type InputMode = 'text' | 'voice' | 'image';
 
@@ -29,11 +28,10 @@ export function Teach() {
   const [followUpQuestion, setFollowUpQuestion] = useState('');
   const [extractedTopicsList, setExtractedTopicsList] = useState<string[]>([]);
   const [sessionId, setSessionId] = useState('');
+  const [sessionPrimaryId, setSessionPrimaryId] = useState<string | null>(null);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const { profile, addIntelligence, addHealth, updateStreak } = usePetStats();
-  const { isDemoMode } = useStore();
-  const navigate = useNavigate();
-  const locale = getCurrentLocale();
+  const locale = useLocale();
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -55,24 +53,22 @@ export function Teach() {
 
       let recentHistory: string[] = [];
 
-      if (!isDemoMode) {
-        const { data: recentSessions } = await supabase
-          .from('teaching_sessions')
-          .select('raw_input, extracted_topics')
-          .eq('user_id', profile.id)
-          .order('created_at', { ascending: false })
-          .limit(5);
+      try {
+        const recentSessions = await apiClient.request<TeachingSession[]>('/api/v1/sessions/teaching?limit=5');
 
-        recentHistory = recentSessions?.map(s =>
-          `${s.extracted_topics.join(', ')}: ${s.raw_input.substring(0, 100)}...`
-        ) || [];
+        recentHistory = (recentSessions ?? []).map((session) =>
+          `${session.extracted_topics.join(', ')}: ${session.raw_input.substring(0, 100)}...`
+        );
+      } catch (historyError) {
+        console.warn('[Teach] Failed to load recent teaching history', historyError);
       }
 
       const question = await generateFollowUpQuestion(input, topics, recentHistory);
       setFollowUpQuestion(question);
 
-      const newSessionId = `session-${Date.now()}`;
-      setSessionId(newSessionId);
+      const fallbackSessionId = `session-${Date.now()}`;
+      setSessionId(fallbackSessionId);
+      setSessionPrimaryId(null);
 
       setChatHistory(prev => [
         ...prev,
@@ -80,66 +76,24 @@ export function Teach() {
         { role: 'assistant', content: question, timestamp: Date.now() + 1 }
       ]);
 
-      if (!isDemoMode) {
-        const { error } = await supabase.from('teaching_sessions').insert([
-          {
-            user_id: profile.id,
-            session_id: newSessionId,
+      try {
+        const createdSession = await apiClient.request<TeachingSession>('/api/v1/sessions/teaching', {
+          method: 'POST',
+          body: {
             input_type: inputMode,
             raw_input: input,
             extracted_topics: topics,
             follow_up_question: question,
           },
-        ]);
+        });
 
-        if (error) throw error;
-      }
-
-      if (!isDemoMode) {
-        for (const topicName of topics) {
-          const { data: existing } = await supabase
-            .from('topics')
-            .select('*')
-            .eq('user_id', profile.id)
-            .eq('topic_name', topicName)
-            .maybeSingle();
-
-          if (existing) {
-            await supabase
-              .from('topics')
-              .update({
-                depth: existing.depth + 1,
-                last_reviewed: new Date().toISOString(),
-              })
-              .eq('id', existing.id);
-          } else {
-            const { data: newTopic } = await supabase
-              .from('topics')
-              .insert([
-                {
-                  user_id: profile.id,
-                  topic_name: topicName,
-                  depth: 1,
-                },
-              ])
-              .select()
-              .single();
-
-            if (newTopic) {
-              const scheduledDate = new Date();
-              scheduledDate.setMinutes(scheduledDate.getMinutes() + 10);
-
-              await supabase.from('reviews').insert([
-                {
-                  user_id: profile.id,
-                  topic_id: newTopic.id,
-                  scheduled_date: scheduledDate.toISOString(),
-                  interval_days: 0,
-                },
-              ]);
-            }
-          }
+        if (createdSession) {
+          const persistedSessionId = createdSession.session_id ?? createdSession.id ?? fallbackSessionId;
+          setSessionPrimaryId(persistedSessionId);
+          setSessionId(persistedSessionId);
         }
+      } catch (sessionError) {
+        console.error('[Teach] Failed to record teaching session', sessionError);
       }
 
       const intelligenceGain = Math.min(20, 5 + topics.length * 2);
@@ -148,7 +102,7 @@ export function Teach() {
 
       toast.success(`+${intelligenceGain} Intelligence! 🧠`);
     } catch (error) {
-      console.error('Error processing teaching:', error);
+      console.error('[Teach] Failed to process teaching session', error);
       toast.error('Something went wrong. Please try again.');
     } finally {
       setIsProcessing(false);
@@ -156,19 +110,30 @@ export function Teach() {
   }
 
   async function handleAnswerSubmit(answer: string, qualityScore: number) {
-    if (!profile || !sessionId) return;
+    if (!profile || (!sessionId && !sessionPrimaryId)) return;
 
     try {
-      if (!isDemoMode) {
-        await supabase
-          .from('teaching_sessions')
-          .update({
-            user_answer: answer,
-            quality_score: qualityScore,
-            intelligence_gain: Math.floor(qualityScore / 10),
-            health_change: qualityScore > 70 ? 3 : 1,
-          })
-          .eq('session_id', sessionId);
+      const identifier = sessionPrimaryId ?? sessionId;
+
+      if (identifier) {
+        try {
+          await apiClient.request(`/api/v1/sessions/teaching/${identifier}`, {
+            method: 'PATCH',
+            body: {
+              answer,
+              quality_score: qualityScore,
+            },
+          });
+        } catch (updateError) {
+          console.warn('[Teach] PATCH update failed, retrying via answer endpoint', updateError);
+          await apiClient.request(`/api/v1/sessions/teaching/${identifier}/answer`, {
+            method: 'POST',
+            body: {
+              answer,
+              quality_score: qualityScore,
+            },
+          });
+        }
       }
 
       const intelligenceGain = Math.floor(qualityScore / 10);
@@ -190,9 +155,10 @@ export function Teach() {
         setInput('');
         setExtractedTopicsList([]);
         setSessionId('');
+        setSessionPrimaryId(null);
       }, 2000);
     } catch (error) {
-      console.error('Error saving answer:', error);
+      console.error('[Teach] Failed to submit answer', error);
     }
   }
 
@@ -393,7 +359,7 @@ export function Teach() {
         )}
 
         <div className="mt-8">
-          <ForgettingCurve compact />
+          <ForgettingCurve />
         </div>
       </div>
     </div>

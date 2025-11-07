@@ -1,11 +1,6 @@
-const GROK_API_KEY = import.meta.env.VITE_GROK_API_KEY || '';
-const API_BASE_URL = 'https://api.x.ai/v1';
-
-interface FollowUpResponse {
-  question: string;
-  evaluation?: string;
-  qualityScore?: number;
-}
+const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY || '';
+const API_BASE_URL = 'https://api.groq.com/openai/v1';
+const DEFAULT_MODEL = 'llama-3.1-8b-instant';
 
 const AOMIGO_PERSONALITY = `You are Aomigo, a friendly and encouraging AI learning companion in the form of a cute puppy. Your personality:
 - Warm, supportive, and enthusiastic about learning
@@ -20,8 +15,8 @@ export async function generateFollowUpQuestion(
   topics: string[],
   recentHistory?: string[]
 ): Promise<string> {
-  if (!GROK_API_KEY) {
-    throw new Error('Grok API key is required for Aomigo to communicate');
+  if (!GROQ_API_KEY) {
+    throw new Error('Groq API key is required for Aomigo to communicate');
   }
 
   try {
@@ -33,10 +28,10 @@ export async function generateFollowUpQuestion(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROK_API_KEY}`,
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4-fast-reasoning',
+        model: DEFAULT_MODEL,
         messages: [
           {
             role: 'system',
@@ -53,22 +48,19 @@ export async function generateFollowUpQuestion(
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Grok API error response:', errorData);
-      throw new Error(`Grok API error: ${errorData.error?.message || response.statusText}`);
+      throw new Error(`Groq API error: ${response.status}`);
     }
 
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error('Invalid Grok response structure:', data);
       return 'Tell me more about what you learned!';
     }
 
     return data.choices[0].message.content;
   } catch (error) {
-    console.error('Grok API error:', error);
-    throw error;
+    console.error('[OpenAI] Failed to generate follow-up question', error);
+    throw new Error('Groq API request failed');
   }
 }
 
@@ -76,8 +68,8 @@ export async function evaluateAnswer(
   question: string,
   answer: string
 ): Promise<{ evaluation: string; qualityScore: number }> {
-  if (!GROK_API_KEY) {
-    throw new Error('Grok API key is required for Aomigo to communicate');
+  if (!GROQ_API_KEY) {
+    throw new Error('Groq API key is required for Aomigo to communicate');
   }
 
   try {
@@ -85,10 +77,10 @@ export async function evaluateAnswer(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROK_API_KEY}`,
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4-fast-reasoning',
+        model: DEFAULT_MODEL,
         messages: [
           {
             role: 'system',
@@ -105,15 +97,12 @@ export async function evaluateAnswer(
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Grok API error response:', errorData);
-      throw new Error(`Grok API error: ${errorData.error?.message || response.statusText}`);
+      throw new Error(`Groq API error: ${response.status}`);
     }
 
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error('Invalid Grok response structure:', data);
       return {
         evaluation: 'Great effort! You\'re learning so well!',
         qualityScore: 75,
@@ -135,14 +124,14 @@ export async function evaluateAnswer(
       };
     }
   } catch (error) {
-    console.error('Grok API error:', error);
-    throw error;
+    console.error('[OpenAI] Failed to evaluate answer', error);
+    throw new Error('Groq API request failed');
   }
 }
 
 export async function extractTopics(input: string): Promise<string[]> {
-  if (!GROK_API_KEY) {
-    throw new Error('Grok API key is required for Aomigo to communicate');
+  if (!GROQ_API_KEY) {
+    throw new Error('Groq API key is required for Aomigo to communicate');
   }
 
   try {
@@ -150,10 +139,10 @@ export async function extractTopics(input: string): Promise<string[]> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROK_API_KEY}`,
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4-fast-reasoning',
+        model: DEFAULT_MODEL,
         messages: [
           {
             role: 'system',
@@ -170,15 +159,12 @@ export async function extractTopics(input: string): Promise<string[]> {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Grok API error response:', errorData);
-      throw new Error(`Grok API error: ${errorData.error?.message || response.statusText}`);
+      throw new Error(`Groq API error: ${response.status}`);
     }
 
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error('Invalid Grok response structure:', data);
       return ['learning'];
     }
 
@@ -191,8 +177,8 @@ export async function extractTopics(input: string): Promise<string[]> {
       return ['learning'];
     }
   } catch (error) {
-    console.error('Grok API error:', error);
-    throw error;
+    console.error('[OpenAI] Failed to extract topics', error);
+    throw new Error('Groq API request failed');
   }
 }
 
@@ -200,8 +186,8 @@ export async function evaluateReview(
   topicName: string,
   answer: string
 ): Promise<{ feedback: string; result: 'good' | 'poor'; qualityScore: number }> {
-  if (!GROK_API_KEY) {
-    throw new Error('Grok API key is required for Aomigo to communicate');
+  if (!GROQ_API_KEY) {
+    throw new Error('Groq API key is required for Aomigo to communicate');
   }
 
   try {
@@ -209,10 +195,10 @@ export async function evaluateReview(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROK_API_KEY}`,
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4-fast-reasoning',
+        model: DEFAULT_MODEL,
         messages: [
           {
             role: 'system',
@@ -229,15 +215,12 @@ export async function evaluateReview(
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Grok API error response:', errorData);
-      throw new Error(`Grok API error: ${errorData.error?.message || response.statusText}`);
+      throw new Error(`Groq API error: ${response.status}`);
     }
 
     const data = await response.json();
 
     if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error('Invalid Grok response structure:', data);
       return {
         feedback: 'Great effort! Keep learning!',
         result: 'good',
@@ -262,7 +245,7 @@ export async function evaluateReview(
       };
     }
   } catch (error) {
-    console.error('Grok API error:', error);
-    throw error;
+    console.error('[OpenAI] Failed to evaluate review', error);
+    throw new Error('Groq API request failed');
   }
 }

@@ -1,5 +1,4 @@
 type Locale = 'en' | 'zh';
-
 interface Translations {
   [key: string]: {
     en: string;
@@ -44,18 +43,19 @@ const translations: Translations = {
 export function t(key: string, locale: Locale = 'en'): string {
   const translation = translations[key];
   if (!translation) {
-    console.warn(`Translation missing for key: ${key}`);
     return key;
   }
   return translation[locale] || translation.en;
 }
 
 export function getCurrentLocale(): Locale {
-  const stored = localStorage.getItem('aomigo_locale');
-  return (stored === 'zh' ? 'zh' : 'en') as Locale;
+  const runtime = (window as any).__AOMIGO_LOCALE as Locale | undefined;
+  if (runtime) return runtime;
+  const nav = typeof navigator !== 'undefined' ? navigator.language : 'en';
+  return nav && nav.startsWith('zh') ? 'zh' : 'en';
 }
 
 export function setLocale(locale: Locale): void {
-  localStorage.setItem('aomigo_locale', locale);
+  (window as any).__AOMIGO_LOCALE = locale;
   window.location.reload();
 }

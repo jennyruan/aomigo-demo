@@ -22,7 +22,6 @@ export function FollowUpQuestion({ question, onAnswerSubmit }: FollowUpQuestionP
       setEvaluation(result.evaluation);
       onAnswerSubmit(answer, result.qualityScore);
     } catch (error) {
-      console.error('Error evaluating answer:', error);
       setEvaluation('Great effort! Keep learning and teaching me more!');
       onAnswerSubmit(answer, 75);
     } finally {

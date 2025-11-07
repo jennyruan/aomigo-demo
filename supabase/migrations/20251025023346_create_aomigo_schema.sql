@@ -103,18 +103,18 @@ ALTER TABLE users_profile ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own profile"
   ON users_profile FOR SELECT
   TO authenticated
-  USING (auth.uid() = id);
+  USING (auth.uid()::uuid = id);
 
 CREATE POLICY "Users can insert own profile"
   ON users_profile FOR INSERT
   TO authenticated
-  WITH CHECK (auth.uid() = id);
+  WITH CHECK (auth.uid()::uuid = id);
 
 CREATE POLICY "Users can update own profile"
   ON users_profile FOR UPDATE
   TO authenticated
-  USING (auth.uid() = id)
-  WITH CHECK (auth.uid() = id);
+  USING (auth.uid()::uuid = id)
+  WITH CHECK (auth.uid()::uuid = id);
 
 -- Create teaching_sessions table
 CREATE TABLE IF NOT EXISTS teaching_sessions (
@@ -137,12 +137,12 @@ ALTER TABLE teaching_sessions ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own sessions"
   ON teaching_sessions FOR SELECT
   TO authenticated
-  USING (auth.uid() = user_id);
+  USING (auth.uid()::uuid = user_id);
 
 CREATE POLICY "Users can insert own sessions"
   ON teaching_sessions FOR INSERT
   TO authenticated
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK (auth.uid()::uuid = user_id);
 
 -- Create topics table
 CREATE TABLE IF NOT EXISTS topics (
@@ -164,18 +164,18 @@ ALTER TABLE topics ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own topics"
   ON topics FOR SELECT
   TO authenticated
-  USING (auth.uid() = user_id);
+  USING (auth.uid()::uuid = user_id);
 
 CREATE POLICY "Users can insert own topics"
   ON topics FOR INSERT
   TO authenticated
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK (auth.uid()::uuid = user_id);
 
 CREATE POLICY "Users can update own topics"
   ON topics FOR UPDATE
   TO authenticated
-  USING (auth.uid() = user_id)
-  WITH CHECK (auth.uid() = user_id);
+  USING (auth.uid()::uuid = user_id)
+  WITH CHECK (auth.uid()::uuid = user_id);
 
 -- Create reviews table
 CREATE TABLE IF NOT EXISTS reviews (
@@ -194,18 +194,18 @@ ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own reviews"
   ON reviews FOR SELECT
   TO authenticated
-  USING (auth.uid() = user_id);
+  USING (auth.uid()::uuid = user_id);
 
 CREATE POLICY "Users can insert own reviews"
   ON reviews FOR INSERT
   TO authenticated
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK (auth.uid()::uuid = user_id);
 
 CREATE POLICY "Users can update own reviews"
   ON reviews FOR UPDATE
   TO authenticated
-  USING (auth.uid() = user_id)
-  WITH CHECK (auth.uid() = user_id);
+  USING (auth.uid()::uuid = user_id)
+  WITH CHECK (auth.uid()::uuid = user_id);
 
 -- Create community_posts table
 CREATE TABLE IF NOT EXISTS community_posts (
@@ -229,18 +229,18 @@ CREATE POLICY "Anyone can view community posts"
 CREATE POLICY "Users can insert own posts"
   ON community_posts FOR INSERT
   TO authenticated
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK (auth.uid()::uuid = user_id);
 
 CREATE POLICY "Users can update own posts"
   ON community_posts FOR UPDATE
   TO authenticated
-  USING (auth.uid() = user_id)
-  WITH CHECK (auth.uid() = user_id);
+  USING (auth.uid()::uuid = user_id)
+  WITH CHECK (auth.uid()::uuid = user_id);
 
 CREATE POLICY "Users can delete own posts"
   ON community_posts FOR DELETE
   TO authenticated
-  USING (auth.uid() = user_id);
+  USING (auth.uid()::uuid = user_id);
 
 -- Create achievements table
 CREATE TABLE IF NOT EXISTS achievements (
@@ -256,12 +256,12 @@ ALTER TABLE achievements ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own achievements"
   ON achievements FOR SELECT
   TO authenticated
-  USING (auth.uid() = user_id);
+  USING (auth.uid()::uuid = user_id);
 
 CREATE POLICY "Users can insert own achievements"
   ON achievements FOR INSERT
   TO authenticated
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK (auth.uid()::uuid = user_id);
 
 -- Create indexes for better query performance
 CREATE INDEX IF NOT EXISTS idx_teaching_sessions_user_id ON teaching_sessions(user_id);

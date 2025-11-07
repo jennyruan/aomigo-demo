@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { PetAvatar } from './PetAvatar';
+import { toast } from 'sonner';
 
 interface PostCreationModalProps {
   isOpen: boolean;
@@ -93,7 +94,8 @@ export function PostCreationModal({ isOpen, onClose, onSubmit, petName }: PostCr
       setImagePreview('');
       onClose();
     } catch (error) {
-      console.error('Error submitting post:', error);
+      toast.error('Failed to create post');
+      throw error;
     } finally {
       setIsSubmitting(false);
     }
