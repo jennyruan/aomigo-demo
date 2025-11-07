@@ -1295,17 +1295,8 @@ export function Landing() {
                     )}
                   </button>
                 </div>
-                <div className="space-y-5">
-                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    Hello, I'm Jessi, the oldest of five and a first-generation college student. In middle school, I ranked top 12 nationally in Math Olympiads and graduated with honors, though my family couldn't attend. I came to the U.S. chasing the American dream but ended up living on the streets for 30 days, with my ESL teacher as my only support.
-                  </p>
-                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    Later, I shifted from Math and Physics to Computer Science, won six hackathons, worked as a PM at PlayAI (acquired by Meta Superintelligence Labs), and now co-founded Aomigo — a platform helping people find the support they need when they need it most.
-                  </p>
-                </div>
               </div>
             </div>
-
           </div>
         </section>
       </main>
