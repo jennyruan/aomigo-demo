@@ -6,7 +6,6 @@ import { VoiceRecorder } from '../components/VoiceRecorder';
 import { ImageUploader } from '../components/ImageUploader';
 import { FollowUpQuestion } from '../components/FollowUpQuestion';
 import { usePetStats } from '../hooks/usePetStats';
-import { useStore } from '../hooks/useStore.tsx';
 import { extractTopics, generateFollowUpQuestion } from '../lib/openai';
 import { t, getCurrentLocale } from '../lib/lingo';
 import { toast } from 'sonner';
@@ -32,7 +31,6 @@ export function Teach() {
   const [sessionPrimaryId, setSessionPrimaryId] = useState<string | null>(null);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const { profile, addIntelligence, addHealth, updateStreak } = usePetStats();
-  const { isDemoMode, firebaseUser } = useStore();
   const locale = getCurrentLocale();
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -55,19 +53,14 @@ export function Teach() {
 
       let recentHistory: string[] = [];
 
-      if (!isDemoMode && firebaseUser) {
-        try {
-          const recentSessions = await apiClient.withAuth<TeachingSession[]>(
-            firebaseUser,
-            '/api/v1/sessions/teaching?limit=5'
-          );
+      try {
+        const recentSessions = await apiClient.request<TeachingSession[]>('/api/v1/sessions/teaching?limit=5');
 
-          recentHistory = (recentSessions ?? []).map((session) =>
-            `${session.extracted_topics.join(', ')}: ${session.raw_input.substring(0, 100)}...`
-          );
-        } catch (historyError) {
-          console.warn('[Teach] Failed to load recent teaching history', historyError);
-        }
+        recentHistory = (recentSessions ?? []).map((session) =>
+          `${session.extracted_topics.join(', ')}: ${session.raw_input.substring(0, 100)}...`
+        );
+      } catch (historyError) {
+        console.warn('[Teach] Failed to load recent teaching history', historyError);
       }
 
       const question = await generateFollowUpQuestion(input, topics, recentHistory);
@@ -83,27 +76,23 @@ export function Teach() {
         { role: 'assistant', content: question, timestamp: Date.now() + 1 }
       ]);
 
-      if (!isDemoMode && firebaseUser) {
-        try {
-          const createdSession = await apiClient.withAuth<TeachingSession>(
-            firebaseUser,
-            '/api/v1/sessions/teaching',
-            'POST',
-            {
-              input_type: inputMode,
-              raw_input: input,
-              extracted_topics: topics,
-              follow_up_question: question,
-            }
-          );
+      try {
+        const createdSession = await apiClient.request<TeachingSession>('/api/v1/sessions/teaching', {
+          method: 'POST',
+          body: {
+            input_type: inputMode,
+            raw_input: input,
+            extracted_topics: topics,
+            follow_up_question: question,
+          },
+        });
 
-          if (createdSession) {
-            setSessionPrimaryId(createdSession.id ?? null);
-            setSessionId(createdSession.session_id ?? createdSession.id ?? fallbackSessionId);
-          }
-        } catch (sessionError) {
-          console.error('[Teach] Failed to record teaching session', sessionError);
+        if (createdSession) {
+          setSessionPrimaryId(createdSession.id ?? null);
+          setSessionId(createdSession.session_id ?? createdSession.id ?? fallbackSessionId);
         }
+      } catch (sessionError) {
+        console.error('[Teach] Failed to record teaching session', sessionError);
       }
 
       const intelligenceGain = Math.min(20, 5 + topics.length * 2);
@@ -123,32 +112,26 @@ export function Teach() {
     if (!profile || (!sessionId && !sessionPrimaryId)) return;
 
     try {
-      if (!isDemoMode && firebaseUser) {
-        const identifier = sessionPrimaryId ?? sessionId;
+      const identifier = sessionPrimaryId ?? sessionId;
 
-        if (identifier) {
-          try {
-            await apiClient.withAuth(
-              firebaseUser,
-              `/api/v1/sessions/teaching/${identifier}`,
-              'PATCH',
-              {
-                user_answer: answer,
-                quality_score: qualityScore,
-              }
-            );
-          } catch (updateError) {
-            console.warn('[Teach] PATCH update failed, retrying via answer endpoint', updateError);
-            await apiClient.withAuth(
-              firebaseUser,
-              `/api/v1/sessions/teaching/${identifier}/answer`,
-              'POST',
-              {
-                user_answer: answer,
-                quality_score: qualityScore,
-              }
-            );
-          }
+      if (identifier) {
+        try {
+          await apiClient.request(`/api/v1/sessions/teaching/${identifier}`, {
+            method: 'PATCH',
+            body: {
+              user_answer: answer,
+              quality_score: qualityScore,
+            },
+          });
+        } catch (updateError) {
+          console.warn('[Teach] PATCH update failed, retrying via answer endpoint', updateError);
+          await apiClient.request(`/api/v1/sessions/teaching/${identifier}/answer`, {
+            method: 'POST',
+            body: {
+              user_answer: answer,
+              quality_score: qualityScore,
+            },
+          });
         }
       }
 

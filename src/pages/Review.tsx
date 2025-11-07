@@ -4,7 +4,6 @@ import { Clock, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
 import { usePetStats } from '../hooks/usePetStats';
 import { useReviews } from '../hooks/useReviews';
-import { useStore } from '../hooks/useStore.tsx';
 import { evaluateReview } from '../lib/openai';
 import type { Topic } from '../types';
 import { toast } from 'sonner';
@@ -13,7 +12,6 @@ import { apiClient } from '../lib/api/client';
 export function Review() {
   const { profile, addIntelligence, addHealth } = usePetStats();
   const { dueReviews, completeReview } = useReviews(profile?.id || null);
-  const { firebaseUser } = useStore();
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
   const [currentTopic, setCurrentTopic] = useState<Topic | null>(null);
   const [userAnswer, setUserAnswer] = useState('');
@@ -33,13 +31,7 @@ export function Review() {
     if (!dueReviews[currentReviewIndex]) return;
 
     try {
-      if (!firebaseUser) {
-        setCurrentTopic(null);
-        return;
-      }
-
-      const topic = await apiClient.withAuth<Topic>(
-        firebaseUser,
+      const topic = await apiClient.request<Topic>(
         `/api/v1/topics/${dueReviews[currentReviewIndex].topic_id}`
       );
 

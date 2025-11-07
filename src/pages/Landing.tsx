@@ -204,14 +204,17 @@ export function Landing() {
     setIsInvestorSubmitting(true);
 
     try {
-      await apiClient.request('/api/v1/waitlist', 'POST', {
-        first_name: investorFormData.firstName.trim(),
-        last_name: investorFormData.lastName.trim() || null,
-        email: investorFormData.email.trim().toLowerCase(),
-        phone_number: investorFormData.phoneNumber.trim() || null,
-        linkedin_url: investorFormData.linkedinUrl.trim() || null,
-        message: investorFormData.message.trim() || null,
-        user_type: 'investor',
+      await apiClient.request('/api/v1/waitlist', {
+        method: 'POST',
+        body: {
+          first_name: investorFormData.firstName.trim(),
+          last_name: investorFormData.lastName.trim() || null,
+          email: investorFormData.email.trim().toLowerCase(),
+          phone_number: investorFormData.phoneNumber.trim() || null,
+          linkedin_url: investorFormData.linkedinUrl.trim() || null,
+          message: investorFormData.message.trim() || null,
+          user_type: 'investor',
+        },
       });
 
       setIsInvestorSubmitted(true);

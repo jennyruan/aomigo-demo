@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   BookOpen,
   Clock,
@@ -18,9 +18,12 @@ import { StatMeter } from '../components/landing/StatMeter';
 import { SupportCard } from '../components/landing/SupportCard';
 import { usePetStats } from '../hooks/usePetStats';
 import { useReviews } from '../hooks/useReviews';
+import { useStore } from '../hooks/useStore';
 import { t, getCurrentLocale } from '../lib/lingo';
 
 export function Home() {
+  const navigate = useNavigate();
+  const { user, loading: storeLoading, syncSession } = useStore();
   const { profile, updateStreak } = usePetStats();
   const { dueReviews } = useReviews(profile?.id || null);
   const locale = getCurrentLocale();
@@ -71,7 +74,19 @@ export function Home() {
     else setGreeting('Good evening');
   }, [profile, updateStreak]);
 
-  if (!profile) {
+  useEffect(() => {
+    if (!storeLoading && !user) {
+      navigate('/');
+    }
+  }, [navigate, storeLoading, user]);
+
+  useEffect(() => {
+    if (user && !profile) {
+      void syncSession();
+    }
+  }, [user, profile, syncSession]);
+
+  if (storeLoading || !profile) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-600"></div>

@@ -1,27 +1,27 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from 'react';
-import type { User } from 'firebase/auth';
-import { onAuthChange, tryGetFirebaseAuth, signOut as firebaseSignOut } from '../lib/firebase';
-import { apiClient } from '../lib/api/client';
+import { ApiError, apiClient } from '../lib/api/client';
 import type { UserProfile } from '../types';
+import { auth, signOut as firebaseSignOut } from '../lib/firebase';
 
 export type BasicUser = { id: string; email?: string } | null;
 
 interface StoreValue {
   user: BasicUser;
-  firebaseUser: User | null;
   profile: UserProfile | null;
   loading: boolean;
-  isDemoMode: boolean;
+  createProfile(defaults?: Partial<UserProfile>): Promise<void>;
   refreshProfile(): Promise<void>;
   updateProfile(updates: Partial<UserProfile>): Promise<void>;
   signOut(): Promise<void>;
+  syncSession(): Promise<void>;
 }
 
 const StoreContext = createContext<StoreValue | undefined>(undefined);
@@ -42,85 +42,162 @@ function mapProfile(dto: any): UserProfile {
 }
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const auth = useMemo(() => tryGetFirebaseAuth(), []);
-  const [firebaseUser, setFirebaseUser] = useState<User | null>(auth?.currentUser ?? null);
-  const [user, setUser] = useState<BasicUser>(firebaseUser ? { id: firebaseUser.uid, email: firebaseUser.email ?? undefined } : null);
+  const [user, setUser] = useState<BasicUser>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const isDemoMode = false;
 
   useEffect(() => {
-    const unsubscribe = onAuthChange(async (nextUser) => {
-      setFirebaseUser(nextUser);
-      if (!nextUser) {
-        setUser(null);
+    setLoading(false);
+  }, []);
+
+  const buildAuthHeaders = useCallback((activeUser?: BasicUser): Record<string, string> => {
+    let source = activeUser ?? user;
+
+    if (!source) {
+      const current = auth.currentUser;
+      if (!current) {
+        return {};
+      }
+
+      source = {
+        id: current.uid,
+        email: current.email ?? undefined,
+      };
+    }
+
+    const headers: Record<string, string> = {
+      'X-User-Id': source.id,
+    };
+
+    if (source.email) {
+      headers['X-User-Email'] = source.email;
+    }
+
+    return headers;
+  }, [user]);
+
+  const fetchProfile = useCallback(async (nextUser?: BasicUser) => {
+    const activeUser = nextUser ?? user;
+    if (!activeUser) {
+      setProfile(null);
+      return;
+    }
+
+    try {
+      const remoteProfile = await apiClient.request<any>('/api/v1/profiles/me', {
+        headers: buildAuthHeaders(activeUser),
+        skipNotFound: true,
+      });
+
+      if (!remoteProfile) {
         setProfile(null);
-        setLoading(false);
         return;
       }
 
-      // Don't automatically fetch the profile on auth state change.
-      // Many pages (like the home/landing) don't need the profile immediately
-      // and calling the protected `/profiles/me` endpoint on every auth event
-      // can surface 401s if a token isn't available yet. Provide an explicit
-      // `refreshProfile()` for components that need server-side profile data.
-      setUser({ id: nextUser.uid, email: nextUser.email ?? undefined });
-      setLoading(false);
-    });
-
-    return () => {
-      try {
-        unsubscribe?.();
-      } catch (error) {
-        console.error('[Store] Failed to clean up auth listener', error);
-      }
-    };
-  }, []);
-
-  async function refreshProfile() {
-    if (!firebaseUser) return;
-    try {
-      const remoteProfile = await apiClient.withAuth<any>(firebaseUser, '/api/v1/profiles/me');
       setProfile(mapProfile(remoteProfile));
     } catch (error) {
-      console.error('[Store] Failed to refresh profile', error);
+      console.error('[Store] Failed to load profile', error);
     }
-  }
+  }, [buildAuthHeaders, user]);
 
-  async function updateProfile(updates: Partial<UserProfile>) {
-    if (!firebaseUser) return;
+  const createProfile = useCallback(async (defaults?: Partial<UserProfile>) => {
     try {
-      const payload = {
-        ...updates,
-      };
-      const remoteProfile = await apiClient.withAuth<any>(firebaseUser, '/api/v1/profiles/me', 'PATCH', payload);
-      setProfile(mapProfile(remoteProfile));
+      const body = defaults && Object.keys(defaults).length > 0 ? defaults : undefined;
+      const result = await apiClient.request<any>('/api/v1/profiles/me', {
+        method: 'POST',
+        body,
+        headers: buildAuthHeaders(),
+      });
+      setProfile(mapProfile(result));
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 409) {
+        await fetchProfile();
+        return;
+      }
+
+      console.error('[Store] Failed to create profile', error);
+      throw error;
+    }
+  }, [buildAuthHeaders, fetchProfile]);
+
+  const syncSession = useCallback(async () => {
+    setLoading(true);
+    try {
+      const current = auth.currentUser;
+
+      if (current) {
+        const nextUser: BasicUser = {
+          id: current.uid,
+          email: current.email ?? undefined,
+        };
+
+        setUser((prev) => {
+          if (prev && prev.id === nextUser.id && prev.email === nextUser.email) {
+            return prev;
+          }
+          return nextUser;
+        });
+
+        await fetchProfile(nextUser);
+      } else {
+        setUser((prev) => (prev ? null : prev));
+        setProfile((prev) => (prev ? null : prev));
+      }
+    } catch (error) {
+      console.warn('[Store] Session lookup failed, clearing session', error);
+      setUser((prev) => (prev ? null : prev));
+      setProfile((prev) => (prev ? null : prev));
+    } finally {
+      setLoading(false);
+    }
+  }, [fetchProfile]);
+
+  const refreshProfile = useCallback(async () => {
+    await fetchProfile();
+  }, [fetchProfile]);
+
+  const updateProfile = useCallback(async (updates: Partial<UserProfile>) => {
+    if (!user) {
+      throw new Error('Cannot update profile while signed out');
+    }
+
+    try {
+      const payload = await apiClient.request<any>('/api/v1/profiles/me', {
+        method: 'PATCH',
+        body: updates,
+        headers: buildAuthHeaders(user),
+      });
+      setProfile(mapProfile(payload));
     } catch (error) {
       console.error('[Store] Failed to update profile', error);
       throw error;
     }
-  }
+  }, [buildAuthHeaders, user]);
 
-  async function signOut() {
+  const signOut = useCallback(async () => {
     try {
       await firebaseSignOut();
-    } finally {
-      setFirebaseUser(null);
-      setUser(null);
-      setProfile(null);
+    } catch (error) {
+      console.warn('[Store] Sign-out failed', error);
     }
-  }
 
-  const value: StoreValue = {
-    user,
-    firebaseUser,
-    profile,
-    loading,
-    isDemoMode,
-    refreshProfile,
-    updateProfile,
-    signOut,
-  };
+    setUser(null);
+    setProfile(null);
+  }, []);
+
+  const value: StoreValue = useMemo(
+    () => ({
+      user,
+      profile,
+      loading,
+      createProfile,
+      refreshProfile,
+      updateProfile,
+      signOut,
+      syncSession,
+    }),
+    [user, profile, loading, createProfile, refreshProfile, updateProfile, signOut, syncSession]
+  );
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
 }

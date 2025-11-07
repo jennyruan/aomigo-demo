@@ -2,34 +2,35 @@ import { useEffect, useState } from 'react';
 import { Brain, TrendingUp, Clock, Award } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
 import { usePetStats } from '../hooks/usePetStats';
-import { useStore } from '../hooks/useStore.tsx';
 import type { Topic, TeachingSession } from '../types';
 import { t, getCurrentLocale } from '../lib/lingo';
 import { apiClient } from '../lib/api/client';
 
 export function Summary() {
   const { profile } = usePetStats();
-  const { firebaseUser } = useStore();
   const [topics, setTopics] = useState<Topic[]>([]);
   const [sessions, setSessions] = useState<TeachingSession[]>([]);
   const [loading, setLoading] = useState(true);
   const locale = getCurrentLocale();
 
   useEffect(() => {
-    if (!profile || !firebaseUser) {
+    if (!profile) {
+      setLoading(false);
       return;
     }
+
     void loadData();
-  }, [profile, firebaseUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile]);
 
   async function loadData() {
-    if (!profile || !firebaseUser) return;
+    if (!profile) return;
 
     try {
       setLoading(true);
       const [fetchedTopics, fetchedSessions] = await Promise.all([
-        apiClient.withAuth<Topic[]>(firebaseUser, '/api/v1/topics?limit=50'),
-        apiClient.withAuth<TeachingSession[]>(firebaseUser, '/api/v1/sessions/teaching?limit=10'),
+        apiClient.request<Topic[]>('/api/v1/topics?limit=50'),
+        apiClient.request<TeachingSession[]>('/api/v1/sessions/teaching?limit=10'),
       ]);
 
       setTopics(fetchedTopics ?? []);
