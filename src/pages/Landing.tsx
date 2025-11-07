@@ -325,7 +325,7 @@ export function Landing() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FFD93D' }} data-version="colorful-blocks-v3">
-      <header className="sticky top-0 z-50" style={{ backgroundColor: '#FF1493', borderBottom: '4px solid black' }}>
+      <header className="sticky top-0 z-50" style={{ backgroundColor: '#00C851', borderBottom: '4px solid black' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
@@ -1232,7 +1232,7 @@ export function Landing() {
         </section>
       </main>
 
-      <footer className="py-10 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FF1493', borderTop: '4px solid black' }}>
+      <footer className="py-10 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#00C851', borderTop: '4px solid black' }}>
         <div className="max-w-7xl mx-auto text-center">
           <div className="text-3xl font-black mb-4" style={{ color: 'white' }}>AOMIGO</div>
           <p className="font-black mb-3 text-2xl" style={{ color: 'white' }}>
