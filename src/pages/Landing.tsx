@@ -948,7 +948,7 @@ export function Landing() {
                     <Users className="w-8 h-8" style={{ color: 'white' }} />
                   </div>
                   <h3 className="text-3xl font-black" style={{ color: 'black' }}>
-                    Slide Into AOMIGO DMs
+                    Slide Into DMs
                   </h3>
                 </div>
 
