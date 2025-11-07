@@ -315,7 +315,7 @@ export function Landing() {
   const LogoComponent = () => (
     <div className="flex flex-col items-center justify-center gap-1" style={{ transform: 'rotate(-5deg)' }}>
       <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#00C8FF', border: '4px solid black', transform: 'rotate(8deg)' }}>A</div>
-      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#FF1493', border: '4px solid black', transform: 'rotate(-5deg)' }}>O</div>
+      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#F26522', border: '4px solid black', transform: 'rotate(-5deg)' }}>O</div>
       <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#B4FF39', border: '4px solid black', transform: 'rotate(3deg)' }}>M</div>
       <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#FF9F40', border: '4px solid black', transform: 'rotate(-7deg)' }}>I</div>
       <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#B39DDB', border: '4px solid black', transform: 'rotate(4deg)' }}>G</div>
@@ -325,7 +325,7 @@ export function Landing() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FADF0B' }} data-version="colorful-blocks-v3">
-      <header className="sticky top-0 z-50" style={{ backgroundColor: '#FF5722', borderBottom: '4px solid black' }}>
+      <header className="sticky top-0 z-50" style={{ backgroundColor: '#F26523', borderBottom: '4px solid black' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
@@ -641,7 +641,7 @@ export function Landing() {
               <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black' }}>
                 Make our logo and win $1024!
               </h2>
-              <p className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#FF1493' }}>
+              <p className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#F26522' }}>
                 Turn A-O-M-I-G-O into our new logo!
               </p>
               <p className="text-2xl font-black mb-8" style={{ color: 'black' }}>
@@ -664,7 +664,7 @@ export function Landing() {
                   <button
                     onClick={() => setIsContestSubmitted(false)}
                     className="font-bold underline text-xl"
-                    style={{ color: '#FF1493' }}
+                    style={{ color: '#F26522' }}
                   >
                     Add another entry
                   </button>
@@ -885,7 +885,7 @@ export function Landing() {
                   <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.days}</div>
                   <div className="text-base font-black" style={{ color: 'black' }}>DAYS</div>
                 </div>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#FF1493', border: '4px solid black' }}>
+                <div className="p-6 rounded-xl" style={{ backgroundColor: '#F26522', border: '4px solid black' }}>
                   <div className="text-5xl font-black mb-2" style={{ color: 'white' }}>{timeLeft.hours}</div>
                   <div className="text-base font-black" style={{ color: 'white' }}>HOURS</div>
                 </div>
@@ -911,7 +911,7 @@ export function Landing() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="flex items-center gap-4 mb-8">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF1493', border: '4px solid black' }}>
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#F26522', border: '4px solid black' }}>
                     <Users className="w-8 h-8" style={{ color: 'white' }} />
                   </div>
                   <h3 className="text-3xl font-black" style={{ color: 'black' }}>
@@ -1099,7 +1099,7 @@ export function Landing() {
                   </div>
 
                   <div className="text-center pt-4 border-t-4 border-black">
-                    <p className="text-2xl font-black" style={{ color: '#FF1493' }}>
+                    <p className="text-2xl font-black" style={{ color: '#F26522' }}>
                       We Empower People
                     </p>
                   </div>
@@ -1151,14 +1151,14 @@ export function Landing() {
 
               <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="flex items-start gap-6 mb-6">
-                  <div className="w-24 h-24 rounded-full flex items-center justify-center flex-shrink-0 text-4xl font-black" style={{ backgroundColor: '#FF1493', border: '4px solid black', color: 'white' }}>
+                  <div className="w-24 h-24 rounded-full flex items-center justify-center flex-shrink-0 text-4xl font-black" style={{ backgroundColor: '#F26522', border: '4px solid black', color: 'white' }}>
                     J
                   </div>
                   <div>
                     <h3 className="text-4xl font-black mb-2" style={{ color: 'black' }}>
                       Jessi
                     </h3>
-                    <p className="text-xl font-bold" style={{ color: '#FF1493' }}>
+                    <p className="text-xl font-bold" style={{ color: '#F26522' }}>
                       Co-Founder
                     </p>
                   </div>
@@ -1178,14 +1178,14 @@ export function Landing() {
             </div>
 
             <div className="mt-10 bg-white rounded-2xl p-10 text-center" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-              <Heart className="w-16 h-16 mx-auto mb-6" style={{ color: '#FF1493' }} />
+              <Heart className="w-16 h-16 mx-auto mb-6" style={{ color: '#F26522' }} />
               <h3 className="text-4xl font-black mb-4" style={{ color: 'black' }}>
                 Join Our Journey
               </h3>
               <p className="text-2xl font-semibold leading-relaxed mb-6" style={{ color: 'black' }}>
                 We're building AOMIGO with love, care, and a deep commitment to empowering people everywhere. Whether you're a user, investor, or partner, you're part of this movement.
               </p>
-              <p className="text-3xl font-black" style={{ color: '#FF1493' }}>
+              <p className="text-3xl font-black" style={{ color: '#F26522' }}>
                 We Empower People
               </p>
             </div>
@@ -1193,7 +1193,7 @@ export function Landing() {
         </section>
       </main>
 
-      <footer className="py-10 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FF5722', borderTop: '4px solid black' }}>
+      <footer className="py-10 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#F26523', borderTop: '4px solid black' }}>
         <div className="max-w-7xl mx-auto text-center">
           <div className="text-3xl font-black mb-4" style={{ color: 'white' }}>AOMIGO</div>
           <p className="font-black mb-3 text-2xl" style={{ color: 'white' }}>
