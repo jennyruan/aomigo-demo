@@ -338,23 +338,23 @@ export function Landing() {
               <button
                 onClick={() => scrollToSection('events')}
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
-                style={{ color: activeSection === 'events' ? 'black' : 'white' }}
+                style={{ color: activeSection === 'events' ? 'black' : 'white', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}
               >
                 DOPE EVENTS
               </button>
-              <span className="text-white font-bold">|</span>
+              <span className="text-white font-bold" style={{ textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>|</span>
               <button
                 onClick={() => scrollToSection('collab')}
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
-                style={{ color: activeSection === 'collab' ? 'black' : 'white' }}
+                style={{ color: activeSection === 'collab' ? 'black' : 'white', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}
               >
                 VIBE CHECK
               </button>
-              <span className="text-white font-bold">|</span>
+              <span className="text-white font-bold" style={{ textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>|</span>
               <button
                 onClick={() => scrollToSection('story')}
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
-                style={{ color: activeSection === 'story' ? 'black' : 'white' }}
+                style={{ color: activeSection === 'story' ? 'black' : 'white', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}
               >
                 AOMIGO STORY
               </button>
@@ -640,7 +640,7 @@ export function Landing() {
         <section id="events" className="py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FADF0B' }}>
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black', textShadow: '4px 4px 0px rgba(0,0,0,0.3)' }}>
+              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>
                 DOPE EVENTS
               </h2>
               <h3 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: 'black' }}>
@@ -936,7 +936,7 @@ export function Landing() {
 
         <section id="collab" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#00C8FF' }}>
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-5xl sm:text-6xl font-black text-center mb-16" style={{ color: 'black', textShadow: '4px 4px 0px rgba(0,0,0,0.3)' }}>
+            <h2 className="text-5xl sm:text-6xl font-black text-center mb-16" style={{ color: 'black', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>
               VIBE CHECK
             </h2>
 
@@ -1113,7 +1113,7 @@ export function Landing() {
                         </>
                       ) : (
                         <>
-                          Submit Inquiry
+                          Submit
                           <ChevronRight className="w-6 h-6" />
                         </>
                       )}
@@ -1181,7 +1181,7 @@ export function Landing() {
         <section id="story" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FF8787' }}>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-14">
-              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black', textShadow: '4px 4px 0px rgba(0,0,0,0.3)' }}>
+              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>
                 AOMIGO STORY
               </h2>
               <p className="text-2xl font-black" style={{ color: 'black' }}>
