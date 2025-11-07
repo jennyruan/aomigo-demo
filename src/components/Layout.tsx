@@ -53,7 +53,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen flex flex-col bg-yellow-300">
-      <header className="bg-orange-400 cartoon-border sticky top-0 z-50 mb-4 mx-2 sm:mx-4 mt-4 rounded-2xl">
+      <header className="bg-orange-400 cartoon-border md:sticky md:top-0 z-50 mb-4 mx-2 sm:mx-4 mt-4 rounded-2xl">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex w-full flex-wrap md:flex-nowrap items-center gap-3 md:h-20 py-3 md:py-0">
             <Link
