@@ -337,7 +337,7 @@ export function Landing() {
                 src="/ios-appstore-1024x1024.png"
                 alt="AOMIGO Logo"
                 className="h-12 w-12 rounded-lg"
-                style={{ border: '2px solid white' }}
+                style={{ border: '2px solid white', backgroundColor: '#FBDF09' }}
               />
               <div className="text-2xl font-black" style={{ color: 'white' }}>AOMIGO</div>
             </div>
@@ -1272,7 +1272,7 @@ export function Landing() {
               src="/ios-appstore-1024x1024.png"
               alt="AOMIGO Logo"
               className="h-16 w-16 rounded-lg"
-              style={{ border: '3px solid white' }}
+              style={{ border: '3px solid white', backgroundColor: '#FBDF09' }}
             />
             <div className="text-3xl font-black" style={{ color: 'white' }}>AOMIGO</div>
           </div>
