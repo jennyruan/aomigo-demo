@@ -364,7 +364,7 @@ export function Landing() {
                 className="px-4 py-2 font-bold text-base bg-white rounded-lg transition-all hover:bg-opacity-90"
                 style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', color: 'black', backgroundColor: '#00C8FF' }}
               >
-                Sign In/Up
+                SIGN IN/UP
               </button>
             </nav>
 
@@ -409,7 +409,7 @@ export function Landing() {
                   className="px-4 py-3 font-bold text-lg text-left bg-white rounded-lg"
                   style={{ border: '3px solid black' }}
                 >
-                  Sign In/Up
+                  SIGN IN/UP
                 </button>
               </div>
             </nav>
@@ -423,7 +423,7 @@ export function Landing() {
             <div className="p-6 sm:p-8">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-3xl font-black" style={{ color: 'black' }}>
-                  {authMode === 'signin' ? 'Sign In' : 'Sign Up'}
+                  {authMode === 'signin' ? 'SIGN IN' : 'SIGN UP'}
                 </h2>
                 <button
                   onClick={() => setShowAuthModal(false)}
@@ -442,7 +442,7 @@ export function Landing() {
                   }`}
                   style={{ border: '3px solid black' }}
                 >
-                  Sign In
+                  SIGN IN
                 </button>
                 <button
                   onClick={() => setAuthMode('signup')}
@@ -451,7 +451,7 @@ export function Landing() {
                   }`}
                   style={{ border: '3px solid black' }}
                 >
-                  Sign Up
+                  SIGN UP
                 </button>
               </div>
 
@@ -502,7 +502,7 @@ export function Landing() {
                           className="px-5 py-3 font-black rounded-lg text-white text-base"
                           style={{ backgroundColor: '#FF9F40', border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)' }}
                         >
-                          Randomize
+                          RANDOMIZE
                         </button>
                       </div>
                       <div className="grid grid-cols-3 gap-2">
@@ -621,11 +621,11 @@ export function Landing() {
                   {isAuthSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                      {authMode === 'signin' ? 'Signing in...' : 'Creating account...'}
+                      {authMode === 'signin' ? 'SIGNING IN...' : 'CREATING ACCOUNT...'}
                     </>
                   ) : (
                     <>
-                      {authMode === 'signin' ? 'Sign In' : 'Create Account'}
+                      {authMode === 'signin' ? 'SIGN IN' : 'CREATE ACCOUNT'}
                       <ChevronRight className="w-6 h-6" />
                     </>
                   )}
@@ -671,7 +671,7 @@ export function Landing() {
                     className="font-bold underline text-xl"
                     style={{ color: '#F26522' }}
                   >
-                    Add another entry
+                    ADD ANOTHER ENTRY
                   </button>
                 </div>
               ) : (
@@ -778,11 +778,11 @@ export function Landing() {
                       {isContestSubmitting ? (
                         <>
                           <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-white"></div>
-                          Joining...
+                          JOINING...
                         </>
                       ) : (
                         <>
-                          Sign Up & Join Contest
+                          SIGN UP & JOIN CONTEST
                           <ChevronRight className="w-7 h-7" />
                         </>
                       )}
@@ -798,7 +798,7 @@ export function Landing() {
                           boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                         }}
                       >
-                        Individual User Demo
+                        INDIVIDUAL USER DEMO
                       </button>
                       <button
                         type="button"
@@ -809,7 +809,7 @@ export function Landing() {
                           boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                         }}
                       >
-                        Group User Demo
+                        GROUP USER DEMO
                       </button>
                     </div>
                   </div>
@@ -967,7 +967,7 @@ export function Landing() {
                       className="font-bold underline text-xl"
                       style={{ color: '#B39DDB' }}
                     >
-                      Submit another inquiry
+                      SUBMIT ANOTHER INQUIRY
                     </button>
                   </div>
                 ) : (
@@ -1109,11 +1109,11 @@ export function Landing() {
                       {isInvestorSubmitting ? (
                         <>
                           <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-white"></div>
-                          Submitting...
+                          SUBMITTING...
                         </>
                       ) : (
                         <>
-                          Submit
+                          SUBMIT
                           <ChevronRight className="w-6 h-6" />
                         </>
                       )}
