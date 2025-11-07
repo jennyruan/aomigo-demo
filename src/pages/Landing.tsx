@@ -1210,12 +1210,20 @@ export function Landing() {
 
                         const voices = window.speechSynthesis.getVoices();
                         const maleVoice = voices.find(voice =>
-                          voice.name.includes('Male') ||
+                          voice.lang.startsWith('en') &&
+                          !voice.name.toLowerCase().includes('female') &&
+                          !voice.name.toLowerCase().includes('woman') &&
+                          (voice.name.includes('Male') ||
                           voice.name.includes('Daniel') ||
                           voice.name.includes('Alex') ||
                           voice.name.includes('Thomas') ||
                           voice.name.includes('Fred') ||
-                          (voice.lang.startsWith('en') && !voice.name.includes('Female'))
+                          voice.name.includes('Google UK English Male') ||
+                          voice.name.includes('Microsoft David') ||
+                          voice.name.includes('Microsoft Mark'))
+                        ) || voices.find(voice =>
+                          voice.lang.startsWith('en') &&
+                          voice.gender === 'male'
                         );
                         if (maleVoice) speech.voice = maleVoice;
 
