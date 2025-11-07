@@ -1,4 +1,4 @@
-import { useStore } from './useStore';
+import { useStore } from './useStore.tsx';
 import type { PetMood } from '../types';
 
 export function usePetStats() {

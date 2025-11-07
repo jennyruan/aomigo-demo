@@ -180,13 +180,11 @@ export function TutorialModal({ isOpen, onClose }: TutorialModalProps) {
   }
 
   function handleComplete() {
-    localStorage.setItem('tutorialCompleted', 'true');
     onClose();
     setCurrentPage(0);
   }
 
   function handleSkip() {
-    localStorage.setItem('tutorialCompleted', 'true');
     onClose();
     setCurrentPage(0);
   }

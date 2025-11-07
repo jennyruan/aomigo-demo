@@ -37,7 +37,6 @@ export function VoiceRecorder({ onTranscript }: VoiceRecorderProps) {
       };
 
       recognitionInstance.onerror = (event: any) => {
-        console.error('Speech recognition error:', event.error);
         if (event.error === 'not-allowed') {
           alert('Please allow microphone access to use voice input.');
         }
