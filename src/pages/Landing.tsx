@@ -324,7 +324,7 @@ export function Landing() {
   );
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#FFD93D' }} data-version="colorful-blocks-v3">
+    <div className="min-h-screen" style={{ backgroundColor: '#f2a842' }} data-version="colorful-blocks-v3">
       <header className="sticky top-0 z-50" style={{ backgroundColor: '#FF5722', borderBottom: '4px solid black' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -466,7 +466,7 @@ export function Landing() {
                         onChange={(e) => setAuthFormData({ ...authFormData, name: e.target.value })}
                         placeholder="Your name"
                         className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                        style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                         required
                       />
                     </div>
@@ -481,7 +481,7 @@ export function Landing() {
                         onChange={(e) => setAuthFormData({ ...authFormData, organizationName: e.target.value })}
                         placeholder="Your organization"
                         className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                        style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                       />
                     </div>
 
@@ -535,7 +535,7 @@ export function Landing() {
                     onChange={(e) => setAuthFormData({ ...authFormData, email: e.target.value })}
                     placeholder="your@email.com"
                     className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4"
-                    style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                    style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                     required
                   />
                 </div>
@@ -551,7 +551,7 @@ export function Landing() {
                       onChange={(e) => setAuthFormData({ ...authFormData, password: e.target.value })}
                       placeholder="Enter password"
                       className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4 pr-12"
-                      style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                      style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                       required
                     />
                     <button
@@ -576,7 +576,7 @@ export function Landing() {
                         onChange={(e) => setAuthFormData({ ...authFormData, confirmPassword: e.target.value })}
                         placeholder="Confirm password"
                         className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4 pr-12"
-                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                        style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                         required
                       />
                       <button
@@ -635,7 +635,7 @@ export function Landing() {
       )}
 
       <main>
-        <section id="events" className="py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FFD93D' }}>
+        <section id="events" className="py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#f2a842' }}>
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10">
               <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black' }}>
@@ -681,7 +681,7 @@ export function Landing() {
                       onChange={(e) => setContestFormData({ ...contestFormData, name: e.target.value })}
                       placeholder="Your name"
                       className="w-full px-5 py-4 rounded-lg text-xl font-semibold focus:outline-none focus:ring-4"
-                      style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                      style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                       required
                     />
                   </div>
@@ -696,7 +696,7 @@ export function Landing() {
                       onChange={(e) => setContestFormData({ ...contestFormData, email: e.target.value })}
                       placeholder="your@email.com"
                       className="w-full px-5 py-4 rounded-lg text-xl font-semibold focus:outline-none focus:ring-4"
-                      style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                      style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                       required
                     />
                   </div>
@@ -711,7 +711,7 @@ export function Landing() {
                       onChange={(e) => setContestFormData({ ...contestFormData, phoneNumber: e.target.value })}
                       placeholder="+1 (555) 123-4567"
                       className="w-full px-5 py-4 rounded-lg text-xl font-semibold focus:outline-none focus:ring-4"
-                      style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                      style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                     />
                   </div>
 
@@ -951,7 +951,7 @@ export function Landing() {
                           onChange={(e) => setInvestorFormData({ ...investorFormData, firstName: e.target.value })}
                           placeholder="John"
                           className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                          style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                          style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                           required
                         />
                       </div>
@@ -966,7 +966,7 @@ export function Landing() {
                           onChange={(e) => setInvestorFormData({ ...investorFormData, lastName: e.target.value })}
                           placeholder="Doe"
                           className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                          style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                          style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                         />
                       </div>
                     </div>
@@ -981,7 +981,7 @@ export function Landing() {
                         onChange={(e) => setInvestorFormData({ ...investorFormData, email: e.target.value })}
                         placeholder="investor@example.com"
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                        style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                         required
                       />
                     </div>
@@ -996,7 +996,7 @@ export function Landing() {
                         onChange={(e) => setInvestorFormData({ ...investorFormData, phoneNumber: e.target.value })}
                         placeholder="+1 (555) 123-4567"
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                        style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                       />
                     </div>
 
@@ -1010,7 +1010,7 @@ export function Landing() {
                         onChange={(e) => setInvestorFormData({ ...investorFormData, linkedinUrl: e.target.value })}
                         placeholder="linkedin.com/in/yourprofile"
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                        style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                       />
                     </div>
 
@@ -1024,7 +1024,7 @@ export function Landing() {
                         placeholder="Tell us about your interest..."
                         rows={4}
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4 resize-none"
-                        style={{ border: '4px solid black', backgroundColor: '#FFD93D' }}
+                        style={{ border: '4px solid black', backgroundColor: '#f2a842' }}
                       />
                     </div>
 
@@ -1065,7 +1065,7 @@ export function Landing() {
                 </div>
 
                 <div className="space-y-6">
-                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FFD93D', border: '4px solid black' }}>
+                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#f2a842', border: '4px solid black' }}>
                     <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: 'black' }}>
                       <Users className="w-7 h-7" />
                       Community & Companion
@@ -1076,7 +1076,7 @@ export function Landing() {
                     </p>
                   </div>
 
-                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FFD93D', border: '4px solid black' }}>
+                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#f2a842', border: '4px solid black' }}>
                     <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: 'black' }}>
                       <Shield className="w-7 h-7" />
                       Connecting People
@@ -1087,7 +1087,7 @@ export function Landing() {
                     </p>
                   </div>
 
-                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FFD93D', border: '4px solid black' }}>
+                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#f2a842', border: '4px solid black' }}>
                     <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: 'black' }}>
                       <Sparkles className="w-7 h-7" />
                       Our Vision
