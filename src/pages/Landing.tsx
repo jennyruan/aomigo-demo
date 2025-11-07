@@ -346,7 +346,7 @@ export function Landing() {
               <button
                 onClick={() => scrollToSection('events')}
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
-                style={{ color: activeSection === 'events' ? 'black' : 'white', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}
+                style={{ color: activeSection === 'events' ? 'black' : 'white', textShadow: '2px 4px 4px rgba(255,255,255,0.5)', backgroundColor: activeSection === 'events' ? '#B4FF39' : 'transparent' }}
               >
                 DOPE EVENTS
               </button>
@@ -354,7 +354,7 @@ export function Landing() {
               <button
                 onClick={() => scrollToSection('collab')}
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
-                style={{ color: activeSection === 'collab' ? 'black' : 'white', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}
+                style={{ color: activeSection === 'collab' ? 'black' : 'white', textShadow: '2px 4px 4px rgba(255,255,255,0.5)', backgroundColor: activeSection === 'collab' ? '#B4FF39' : 'transparent' }}
               >
                 VIBE CHECK
               </button>
@@ -362,7 +362,7 @@ export function Landing() {
               <button
                 onClick={() => scrollToSection('story')}
                 className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
-                style={{ color: activeSection === 'story' ? 'black' : 'white', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}
+                style={{ color: activeSection === 'story' ? 'black' : 'white', textShadow: '2px 4px 4px rgba(255,255,255,0.5)', backgroundColor: activeSection === 'story' ? '#B4FF39' : 'transparent' }}
               >
                 AOMIGO STORY
               </button>
@@ -390,22 +390,22 @@ export function Landing() {
               <div className="flex flex-col gap-2">
                 <button
                   onClick={() => scrollToSection('events')}
-                  className="px-4 py-3 font-bold text-lg text-left bg-white rounded-lg"
-                  style={{ border: '3px solid black' }}
+                  className="px-4 py-3 font-bold text-lg text-left rounded-lg"
+                  style={{ border: '3px solid black', backgroundColor: activeSection === 'events' ? '#B4FF39' : 'white', color: 'black' }}
                 >
                   DOPE EVENTS
                 </button>
                 <button
                   onClick={() => scrollToSection('collab')}
-                  className="px-4 py-3 font-bold text-lg text-left bg-white rounded-lg"
-                  style={{ border: '3px solid black' }}
+                  className="px-4 py-3 font-bold text-lg text-left rounded-lg"
+                  style={{ border: '3px solid black', backgroundColor: activeSection === 'collab' ? '#B4FF39' : 'white', color: 'black' }}
                 >
                   VIBE CHECK
                 </button>
                 <button
                   onClick={() => scrollToSection('story')}
-                  className="px-4 py-3 font-bold text-lg text-left bg-white rounded-lg"
-                  style={{ border: '3px solid black' }}
+                  className="px-4 py-3 font-bold text-lg text-left rounded-lg"
+                  style={{ border: '3px solid black', backgroundColor: activeSection === 'story' ? '#B4FF39' : 'white', color: 'black' }}
                 >
                   AOMIGO STORY
                 </button>
