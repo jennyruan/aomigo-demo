@@ -640,8 +640,11 @@ export function Landing() {
         <section id="events" className="py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FADF0B' }}>
           <div className="max-w-5xl mx-auto">
             <div className="bg-white rounded-2xl p-8 text-center mb-10" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
+              <h3 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: 'black' }}>
+                Please help us design AOMIGO's logo!
+              </h3>
               <h3 className="text-2xl sm:text-3xl font-black mb-6" style={{ color: 'black' }}>
-                Please help us design AOMIGO's logo! Submit your design by...
+                Submit your design in...
               </h3>
               <div className="grid grid-cols-4 gap-4">
                 <div className="p-6 rounded-xl" style={{ backgroundColor: '#00C8FF', border: '4px solid black' }}>
@@ -808,7 +811,7 @@ export function Landing() {
                   Design Rules
                 </h4>
                 <p className="font-semibold text-lg" style={{ color: 'black' }}>
-                  Use shapes from A-O-M-I-G-O letters only
+                  Combine shapes from A-O-M-I-G-O letters creatively!
                 </p>
               </div>
               <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#F26523', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
@@ -817,7 +820,7 @@ export function Landing() {
                   $1024 Prize
                 </h4>
                 <p className="font-semibold text-lg" style={{ color: 'black' }}>
-                  Cash or your choice!
+                  Winner announced 12/14! Other awards too!
                 </p>
               </div>
               <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#B4FF39', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
@@ -826,7 +829,7 @@ export function Landing() {
                   Easy Upload
                 </h4>
                 <p className="font-semibold text-lg" style={{ color: 'black' }}>
-                  Photo, drawing, or digital
+                  Sign up and submit in your portal!
                 </p>
               </div>
             </div>
