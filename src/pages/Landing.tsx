@@ -313,22 +313,27 @@ export function Landing() {
   }
 
   const LogoComponent = () => (
-    <div className="flex items-center justify-center" style={{ position: 'relative' }}>
-      <div className="flex items-center gap-1" style={{ fontSize: '1.5rem', fontWeight: '900', color: '#2C3E50', letterSpacing: '0.05em' }}>
-        <span>A</span>
-        <span style={{ fontSize: '2rem', color: '#FF9A56', transform: 'translateY(-2px)' }}>?</span>
-        <span>MIGO</span>
-      </div>
+    <div className="flex flex-col items-center justify-center" style={{ position: 'relative' }}>
+      <svg width="120" height="140" viewBox="0 0 120 140" style={{ display: 'block' }}>
+        <text x="10" y="30" style={{ fontSize: '32px', fontWeight: '900', fill: '#2C3E50', fontFamily: 'Inter' }}>A</text>
+        <text x="40" y="50" style={{ fontSize: '32px', fontWeight: '900', fill: '#2C3E50', fontFamily: 'Inter' }}>O</text>
+        <text x="70" y="70" style={{ fontSize: '32px', fontWeight: '900', fill: '#2C3E50', fontFamily: 'Inter' }}>M</text>
+        <text x="50" y="90" style={{ fontSize: '32px', fontWeight: '900', fill: '#2C3E50', fontFamily: 'Inter' }}>I</text>
+        <text x="30" y="110" style={{ fontSize: '32px', fontWeight: '900', fill: '#2C3E50', fontFamily: 'Inter' }}>G</text>
+        <text x="60" y="130" style={{ fontSize: '32px', fontWeight: '900', fill: '#2C3E50', fontFamily: 'Inter' }}>O</text>
+        <ellipse cx="55" cy="130" rx="8" ry="8" fill="#FF6B35" />
+      </svg>
+      <div className="text-xl font-black mt-2" style={{ color: '#2C3E50' }}>AOMIGO</div>
     </div>
   );
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#FFECB3' }}>
-      <header className="sticky top-0 z-50" style={{ backgroundColor: '#FF9A56', borderBottom: '4px solid black' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#FED766' }}>
+      <header className="sticky top-0 z-50" style={{ backgroundColor: '#FF6B35', borderBottom: '4px solid black' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <LogoComponent />
+              <div className="text-2xl font-black" style={{ color: '#2C3E50' }}>AOMIGO</div>
             </div>
 
             <nav className="hidden lg:flex items-center gap-2">
@@ -480,14 +485,14 @@ export function Landing() {
                         onChange={(e) => setAuthFormData({ ...authFormData, name: e.target.value })}
                         placeholder="Your name"
                         className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                         required
                       />
                     </div>
 
                     <div className="text-left">
                       <label className="block font-black mb-2 text-lg" style={{ color: '#2C3E50' }}>
-                        Organization Name (Optional)
+                        Organization (Optional)
                       </label>
                       <input
                         type="text"
@@ -495,7 +500,7 @@ export function Landing() {
                         onChange={(e) => setAuthFormData({ ...authFormData, organizationName: e.target.value })}
                         placeholder="Your organization"
                         className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                       />
                     </div>
 
@@ -512,7 +517,7 @@ export function Landing() {
                           type="button"
                           onClick={randomizeAvatar}
                           className="px-5 py-3 font-black rounded-lg text-white text-base"
-                          style={{ backgroundColor: '#B39DDB', border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)' }}
+                          style={{ backgroundColor: '#FF6B35', border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)' }}
                         >
                           Randomize
                         </button>
@@ -549,7 +554,7 @@ export function Landing() {
                     onChange={(e) => setAuthFormData({ ...authFormData, email: e.target.value })}
                     placeholder="your@email.com"
                     className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4"
-                    style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                    style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                     required
                   />
                 </div>
@@ -565,7 +570,7 @@ export function Landing() {
                       onChange={(e) => setAuthFormData({ ...authFormData, password: e.target.value })}
                       placeholder="Enter password"
                       className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4 pr-12"
-                      style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                      style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                       required
                     />
                     <button
@@ -590,7 +595,7 @@ export function Landing() {
                         onChange={(e) => setAuthFormData({ ...authFormData, confirmPassword: e.target.value })}
                         placeholder="Confirm password"
                         className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4 pr-12"
-                        style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                         required
                       />
                       <button
@@ -625,7 +630,7 @@ export function Landing() {
                   disabled={isAuthSubmitting}
                   className="w-full text-white px-8 py-4 rounded-xl font-black text-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:translate-y-[-2px]"
                   style={{
-                    backgroundColor: '#FF9A56',
+                    backgroundColor: '#FF6B35',
                     border: '4px solid black',
                     boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                   }}
@@ -649,17 +654,13 @@ export function Landing() {
       )}
 
       <main>
-        <section id="events" className="py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FFECB3' }}>
+        <section id="events" className="py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FED766' }}>
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10">
-              <div className="inline-block bg-white px-8 py-4 rounded-full font-black text-2xl mb-8" style={{ border: '4px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-                AOMIGO Logo Lab - Join Now!
-              </div>
-
               <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: '#2C3E50' }}>
                 Make our logo and win $1024!
               </h2>
-              <p className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#FF9A56' }}>
+              <p className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#FF6B35' }}>
                 Turn A-O-M-I-G-O into our new logo!
               </p>
               <p className="text-2xl font-black mb-8" style={{ color: '#2C3E50' }}>
@@ -682,7 +683,7 @@ export function Landing() {
                   <button
                     onClick={() => setIsContestSubmitted(false)}
                     className="font-bold underline text-xl"
-                    style={{ color: '#FF9A56' }}
+                    style={{ color: '#FF6B35' }}
                   >
                     Add another entry
                   </button>
@@ -699,7 +700,7 @@ export function Landing() {
                       onChange={(e) => setContestFormData({ ...contestFormData, name: e.target.value })}
                       placeholder="Your name"
                       className="w-full px-5 py-4 rounded-lg text-xl font-semibold focus:outline-none focus:ring-4"
-                      style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                      style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                       required
                     />
                   </div>
@@ -714,7 +715,7 @@ export function Landing() {
                       onChange={(e) => setContestFormData({ ...contestFormData, email: e.target.value })}
                       placeholder="your@email.com"
                       className="w-full px-5 py-4 rounded-lg text-xl font-semibold focus:outline-none focus:ring-4"
-                      style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                      style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                       required
                     />
                   </div>
@@ -729,7 +730,7 @@ export function Landing() {
                       onChange={(e) => setContestFormData({ ...contestFormData, phoneNumber: e.target.value })}
                       placeholder="+1 (555) 123-4567"
                       className="w-full px-5 py-4 rounded-lg text-xl font-semibold focus:outline-none focus:ring-4"
-                      style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                      style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                     />
                   </div>
 
@@ -782,7 +783,7 @@ export function Landing() {
                     disabled={isContestSubmitting}
                     className="w-full text-white px-8 py-5 rounded-xl font-black text-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 hover:translate-y-[-2px]"
                     style={{
-                      backgroundColor: '#FF9A56',
+                      backgroundColor: '#FF6B35',
                       border: '4px solid black',
                       boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                     }}
@@ -828,15 +829,9 @@ export function Landing() {
                   $1024 Prize
                 </h4>
                 <p className="font-semibold text-lg" style={{ color: '#2C3E50' }}>
-                  Cash or any wish!
+                  Cash or your choice!
                 </p>
               </div>
-            </div>
-
-            <div className="bg-white rounded-2xl p-8 mb-10" style={{ border: '5px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-              <p className="text-2xl sm:text-3xl font-black text-center" style={{ color: '#2C3E50' }}>
-                Grand Prize: $1024 cash OR any wish AOMIGO will grant up to $1024!
-              </p>
             </div>
 
             <div className="bg-white rounded-2xl overflow-hidden mb-8" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
@@ -905,7 +900,7 @@ export function Landing() {
                 Contest Ends In:
               </h3>
               <div className="grid grid-cols-4 gap-4">
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#FF9A56', border: '4px solid black' }}>
+                <div className="p-6 rounded-xl" style={{ backgroundColor: '#FF6B35', border: '4px solid black' }}>
                   <div className="text-5xl font-black text-white mb-2">{timeLeft.days}</div>
                   <div className="text-base font-black" style={{ color: '#2C3E50' }}>DAYS</div>
                 </div>
@@ -975,7 +970,7 @@ export function Landing() {
                           onChange={(e) => setInvestorFormData({ ...investorFormData, firstName: e.target.value })}
                           placeholder="John"
                           className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                          style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                          style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                           required
                         />
                       </div>
@@ -990,7 +985,7 @@ export function Landing() {
                           onChange={(e) => setInvestorFormData({ ...investorFormData, lastName: e.target.value })}
                           placeholder="Doe"
                           className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                          style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                          style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                         />
                       </div>
                     </div>
@@ -1005,7 +1000,7 @@ export function Landing() {
                         onChange={(e) => setInvestorFormData({ ...investorFormData, email: e.target.value })}
                         placeholder="investor@example.com"
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                         required
                       />
                     </div>
@@ -1020,7 +1015,7 @@ export function Landing() {
                         onChange={(e) => setInvestorFormData({ ...investorFormData, phoneNumber: e.target.value })}
                         placeholder="+1 (555) 123-4567"
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                       />
                     </div>
 
@@ -1034,7 +1029,7 @@ export function Landing() {
                         onChange={(e) => setInvestorFormData({ ...investorFormData, linkedinUrl: e.target.value })}
                         placeholder="linkedin.com/in/yourprofile"
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
-                        style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                       />
                     </div>
 
@@ -1048,7 +1043,7 @@ export function Landing() {
                         placeholder="Tell us about your interest..."
                         rows={4}
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4 resize-none"
-                        style={{ border: '4px solid black', backgroundColor: '#FFECB3' }}
+                        style={{ border: '4px solid black', backgroundColor: '#FED766' }}
                       />
                     </div>
 
@@ -1080,7 +1075,7 @@ export function Landing() {
 
               <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="flex items-center gap-4 mb-8">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF9A56', border: '4px solid black' }}>
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FF6B35', border: '4px solid black' }}>
                     <Sparkles className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-3xl font-black" style={{ color: '#2C3E50' }}>
@@ -1089,7 +1084,7 @@ export function Landing() {
                 </div>
 
                 <div className="space-y-6">
-                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FFECB3', border: '4px solid black' }}>
+                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FED766', border: '4px solid black' }}>
                     <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: '#2C3E50' }}>
                       <Users className="w-7 h-7" />
                       Community & Companion
@@ -1100,7 +1095,7 @@ export function Landing() {
                     </p>
                   </div>
 
-                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FFECB3', border: '4px solid black' }}>
+                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FED766', border: '4px solid black' }}>
                     <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: '#2C3E50' }}>
                       <Shield className="w-7 h-7" />
                       Connecting People
@@ -1111,7 +1106,7 @@ export function Landing() {
                     </p>
                   </div>
 
-                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FFECB3', border: '4px solid black' }}>
+                  <div className="p-6 rounded-xl" style={{ backgroundColor: '#FED766', border: '4px solid black' }}>
                     <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: '#2C3E50' }}>
                       <Sparkles className="w-7 h-7" />
                       Our Vision
@@ -1123,8 +1118,8 @@ export function Landing() {
                   </div>
 
                   <div className="text-center pt-4 border-t-4 border-black">
-                    <p className="text-2xl font-black" style={{ color: '#FF9A56' }}>
-                      Together We Got This
+                    <p className="text-2xl font-black" style={{ color: '#FF6B35' }}>
+                      We Empower People
                     </p>
                   </div>
                 </div>
@@ -1133,284 +1128,125 @@ export function Landing() {
           </div>
         </section>
 
-        <section id="demo" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FFECB3' }}>
+        <section id="demo" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FED766' }}>
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-14">
-              <div className="inline-block bg-white px-10 py-5 rounded-full font-black text-3xl mb-8" style={{ border: '4px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-                Try AOMIGO Demo
-              </div>
               <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: '#2C3E50' }}>
                 Experience AOMIGO Now
               </h2>
-              <p className="text-2xl font-black" style={{ color: '#FF9A56' }}>
+              <p className="text-2xl font-black mb-10" style={{ color: '#FF6B35' }}>
                 See how your digital companion connects you with others!
               </p>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14 max-w-5xl mx-auto">
               <button
-                onClick={() => toast.info('Individual demo coming soon!')}
-                className="bg-white p-10 rounded-2xl font-black text-2xl transition-all hover:translate-y-[-4px] text-center"
+                onClick={() => toast.info('Demo coming soon!')}
+                className="bg-white px-16 py-6 rounded-full font-black text-3xl transition-all hover:translate-y-[-4px] inline-block"
                 style={{
                   border: '6px solid black',
                   boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                   color: '#2C3E50',
                 }}
               >
-                <div className="text-6xl mb-5">+</div>
-                <div className="mb-3">Try Individual Demo</div>
-                <p className="text-xl font-semibold" style={{ color: '#2C3E50' }}>
-                  Connect with community friends
-                </p>
+                Try AOMIGO Demo
               </button>
-
-              <button
-                onClick={() => toast.info('Enterprise demo coming soon!')}
-                className="bg-white p-10 rounded-2xl font-black text-2xl transition-all hover:translate-y-[-4px] text-center"
-                style={{
-                  border: '6px solid black',
-                  boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
-                  color: '#2C3E50',
-                }}
-              >
-                <div className="text-6xl mb-5">#</div>
-                <div className="mb-3">Try Enterprise Demo</div>
-                <p className="text-xl font-semibold" style={{ color: '#2C3E50' }}>
-                  Organization management system
-                </p>
-              </button>
-            </div>
-
-            <div className="bg-white rounded-2xl p-10 sm:p-14 mb-14" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
-              <h3 className="text-4xl sm:text-5xl font-black mb-10 text-center" style={{ color: '#2C3E50' }}>
-                Enterprise Features
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="p-8 rounded-xl" style={{ backgroundColor: '#B3D4FF', border: '4px solid black' }}>
-                  <div className="text-5xl mb-4">*</div>
-                  <h4 className="font-black text-2xl mb-3" style={{ color: '#2C3E50' }}>
-                    Custom Branded Companions
-                  </h4>
-                  <p className="font-semibold text-xl leading-relaxed" style={{ color: '#2C3E50' }}>
-                    Digital companions customized for your organization
-                  </p>
-                </div>
-
-                <div className="p-8 rounded-xl" style={{ backgroundColor: '#FFB3D9', border: '4px solid black' }}>
-                  <div className="text-5xl mb-4">&</div>
-                  <h4 className="font-black text-2xl mb-3" style={{ color: '#2C3E50' }}>
-                    CRM Integration
-                  </h4>
-                  <p className="font-semibold text-xl leading-relaxed" style={{ color: '#2C3E50' }}>
-                    Seamless integration for educational institutions
-                  </p>
-                </div>
-
-                <div className="p-8 rounded-xl" style={{ backgroundColor: '#A8E6CF', border: '4px solid black' }}>
-                  <div className="text-5xl mb-4">@</div>
-                  <h4 className="font-black text-2xl mb-3" style={{ color: '#2C3E50' }}>
-                    Security & Safety
-                  </h4>
-                  <p className="font-semibold text-xl leading-relaxed" style={{ color: '#2C3E50' }}>
-                    Advanced security and community safety systems
-                  </p>
-                </div>
-
-                <div className="p-8 rounded-xl" style={{ backgroundColor: '#B39DDB', border: '4px solid black' }}>
-                  <div className="text-5xl mb-4 text-white">%</div>
-                  <h4 className="font-black text-2xl mb-3 text-white">
-                    Analytics Dashboard
-                  </h4>
-                  <p className="font-semibold text-xl leading-relaxed text-white">
-                    Real-time community management and insights
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white rounded-2xl p-10 text-center" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-                <div className="w-28 h-28 rounded-full mx-auto mb-6 flex items-center justify-center text-5xl font-black" style={{ backgroundColor: '#FF9A56', border: '4px solid black', color: 'white' }}>
-                  ?
-                </div>
-                <h3 className="text-2xl font-black mb-4" style={{ color: '#2C3E50' }}>
-                  Your Companion
-                </h3>
-                <p className="font-semibold text-lg leading-relaxed" style={{ color: '#2C3E50' }}>
-                  A digital friend that keeps you company 24/7 and helps you connect with others
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-                <div className="flex items-center gap-4 mb-6">
-                  <span className="text-4xl">+</span>
-                  <h3 className="text-2xl font-black" style={{ color: '#2C3E50' }}>
-                    Connect
-                  </h3>
-                </div>
-                <p className="font-semibold text-lg mb-6 leading-relaxed" style={{ color: '#2C3E50' }}>
-                  Find community friends who share your interests
-                </p>
-                <div className="space-y-4">
-                  <div className="p-5 rounded-xl flex items-center gap-4" style={{ backgroundColor: '#FFB3D9', border: '4px solid black' }}>
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 text-xl font-black" style={{ backgroundColor: '#FF9A56', border: '3px solid black', color: 'white' }}>
-                      M
-                    </div>
-                    <div className="text-left flex-1">
-                      <p className="font-black text-lg" style={{ color: '#2C3E50' }}>Mia</p>
-                      <p className="text-base font-semibold" style={{ color: '#2C3E50' }}>Community Member</p>
-                    </div>
-                  </div>
-                  <div className="p-5 rounded-xl flex items-center gap-4" style={{ backgroundColor: '#B3D4FF', border: '4px solid black' }}>
-                    <div className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 text-xl font-black" style={{ backgroundColor: '#B39DDB', border: '3px solid black', color: 'white' }}>
-                      J
-                    </div>
-                    <div className="text-left flex-1">
-                      <p className="font-black text-lg" style={{ color: '#2C3E50' }}>Jake</p>
-                      <p className="text-base font-semibold" style={{ color: '#2C3E50' }}>Community Member</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-                <div className="flex items-center gap-4 mb-6">
-                  <span className="text-4xl">~</span>
-                  <h3 className="text-2xl font-black" style={{ color: '#2C3E50' }}>
-                    Support
-                  </h3>
-                </div>
-                <p className="font-semibold text-lg mb-6 leading-relaxed" style={{ color: '#2C3E50' }}>
-                  Express your needs and get timely support from the community
-                </p>
-                <div className="p-5 rounded-xl mb-4" style={{ backgroundColor: '#A8E6CF', border: '4px solid black' }}>
-                  <p className="text-base font-semibold italic leading-relaxed" style={{ color: '#2C3E50' }}>
-                    "I'm looking for friends who love art!"
-                  </p>
-                </div>
-                <div className="p-5 rounded-xl" style={{ backgroundColor: '#FFECB3', border: '4px solid black' }}>
-                  <p className="text-base font-black mb-2" style={{ color: '#2C3E50' }}>
-                    Community responds:
-                  </p>
-                  <p className="text-base font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
-                    "Join our art club! We meet every week."
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </section>
 
         <section id="story" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FFB3D9' }}>
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <div className="text-center mb-14">
-              <div className="inline-block bg-white px-10 py-5 rounded-full font-black text-3xl mb-8" style={{ border: '4px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-                <BookOpen className="w-10 h-10 inline-block mr-3" />
-                Our Story
-              </div>
               <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: '#2C3E50' }}>
-                Why We Built AOMIGO
+                Meet Our Founders
               </h2>
               <p className="text-2xl font-black" style={{ color: '#2C3E50' }}>
-                Life experiences that shaped our mission
+                The hearts behind AOMIGO
               </p>
             </div>
 
-            <div className="space-y-8">
-              <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+              <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="flex items-start gap-6 mb-6">
-                  <div className="w-20 h-20 rounded-full flex items-center justify-center flex-shrink-0 text-3xl font-black" style={{ backgroundColor: '#FF9A56', border: '4px solid black', color: 'white' }}>
-                    A
+                  <div className="w-24 h-24 rounded-full flex items-center justify-center flex-shrink-0 text-4xl font-black" style={{ backgroundColor: '#FF6B35', border: '4px solid black', color: 'white' }}>
+                    J
                   </div>
                   <div>
-                    <h3 className="text-3xl font-black mb-3" style={{ color: '#2C3E50' }}>
-                      The Beginning
+                    <h3 className="text-4xl font-black mb-2" style={{ color: '#2C3E50' }}>
+                      Jenny
                     </h3>
-                    <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
-                      AOMIGO was born from personal struggles with isolation and the realization that many people face similar challenges. We found that traditional social platforms often made us feel more alone, despite being "connected." We wanted to create something different - a space where genuine companionship and support could thrive.
+                    <p className="text-xl font-bold" style={{ color: '#FF6B35' }}>
+                      Co-Founder
                     </p>
                   </div>
                 </div>
-              </div>
-
-              <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-                <div className="flex items-start gap-6 mb-6">
-                  <div className="w-20 h-20 rounded-full flex items-center justify-center flex-shrink-0 text-3xl font-black" style={{ backgroundColor: '#B39DDB', border: '4px solid black', color: 'white' }}>
-                    O
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-black mb-3" style={{ color: '#2C3E50' }}>
-                      Our Journey
-                    </h3>
-                    <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
-                      Through years of experience in education, technology, and community building, we've seen firsthand how powerful meaningful connections can be. We've witnessed students flourish when they have proper support systems, and communities thrive when people feel safe to express themselves authentically.
-                    </p>
-                  </div>
+                <div className="space-y-4">
+                  <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
+                    Growing up, I experienced firsthand the power of having someone who truly listens. As an educator and technologist, I witnessed countless students struggle not because they lacked ability, but because they lacked support and connection.
+                  </p>
+                  <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
+                    AOMIGO was born from a simple belief: everyone deserves a companion who's always there, who understands them, and who helps them find their community. Technology should bring us together, not isolate us further.
+                  </p>
+                  <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
+                    Through AOMIGO, we're building bridges between people, creating safe spaces for authentic expression, and empowering individuals to reach out for the support they need.
+                  </p>
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
+              <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="flex items-start gap-6 mb-6">
-                  <div className="w-20 h-20 rounded-full flex items-center justify-center flex-shrink-0 text-3xl font-black" style={{ backgroundColor: '#A8E6CF', border: '4px solid black', color: 'white' }}>
-                    M
+                  <div className="w-24 h-24 rounded-full flex items-center justify-center flex-shrink-0 text-4xl font-black" style={{ backgroundColor: '#B39DDB', border: '4px solid black', color: 'white' }}>
+                    J
                   </div>
                   <div>
-                    <h3 className="text-3xl font-black mb-3" style={{ color: '#2C3E50' }}>
-                      The Mission
+                    <h3 className="text-4xl font-black mb-2" style={{ color: '#2C3E50' }}>
+                      Jessi
                     </h3>
-                    <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
-                      We believe everyone deserves a companion who's always there, a community that understands them, and a safe space to grow. AOMIGO combines the reliability of technology with the warmth of human connection. Our digital companions never judge, always listen, and help bridge the gap to real human relationships.
+                    <p className="text-xl font-bold" style={{ color: '#B39DDB' }}>
+                      Co-Founder
                     </p>
                   </div>
                 </div>
-              </div>
-
-              <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-                <div className="flex items-start gap-6 mb-6">
-                  <div className="w-20 h-20 rounded-full flex items-center justify-center flex-shrink-0 text-3xl font-black" style={{ backgroundColor: '#B3D4FF', border: '4px solid black', color: 'white' }}>
-                    I
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-black mb-3" style={{ color: '#2C3E50' }}>
-                      Looking Forward
-                    </h3>
-                    <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
-                      We're building AOMIGO to be more than just an app. It's a movement towards healthier digital interactions, meaningful connections, and genuine support networks. Every feature we develop, every decision we make, is guided by one question: "Will this help people feel less alone and more connected?"
-                    </p>
-                  </div>
+                <div className="space-y-4">
+                  <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
+                    My journey in community building and mental health advocacy showed me that many people suffer in silence, not because help isn't available, but because taking that first step feels overwhelming.
+                  </p>
+                  <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
+                    With AOMIGO, we're creating a gentle introduction to connection. Your digital companion is always ready to listen, never judges, and helps you build the confidence to reach out to real people when you're ready.
+                  </p>
+                  <p className="text-xl font-semibold leading-relaxed" style={{ color: '#2C3E50' }}>
+                    We're not replacing human connection—we're facilitating it. We're giving people the courage to be vulnerable, the platform to express themselves, and the community to support them.
+                  </p>
                 </div>
               </div>
+            </div>
 
-              <div className="bg-white rounded-2xl p-10 text-center" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-                <Heart className="w-16 h-16 mx-auto mb-6" style={{ color: '#FF9A56' }} />
-                <h3 className="text-4xl font-black mb-4" style={{ color: '#2C3E50' }}>
-                  Join Our Journey
-                </h3>
-                <p className="text-2xl font-semibold leading-relaxed mb-6" style={{ color: '#2C3E50' }}>
-                  We're just getting started, and we'd love for you to be part of this story. Whether you're a user, an investor, or a partner, your support helps us build a kinder, more connected world.
-                </p>
-                <p className="text-3xl font-black" style={{ color: '#FF9A56' }}>
-                  Together We Got This
-                </p>
-              </div>
+            <div className="mt-10 bg-white rounded-2xl p-10 text-center" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
+              <Heart className="w-16 h-16 mx-auto mb-6" style={{ color: '#FF6B35' }} />
+              <h3 className="text-4xl font-black mb-4" style={{ color: '#2C3E50' }}>
+                Join Our Journey
+              </h3>
+              <p className="text-2xl font-semibold leading-relaxed mb-6" style={{ color: '#2C3E50' }}>
+                We're building AOMIGO with love, care, and a deep commitment to empowering people everywhere. Whether you're a user, investor, or partner, you're part of this movement.
+              </p>
+              <p className="text-3xl font-black" style={{ color: '#FF6B35' }}>
+                We Empower People
+              </p>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="py-10 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FF9A56', borderTop: '4px solid black' }}>
+      <footer className="py-10 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FF6B35', borderTop: '4px solid black' }}>
         <div className="max-w-7xl mx-auto text-center">
-          <div className="flex items-center justify-center mb-6">
-            <LogoComponent />
-          </div>
-          <p className="font-black mb-3 text-2xl" style={{ color: '#2C3E50' }}>
+          <div className="text-3xl font-black mb-4" style={{ color: 'white' }}>AOMIGO</div>
+          <p className="font-black mb-3 text-2xl" style={{ color: 'white' }}>
             Your Digital Companion
           </p>
-          <p className="font-semibold text-lg" style={{ color: '#2C3E50' }}>
+          <p className="font-semibold text-lg" style={{ color: 'white' }}>
             2025 AOMIGO. All rights reserved.
           </p>
-          <p className="text-2xl font-black mt-6" style={{ color: '#2C3E50' }}>
-            Together We Got This
+          <p className="text-2xl font-black mt-6" style={{ color: 'white' }}>
+            We Empower People
           </p>
         </div>
       </footer>
