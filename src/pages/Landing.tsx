@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Check, Mail, User, Users, Shield, Sparkles, ChevronRight, Phone, Linkedin, MessageSquare, ChevronDown, Menu, X, Eye, EyeOff, Heart, BookOpen } from 'lucide-react';
+import { Check, Mail, User, Users, Shield, Sparkles, ChevronRight, Phone, Linkedin, MessageSquare, ChevronDown, Menu, X, Eye, EyeOff, Heart, BookOpen, Volume2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { toast } from 'sonner';
 
@@ -646,22 +646,22 @@ export function Landing() {
               <h3 className="text-2xl sm:text-3xl font-black mb-6" style={{ color: 'black' }}>
                 Submit your design in...
               </h3>
-              <div className="grid grid-cols-4 gap-4">
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#00C8FF', border: '4px solid black' }}>
-                  <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.days}</div>
-                  <div className="text-base font-black" style={{ color: 'black' }}>DAYS</div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                <div className="p-4 sm:p-6 rounded-xl" style={{ backgroundColor: '#00C8FF', border: '4px solid black' }}>
+                  <div className="text-3xl sm:text-5xl font-black mb-1 sm:mb-2" style={{ color: 'black' }}>{timeLeft.days}</div>
+                  <div className="text-xs sm:text-base font-black" style={{ color: 'black' }}>DAYS</div>
                 </div>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#F26522', border: '4px solid black' }}>
-                  <div className="text-5xl font-black mb-2" style={{ color: 'white' }}>{timeLeft.hours}</div>
-                  <div className="text-base font-black" style={{ color: 'white' }}>HOURS</div>
+                <div className="p-4 sm:p-6 rounded-xl" style={{ backgroundColor: '#F26522', border: '4px solid black' }}>
+                  <div className="text-3xl sm:text-5xl font-black mb-1 sm:mb-2" style={{ color: 'white' }}>{timeLeft.hours}</div>
+                  <div className="text-xs sm:text-base font-black" style={{ color: 'white' }}>HOURS</div>
                 </div>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#FF9F40', border: '4px solid black' }}>
-                  <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.minutes}</div>
-                  <div className="text-base font-black" style={{ color: 'black' }}>MIN</div>
+                <div className="p-4 sm:p-6 rounded-xl" style={{ backgroundColor: '#FF9F40', border: '4px solid black' }}>
+                  <div className="text-3xl sm:text-5xl font-black mb-1 sm:mb-2" style={{ color: 'black' }}>{timeLeft.minutes}</div>
+                  <div className="text-xs sm:text-base font-black" style={{ color: 'black' }}>MIN</div>
                 </div>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#B4FF39', border: '4px solid black' }}>
-                  <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.seconds}</div>
-                  <div className="text-base font-black" style={{ color: 'black' }}>SEC</div>
+                <div className="p-4 sm:p-6 rounded-xl" style={{ backgroundColor: '#B4FF39', border: '4px solid black' }}>
+                  <div className="text-3xl sm:text-5xl font-black mb-1 sm:mb-2" style={{ color: 'black' }}>{timeLeft.seconds}</div>
+                  <div className="text-xs sm:text-base font-black" style={{ color: 'black' }}>SEC</div>
                 </div>
               </div>
             </div>
@@ -1117,52 +1117,74 @@ export function Landing() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
-                <div className="flex items-start gap-6 mb-6">
-                  <div className="w-24 h-24 rounded-full flex items-center justify-center flex-shrink-0 text-4xl font-black" style={{ backgroundColor: '#00C8FF', border: '4px solid black', color: 'black' }}>
+              <div className="bg-white rounded-2xl p-6 sm:p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
+                <div className="flex items-start gap-4 sm:gap-6 mb-6">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center flex-shrink-0 text-3xl sm:text-4xl font-black" style={{ backgroundColor: '#00C8FF', border: '4px solid black', color: 'black' }}>
                     J
                   </div>
-                  <div>
-                    <h3 className="text-4xl font-black mb-2" style={{ color: 'black' }}>
+                  <div className="flex-1">
+                    <h3 className="text-3xl sm:text-4xl font-black mb-2" style={{ color: 'black' }}>
                       Jenny
                     </h3>
-                    <p className="text-xl font-bold" style={{ color: '#00C8FF' }}>
+                    <p className="text-lg sm:text-xl font-bold" style={{ color: '#00C8FF' }}>
                       Founder
                     </p>
                   </div>
+                  <button
+                    onClick={() => {
+                      const text = "Hi! This is Jenny Ruan, the founder of AOMIGO. I was raised by my grandparents after my parents separated when I was 5. My grandparents understood the importance of education and overfeeding a kid, but had no clue about a kid's curiosity and dreams. It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough guitar fund (could have been a DJ now, just saying). My grandparents could afford the purchase, but they didn't share my interests, thus they didn't support my dreams. We don't always get supports easily. That's why I founded AOMIGO. I want to build a modern community that can quickly and safely connect the needs and support. We are all people, people love helping people. We are AOMIGO, we empower people.";
+                      const speech = new SpeechSynthesisUtterance(text);
+                      window.speechSynthesis.speak(speech);
+                    }}
+                    className="p-3 rounded-lg hover:scale-110 transition-transform"
+                    style={{ backgroundColor: '#00C8FF', border: '3px solid black' }}
+                  >
+                    <Volume2 className="w-6 h-6" style={{ color: 'black' }} />
+                  </button>
                 </div>
-                <div className="space-y-4">
-                  <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
+                <div className="space-y-5">
+                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
                     Hi! This is Jenny Ruan, the founder of AOMIGO. I was raised by my grandparents after my parents separated when I was 5. My grandparents understood the importance of education and overfeeding a kid, but had no clue about a kid's curiosity and dreams.
                   </p>
-                  <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
+                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
                     It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough guitar fund (could have been a DJ now, just saying). My grandparents could afford the purchase, but they didn't share my interests, thus they didn't support my dreams.
                   </p>
-                  <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
+                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
                     We don't always get supports easily. That's why I founded AOMIGO. I want to build a modern community that can quickly and safely connect the needs and support. We are all people, people love helping people. We are AOMIGO, we empower people.
                   </p>
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
-                <div className="flex items-start gap-6 mb-6">
-                  <div className="w-24 h-24 rounded-full flex items-center justify-center flex-shrink-0 text-4xl font-black" style={{ backgroundColor: '#F26522', border: '4px solid black', color: 'white' }}>
+              <div className="bg-white rounded-2xl p-6 sm:p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
+                <div className="flex items-start gap-4 sm:gap-6 mb-6">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center flex-shrink-0 text-3xl sm:text-4xl font-black" style={{ backgroundColor: '#F26522', border: '4px solid black', color: 'white' }}>
                     J
                   </div>
-                  <div>
-                    <h3 className="text-4xl font-black mb-2" style={{ color: 'black' }}>
+                  <div className="flex-1">
+                    <h3 className="text-3xl sm:text-4xl font-black mb-2" style={{ color: 'black' }}>
                       Jessi
                     </h3>
-                    <p className="text-xl font-bold" style={{ color: '#F26522' }}>
+                    <p className="text-lg sm:text-xl font-bold" style={{ color: '#F26522' }}>
                       Founding Engineer
                     </p>
                   </div>
+                  <button
+                    onClick={() => {
+                      const text = "Hello, I'm Jessi, the oldest of five and a first-generation college student. In middle school, I ranked top 12 nationally in Math Olympiads and graduated with honors, though my family couldn't attend. I came to the U.S. chasing the American dream but ended up living on the streets for 30 days, with my ESL teacher as my only support. Later, I shifted from Math and Physics to Computer Science, won six hackathons, worked as a PM at PlayAI (acquired by Meta Superintelligence Labs), and now co-founded Aomigo — a platform helping people find the support they need when they need it most.";
+                      const speech = new SpeechSynthesisUtterance(text);
+                      window.speechSynthesis.speak(speech);
+                    }}
+                    className="p-3 rounded-lg hover:scale-110 transition-transform"
+                    style={{ backgroundColor: '#F26522', border: '3px solid black' }}
+                  >
+                    <Volume2 className="w-6 h-6" style={{ color: 'white' }} />
+                  </button>
                 </div>
-                <div className="space-y-4">
-                  <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
+                <div className="space-y-5">
+                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
                     Hello, I'm Jessi, the oldest of five and a first-generation college student. In middle school, I ranked top 12 nationally in Math Olympiads and graduated with honors, though my family couldn't attend. I came to the U.S. chasing the American dream but ended up living on the streets for 30 days, with my ESL teacher as my only support.
                   </p>
-                  <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
+                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
                     Later, I shifted from Math and Physics to Computer Science, won six hackathons, worked as a PM at PlayAI (acquired by Meta Superintelligence Labs), and now co-founded Aomigo — a platform helping people find the support they need when they need it most.
                   </p>
                 </div>
