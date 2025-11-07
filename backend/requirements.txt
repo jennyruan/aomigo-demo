@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+python-dotenv
+supabase
+httpx[http2]
+asyncpg
+structlog
+python-multipart
