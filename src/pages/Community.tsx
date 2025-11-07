@@ -4,7 +4,7 @@ import { Users, Plus, Heart, MessageCircle, Share2, Edit2, Trash2 } from 'lucide
 import { PostCreationModal, type PostData } from '../components/PostCreationModal';
 import { usePetStats } from '../hooks/usePetStats';
 import type { CommunityPost, PostComment } from '../types';
-import { t, getCurrentLocale } from '../lib/lingo';
+import { t, useLocale } from '../lib/lingo';
 import { toast } from 'sonner';
 
 interface ExamplePost extends Partial<CommunityPost> {
@@ -79,7 +79,7 @@ export function Community() {
   const [comments, setComments] = useState<Record<string, PostComment[]>>({});
   const [newComment, setNewComment] = useState<Record<string, string>>({});
   const [userLikes, setUserLikes] = useState<Set<string>>(new Set());
-  const locale = getCurrentLocale();
+  const locale = useLocale();
 
   const loadPosts = useCallback(() => {
     setLoading(true);

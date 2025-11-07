@@ -7,7 +7,7 @@ import { ImageUploader } from '../components/ImageUploader';
 import { FollowUpQuestion } from '../components/FollowUpQuestion';
 import { usePetStats } from '../hooks/usePetStats';
 import { extractTopics, generateFollowUpQuestion } from '../lib/openai';
-import { t, getCurrentLocale } from '../lib/lingo';
+import { t, useLocale } from '../lib/lingo';
 import { toast } from 'sonner';
 import { apiClient } from '../lib/api/client';
 import type { TeachingSession } from '../types';
@@ -31,7 +31,7 @@ export function Teach() {
   const [sessionPrimaryId, setSessionPrimaryId] = useState<string | null>(null);
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const { profile, addIntelligence, addHealth, updateStreak } = usePetStats();
-  const locale = getCurrentLocale();
+  const locale = useLocale();
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -19,14 +19,14 @@ import { SupportCard } from '../components/landing/SupportCard';
 import { usePetStats } from '../hooks/usePetStats';
 import { useReviews } from '../hooks/useReviews';
 import { useStore } from '../hooks/useStore';
-import { t, getCurrentLocale } from '../lib/lingo';
+import { t, useLocale } from '../lib/lingo';
 
 export function Home() {
   const navigate = useNavigate();
   const { user, loading: storeLoading, syncSession } = useStore();
   const { profile, updateStreak } = usePetStats();
   const { dueReviews } = useReviews(profile?.id || null);
-  const locale = getCurrentLocale();
+  const locale = useLocale();
   const [greeting, setGreeting] = useState('');
 
   const actionTiles = useMemo(

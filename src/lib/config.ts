@@ -3,5 +3,5 @@ export const API_STATUS = {
   s2: !!import.meta.env.VITE_S2_TOKEN,
   lingo: !!import.meta.env.VITE_LINGO_API_KEY,
   cactus: !!import.meta.env.VITE_CACTUS_API_KEY,
-  grok: !!import.meta.env.VITE_GROK_API_KEY,
+  groq: !!import.meta.env.VITE_GROQ_API_KEY,
 };

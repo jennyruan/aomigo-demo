@@ -3,7 +3,7 @@ import { Brain, TrendingUp, Clock, Award } from 'lucide-react';
 import { PetAvatar } from '../components/PetAvatar';
 import { usePetStats } from '../hooks/usePetStats';
 import type { Topic, TeachingSession } from '../types';
-import { t, getCurrentLocale } from '../lib/lingo';
+import { t, useLocale } from '../lib/lingo';
 import { apiClient } from '../lib/api/client';
 
 export function Summary() {
@@ -11,7 +11,7 @@ export function Summary() {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [sessions, setSessions] = useState<TeachingSession[]>([]);
   const [loading, setLoading] = useState(true);
-  const locale = getCurrentLocale();
+  const locale = useLocale();
 
   useEffect(() => {
     if (!profile) {

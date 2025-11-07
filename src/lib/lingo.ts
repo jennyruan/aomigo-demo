@@ -1,3 +1,5 @@
+import { useSyncExternalStore } from 'react';
+
 const LINGO_API_KEY = import.meta.env.VITE_LINGO_API_KEY || '';
 
 export type Locale = 'en' | 'zh';
@@ -97,6 +99,25 @@ const FALLBACK_TRANSLATIONS: Translations = {
   'settings.lastSync': { en: 'Last sync', zh: '最后同步' },
 };
 
+type LocaleChangeListener = () => void;
+
+const localeListeners = new Set<LocaleChangeListener>();
+
+function notifyLocaleChange() {
+  localeListeners.forEach((listener) => listener());
+}
+
+function readInitialLocale(): Locale {
+  const runtime = typeof window !== 'undefined'
+    ? ((window as any).__AOMIGO_LOCALE as Locale | undefined)
+    : undefined;
+  if (runtime) return runtime;
+  const nav = typeof navigator !== 'undefined' ? navigator.language : 'en';
+  return nav && nav.startsWith('zh') ? 'zh' : 'en';
+}
+
+let currentLocale: Locale = readInitialLocale();
+
 class LingoClient {
   private apiKey: string;
   private useFallback: boolean;
@@ -170,17 +191,32 @@ export function t(key: string, locale: Locale = 'en'): string {
 }
 
 export function getCurrentLocale(): Locale {
-  // Prefer a runtime override, then the browser language. We intentionally
-  // avoid localStorage persistence here.
-  const runtime = (window as any).__AOMIGO_LOCALE as Locale | undefined;
-  if (runtime) return runtime;
-  const nav = typeof navigator !== 'undefined' ? navigator.language : 'en';
-  return nav && nav.startsWith('zh') ? 'zh' : 'en';
+  return currentLocale;
 }
 
 export function setLocale(locale: Locale): void {
-  // Set an in-memory/runtime override and reload so UI updates. This does
-  // not persist to localStorage by design.
-  (window as any).__AOMIGO_LOCALE = locale;
-  window.location.reload();
+  if (currentLocale === locale) {
+    return;
+  }
+
+  currentLocale = locale;
+
+  if (typeof window !== 'undefined') {
+    (window as any).__AOMIGO_LOCALE = locale;
+  }
+
+  notifyLocaleChange();
+}
+
+export function useLocale(): Locale {
+  return useSyncExternalStore(
+    (listener) => {
+      localeListeners.add(listener);
+      return () => {
+        localeListeners.delete(listener);
+      };
+    },
+    () => currentLocale,
+    () => currentLocale
+  );
 }

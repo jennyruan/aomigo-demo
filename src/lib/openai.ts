@@ -1,5 +1,6 @@
-const GROK_API_KEY = import.meta.env.VITE_GROK_API_KEY || '';
-const API_BASE_URL = 'https://api.x.ai/v1';
+const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY || '';
+const API_BASE_URL = 'https://api.groq.com/openai/v1';
+const DEFAULT_MODEL = 'llama-3.1-8b-instant';
 
 const AOMIGO_PERSONALITY = `You are Aomigo, a friendly and encouraging AI learning companion in the form of a cute puppy. Your personality:
 - Warm, supportive, and enthusiastic about learning
@@ -14,8 +15,8 @@ export async function generateFollowUpQuestion(
   topics: string[],
   recentHistory?: string[]
 ): Promise<string> {
-  if (!GROK_API_KEY) {
-    throw new Error('Grok API key is required for Aomigo to communicate');
+  if (!GROQ_API_KEY) {
+    throw new Error('Groq API key is required for Aomigo to communicate');
   }
 
   try {
@@ -27,10 +28,10 @@ export async function generateFollowUpQuestion(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROK_API_KEY}`,
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4-fast-reasoning',
+        model: DEFAULT_MODEL,
         messages: [
           {
             role: 'system',
@@ -47,8 +48,7 @@ export async function generateFollowUpQuestion(
     });
 
     if (!response.ok) {
-      // swallow API details in the demo app
-      throw new Error(`Grok API error: ${response.status}`);
+      throw new Error(`Groq API error: ${response.status}`);
     }
 
     const data = await response.json();
@@ -58,18 +58,18 @@ export async function generateFollowUpQuestion(
     }
 
     return data.choices[0].message.content;
-    } catch (error) {
-      // hide low-level API errors in demo; bubble a generic error up
-      throw new Error('Grok API request failed');
-    }
+  } catch (error) {
+    console.error('[OpenAI] Failed to generate follow-up question', error);
+    throw new Error('Groq API request failed');
+  }
 }
 
 export async function evaluateAnswer(
   question: string,
   answer: string
 ): Promise<{ evaluation: string; qualityScore: number }> {
-  if (!GROK_API_KEY) {
-    throw new Error('Grok API key is required for Aomigo to communicate');
+  if (!GROQ_API_KEY) {
+    throw new Error('Groq API key is required for Aomigo to communicate');
   }
 
   try {
@@ -77,10 +77,10 @@ export async function evaluateAnswer(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROK_API_KEY}`,
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4-fast-reasoning',
+        model: DEFAULT_MODEL,
         messages: [
           {
             role: 'system',
@@ -97,7 +97,7 @@ export async function evaluateAnswer(
     });
 
     if (!response.ok) {
-      throw new Error(`Grok API error: ${response.status}`);
+      throw new Error(`Groq API error: ${response.status}`);
     }
 
     const data = await response.json();
@@ -123,14 +123,15 @@ export async function evaluateAnswer(
         qualityScore: 75,
       };
     }
-    } catch (error) {
-      throw new Error('Grok API request failed');
-    }
+  } catch (error) {
+    console.error('[OpenAI] Failed to evaluate answer', error);
+    throw new Error('Groq API request failed');
+  }
 }
 
 export async function extractTopics(input: string): Promise<string[]> {
-  if (!GROK_API_KEY) {
-    throw new Error('Grok API key is required for Aomigo to communicate');
+  if (!GROQ_API_KEY) {
+    throw new Error('Groq API key is required for Aomigo to communicate');
   }
 
   try {
@@ -138,10 +139,10 @@ export async function extractTopics(input: string): Promise<string[]> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROK_API_KEY}`,
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4-fast-reasoning',
+        model: DEFAULT_MODEL,
         messages: [
           {
             role: 'system',
@@ -158,7 +159,7 @@ export async function extractTopics(input: string): Promise<string[]> {
     });
 
     if (!response.ok) {
-      throw new Error(`Grok API error: ${response.status}`);
+      throw new Error(`Groq API error: ${response.status}`);
     }
 
     const data = await response.json();
@@ -175,17 +176,18 @@ export async function extractTopics(input: string): Promise<string[]> {
     } catch {
       return ['learning'];
     }
-    } catch (error) {
-      throw new Error('Grok API request failed');
-    }
+  } catch (error) {
+    console.error('[OpenAI] Failed to extract topics', error);
+    throw new Error('Groq API request failed');
+  }
 }
 
 export async function evaluateReview(
   topicName: string,
   answer: string
 ): Promise<{ feedback: string; result: 'good' | 'poor'; qualityScore: number }> {
-  if (!GROK_API_KEY) {
-    throw new Error('Grok API key is required for Aomigo to communicate');
+  if (!GROQ_API_KEY) {
+    throw new Error('Groq API key is required for Aomigo to communicate');
   }
 
   try {
@@ -193,10 +195,10 @@ export async function evaluateReview(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROK_API_KEY}`,
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'grok-4-fast-reasoning',
+        model: DEFAULT_MODEL,
         messages: [
           {
             role: 'system',
@@ -213,7 +215,7 @@ export async function evaluateReview(
     });
 
     if (!response.ok) {
-      throw new Error(`Grok API error: ${response.status}`);
+      throw new Error(`Groq API error: ${response.status}`);
     }
 
     const data = await response.json();
@@ -242,7 +244,8 @@ export async function evaluateReview(
         qualityScore: 75,
       };
     }
-    } catch (error) {
-      throw new Error('Grok API request failed');
-    }
+  } catch (error) {
+    console.error('[OpenAI] Failed to evaluate review', error);
+    throw new Error('Groq API request failed');
+  }
 }
