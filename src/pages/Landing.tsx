@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Check, Mail, User, Users, Shield, Sparkles, ChevronRight, Phone, Linkedin, MessageSquare, ChevronDown, Menu, X, Eye, EyeOff, Heart, BookOpen, Volume2 } from 'lucide-react';
+import { Check, Mail, User, Users, Shield, Sparkles, ChevronRight, Phone, Linkedin, MessageSquare, ChevronDown, Menu, X, Eye, EyeOff, Heart, BookOpen, Volume2, Pause } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { toast } from 'sonner';
 
@@ -20,6 +20,8 @@ export function Landing() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [jennyAudioPlaying, setJennyAudioPlaying] = useState(false);
+  const [jessiAudioPlaying, setJessiAudioPlaying] = useState(false);
 
   const [contestFormData, setContestFormData] = useState({
     name: '',
@@ -1132,14 +1134,41 @@ export function Landing() {
                   </div>
                   <button
                     onClick={() => {
-                      const text = "Hi! This is Jenny Ruan, the founder of AOMIGO. I was raised by my grandparents after my parents separated when I was 5. My grandparents understood the importance of education and overfeeding a kid, but had no clue about a kid's curiosity and dreams. It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough guitar fund (could have been a DJ now, just saying). My grandparents could afford the purchase, but they didn't share my interests, thus they didn't support my dreams. We don't always get supports easily. That's why I founded AOMIGO. I want to build a modern community that can quickly and safely connect the needs and support. We are all people, people love helping people. We are AOMIGO, we empower people.";
-                      const speech = new SpeechSynthesisUtterance(text);
-                      window.speechSynthesis.speak(speech);
+                      if (jennyAudioPlaying) {
+                        window.speechSynthesis.cancel();
+                        setJennyAudioPlaying(false);
+                      } else {
+                        const text = "Hi! This is Jenny Ruan, the founder of AOMIGO. I was raised by my grandparents after my parents separated when I was 5. My grandparents understood the importance of education and overfeeding a kid, but had no clue about a kid's curiosity and dreams. It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough guitar fund (could have been a DJ now, just saying). My grandparents could afford the purchase, but they didn't share my interests, thus they didn't support my dreams. We don't always get supports easily. That's why I founded AOMIGO. I want to build a modern community that can quickly and safely connect the needs and support. We are all people, people love helping people. We are AOMIGO, we empower people.";
+                        const speech = new SpeechSynthesisUtterance(text);
+                        speech.rate = 0.95;
+                        speech.pitch = 1.1;
+
+                        const voices = window.speechSynthesis.getVoices();
+                        const femaleVoice = voices.find(voice =>
+                          voice.name.includes('Female') ||
+                          voice.name.includes('Samantha') ||
+                          voice.name.includes('Victoria') ||
+                          voice.name.includes('Karen') ||
+                          voice.name.includes('Fiona') ||
+                          (voice.lang.startsWith('en') && voice.name.includes('Google') && voice.name.includes('US'))
+                        );
+                        if (femaleVoice) speech.voice = femaleVoice;
+
+                        speech.onstart = () => setJennyAudioPlaying(true);
+                        speech.onend = () => setJennyAudioPlaying(false);
+                        speech.onerror = () => setJennyAudioPlaying(false);
+
+                        window.speechSynthesis.speak(speech);
+                      }
                     }}
                     className="p-3 rounded-lg hover:scale-110 transition-transform"
                     style={{ backgroundColor: '#00C8FF', border: '3px solid black' }}
                   >
-                    <Volume2 className="w-6 h-6" style={{ color: 'black' }} />
+                    {jennyAudioPlaying ? (
+                      <Pause className="w-6 h-6" style={{ color: 'black' }} />
+                    ) : (
+                      <Volume2 className="w-6 h-6" style={{ color: 'black' }} />
+                    )}
                   </button>
                 </div>
                 <div className="space-y-5">
@@ -1170,14 +1199,41 @@ export function Landing() {
                   </div>
                   <button
                     onClick={() => {
-                      const text = "Hello, I'm Jessi, the oldest of five and a first-generation college student. In middle school, I ranked top 12 nationally in Math Olympiads and graduated with honors, though my family couldn't attend. I came to the U.S. chasing the American dream but ended up living on the streets for 30 days, with my ESL teacher as my only support. Later, I shifted from Math and Physics to Computer Science, won six hackathons, worked as a PM at PlayAI (acquired by Meta Superintelligence Labs), and now co-founded Aomigo — a platform helping people find the support they need when they need it most.";
-                      const speech = new SpeechSynthesisUtterance(text);
-                      window.speechSynthesis.speak(speech);
+                      if (jessiAudioPlaying) {
+                        window.speechSynthesis.cancel();
+                        setJessiAudioPlaying(false);
+                      } else {
+                        const text = "Hello, I'm Jessi, the oldest of five and a first-generation college student. In middle school, I ranked top 12 nationally in Math Olympiads and graduated with honors, though my family couldn't attend. I came to the U.S. chasing the American dream but ended up living on the streets for 30 days, with my ESL teacher as my only support. Later, I shifted from Math and Physics to Computer Science, won six hackathons, worked as a PM at PlayAI (acquired by Meta Superintelligence Labs), and now co-founded Aomigo — a platform helping people find the support they need when they need it most.";
+                        const speech = new SpeechSynthesisUtterance(text);
+                        speech.rate = 0.95;
+                        speech.pitch = 0.9;
+
+                        const voices = window.speechSynthesis.getVoices();
+                        const maleVoice = voices.find(voice =>
+                          voice.name.includes('Male') ||
+                          voice.name.includes('Daniel') ||
+                          voice.name.includes('Alex') ||
+                          voice.name.includes('Thomas') ||
+                          voice.name.includes('Fred') ||
+                          (voice.lang.startsWith('en') && !voice.name.includes('Female'))
+                        );
+                        if (maleVoice) speech.voice = maleVoice;
+
+                        speech.onstart = () => setJessiAudioPlaying(true);
+                        speech.onend = () => setJessiAudioPlaying(false);
+                        speech.onerror = () => setJessiAudioPlaying(false);
+
+                        window.speechSynthesis.speak(speech);
+                      }
                     }}
                     className="p-3 rounded-lg hover:scale-110 transition-transform"
                     style={{ backgroundColor: '#F26522', border: '3px solid black' }}
                   >
-                    <Volume2 className="w-6 h-6" style={{ color: 'white' }} />
+                    {jessiAudioPlaying ? (
+                      <Pause className="w-6 h-6" style={{ color: 'white' }} />
+                    ) : (
+                      <Volume2 className="w-6 h-6" style={{ color: 'white' }} />
+                    )}
                   </button>
                 </div>
                 <div className="space-y-5">
