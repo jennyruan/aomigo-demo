@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { ApiError, apiClient } from '../lib/api/client';
 import type { UserProfile } from '../types';
-import { auth, signOut as firebaseSignOut } from '../lib/firebase';
+import { getAuth, signOut as firebaseSignOut } from '../lib/firebase';
 
 export type BasicUser = { id: string; email?: string } | null;
 
@@ -57,7 +57,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     let source = activeUser ?? user;
 
     if (!source) {
-      const current = auth.currentUser;
+      const current = getAuth()?.currentUser;
       if (!current) {
         return {};
       }
@@ -126,7 +126,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const syncSession = useCallback(async () => {
     setLoading(true);
     try {
-      const current = auth.currentUser;
+      const current = getAuth()?.currentUser;
 
       if (current) {
         const nextUser: BasicUser = {

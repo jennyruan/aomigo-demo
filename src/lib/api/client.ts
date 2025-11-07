@@ -1,4 +1,4 @@
-import { auth } from '../firebase';
+import { getAuth } from '../firebase';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000';
 
@@ -29,7 +29,7 @@ export interface RequestOptions {
 }
 
 async function buildAuthHeaders(): Promise<Record<string, string>> {
-  const user = auth.currentUser;
+  const user = getAuth()?.currentUser;
   if (!user) {
     return {};
   }
