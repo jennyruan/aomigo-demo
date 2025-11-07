@@ -639,20 +639,6 @@ export function Landing() {
       <main>
         <section id="events" className="py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FADF0B' }}>
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>
-                DOPE EVENTS
-              </h2>
-              <h3 className="text-4xl sm:text-5xl font-black mb-6" style={{ color: 'black' }}>
-                Design our logo and win $1024!
-              </h3>
-              <p className="text-3xl sm:text-4xl font-black mb-4" style={{ color: '#F26522' }}>
-                Turn A-O-M-I-G-O into our new logo!
-              </p>
-              <p className="text-2xl font-black mb-8" style={{ color: 'black' }}>
-                Why $1024? Because 10/24 is AOMIGO's birthday!
-              </p>
-            </div>
 
             <div className="bg-white rounded-2xl p-8 sm:p-10 mb-10 max-w-2xl mx-auto" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
               {isContestSubmitted ? (
@@ -802,16 +788,7 @@ export function Landing() {
                   All ages welcome!
                 </p>
               </div>
-              <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#FF8787', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
-                <div className="text-5xl mb-4">^</div>
-                <h4 className="font-black text-2xl mb-3" style={{ color: 'black' }}>
-                  Easy Upload
-                </h4>
-                <p className="font-semibold text-lg" style={{ color: 'black' }}>
-                  Photo, drawing, or digital
-                </p>
-              </div>
-              <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#B4FF39', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
+              <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#F26523', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="text-5xl mb-4">$</div>
                 <h4 className="font-black text-2xl mb-3" style={{ color: 'black' }}>
                   $1024 Prize
@@ -820,68 +797,17 @@ export function Landing() {
                   Cash or your choice!
                 </p>
               </div>
+              <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#B4FF39', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
+                <div className="text-5xl mb-4">^</div>
+                <h4 className="font-black text-2xl mb-3" style={{ color: 'black' }}>
+                  Easy Upload
+                </h4>
+                <p className="font-semibold text-lg" style={{ color: 'black' }}>
+                  Photo, drawing, or digital
+                </p>
+              </div>
             </div>
 
-            <div className="bg-white rounded-2xl overflow-hidden mb-8" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-              <button
-                onClick={() => setShowRules(!showRules)}
-                className="w-full p-6 flex items-center justify-between hover:bg-gray-50 transition-colors"
-              >
-                <span className="text-2xl font-black" style={{ color: 'black' }}>
-                  Contest Rules
-                </span>
-                <ChevronDown className={`w-7 h-7 transition-transform ${showRules ? 'rotate-180' : ''}`} />
-              </button>
-
-              {showRules && (
-                <div className="px-6 pb-6 border-t-4 border-black">
-                  <ul className="space-y-4 mt-6">
-                    <li className="flex items-start gap-4">
-                      <span className="text-2xl flex-shrink-0">+</span>
-                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
-                        Use letters A, O, M, I, G, O as shapes
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-4">
-                      <span className="text-2xl flex-shrink-0">+</span>
-                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
-                        Submit through your AOMIGO account portal
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-4">
-                      <span className="text-2xl flex-shrink-0">+</span>
-                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
-                        Accepts: images, photos, PDF, Word docs
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-4">
-                      <span className="text-2xl flex-shrink-0">+</span>
-                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
-                        Posts appear in forum for likes and comments
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-4">
-                      <span className="text-2xl flex-shrink-0">-</span>
-                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
-                        Deadline: Nov 30, 11:59 PM
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-4">
-                      <span className="text-2xl flex-shrink-0">*</span>
-                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
-                        Winner announced: Dec 14, 11:59 PM
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-4">
-                      <span className="text-2xl flex-shrink-0">^</span>
-                      <span className="font-semibold text-lg" style={{ color: 'black' }}>
-                        Prizes: Grand Prize $1024, Funniest, Most Creative, Rainbow Colors, Youngest Artist awards
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
 
             <div className="bg-white rounded-2xl p-8 text-center" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
               <h3 className="text-3xl font-black mb-6" style={{ color: 'black' }}>
