@@ -328,7 +328,7 @@ export function Landing() {
   );
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#FED766' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#FED766' }} data-version="orange-yellow-theme-v2">
       <header className="sticky top-0 z-50" style={{ backgroundColor: '#FF6B35', borderBottom: '4px solid black' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
