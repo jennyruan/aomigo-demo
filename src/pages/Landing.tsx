@@ -362,7 +362,7 @@ export function Landing() {
               <button
                 onClick={() => setShowAuthModal(true)}
                 className="px-4 py-2 font-bold text-base bg-white rounded-lg transition-all hover:bg-opacity-90"
-                style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', color: 'black', backgroundColor: '#00C8FF' }}
+                style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', color: 'black', backgroundColor: '#B4FF39' }}
               >
                 SIGN IN/UP
               </button>
@@ -838,9 +838,12 @@ export function Landing() {
 
         <section id="collab" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#00C8FF' }}>
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-5xl sm:text-6xl font-black text-center mb-16" style={{ color: 'black', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>
+            <h2 className="text-5xl sm:text-6xl font-black text-center mb-4" style={{ color: 'black', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>
               VIBE CHECK
             </h2>
+            <p className="text-xl sm:text-2xl font-semibold text-center mb-16" style={{ color: 'black' }}>
+              Got ideas? Questions? Want to work with us? Drop us a line!
+            </p>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <div className="bg-white rounded-2xl p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
@@ -936,7 +939,7 @@ export function Landing() {
 
                     <div className="text-left">
                       <label className="block font-black mb-2 text-xl" style={{ color: 'black' }}>
-                        Inquiry Type <span className="text-red-600">*</span>
+                        DM Type <span className="text-red-600">*</span>
                       </label>
                       <select
                         value={investorFormData.inquiryType}
@@ -1038,22 +1041,20 @@ export function Landing() {
                   <div className="p-6 rounded-xl" style={{ backgroundColor: '#FADF0B', border: '4px solid black' }}>
                     <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: 'black' }}>
                       <Users className="w-7 h-7" />
-                      Community & Companion
+                      Friends Online
                     </h4>
                     <p className="font-semibold text-lg leading-relaxed" style={{ color: 'black' }}>
-                      AOMIGO is a digital companion ecosystem that shadows verified users' real identity,
-                      providing a friendly and safe community for everybody to connect.
+                      AOMIGO keeps you safe online with real verified people. Like having a trusted friend always there!
                     </p>
                   </div>
 
                   <div className="p-6 rounded-xl" style={{ backgroundColor: '#FADF0B', border: '4px solid black' }}>
                     <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: 'black' }}>
                       <Shield className="w-7 h-7" />
-                      Connecting People
+                      Always Here for You
                     </h4>
                     <p className="font-semibold text-lg leading-relaxed" style={{ color: 'black' }}>
-                      Help people express their needs bravely and connect them with effective support timely.
-                      Our digital companion's 24/7 presence is the backup plan after the encouraged real-life connections.
+                      We help you ask for what you need and find the right help - 24/7. Real friends first, digital backup second.
                     </p>
                   </div>
 
@@ -1063,8 +1064,7 @@ export function Landing() {
                       Our Vision
                     </h4>
                     <p className="font-semibold text-lg leading-relaxed" style={{ color: 'black' }}>
-                      Building a lifestyle brand with IoT integration and enterprise solutions for educational
-                      institutions as CRM and security systems.
+                      Making schools and communities safer and more connected with smart tech.
                     </p>
                   </div>
 
@@ -1127,19 +1127,19 @@ export function Landing() {
                       Jenny
                     </h3>
                     <p className="text-xl font-bold" style={{ color: '#00C8FF' }}>
-                      Co-Founder
+                      Founder
                     </p>
                   </div>
                 </div>
                 <div className="space-y-4">
                   <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
-                    Growing up, I experienced firsthand the power of having someone who truly listens. As an educator and technologist, I witnessed countless students struggle not because they lacked ability, but because they lacked support and connection.
+                    Hi! This is Jenny Ruan, the founder of AOMIGO. I was raised by my grandparents after my parents separated when I was 5. My grandparents understood the importance of education and overfeeding a kid, but had no clue about a kid's curiosity and dreams.
                   </p>
                   <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
-                    AOMIGO was born from a simple belief: everyone deserves a companion who's always there, who understands them, and who helps them find their community. Technology should bring us together, not isolate us further.
+                    It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough guitar fund (could have been a DJ now, just saying). My grandparents could afford the purchase, but they didn't share my interests, thus they didn't support my dreams.
                   </p>
                   <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
-                    Through AOMIGO, we're building bridges between people, creating safe spaces for authentic expression, and empowering individuals to reach out for the support they need.
+                    We don't always get supports easily. That's why I founded AOMIGO. I want to build a modern community that can quickly and safely connect the needs and support. We are all people, people love helping people. We are AOMIGO, we empower people.
                   </p>
                 </div>
               </div>
@@ -1154,36 +1154,21 @@ export function Landing() {
                       Jessi
                     </h3>
                     <p className="text-xl font-bold" style={{ color: '#F26522' }}>
-                      Co-Founder
+                      Founding Engineer
                     </p>
                   </div>
                 </div>
                 <div className="space-y-4">
                   <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
-                    My journey in community building and mental health advocacy showed me that many people suffer in silence, not because help isn't available, but because taking that first step feels overwhelming.
+                    Hello, I'm Jessi, the oldest of five and a first-generation college student. In middle school, I ranked top 12 nationally in Math Olympiads and graduated with honors, though my family couldn't attend. I came to the U.S. chasing the American dream but ended up living on the streets for 30 days, with my ESL teacher as my only support.
                   </p>
                   <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
-                    With AOMIGO, we're creating a gentle introduction to connection. Your digital companion is always ready to listen, never judges, and helps you build the confidence to reach out to real people when you're ready.
-                  </p>
-                  <p className="text-xl font-semibold leading-relaxed" style={{ color: 'black' }}>
-                    We're not replacing human connection—we're facilitating it. We're giving people the courage to be vulnerable, the platform to express themselves, and the community to support them.
+                    Later, I shifted from Math and Physics to Computer Science, won six hackathons, worked as a PM at PlayAI (acquired by Meta Superintelligence Labs), and now co-founded Aomigo — a platform helping people find the support they need when they need it most.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-10 bg-white rounded-2xl p-10 text-center" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-              <Heart className="w-16 h-16 mx-auto mb-6" style={{ color: '#F26522' }} />
-              <h3 className="text-4xl font-black mb-4" style={{ color: 'black' }}>
-                Join Our Journey
-              </h3>
-              <p className="text-2xl font-semibold leading-relaxed mb-6" style={{ color: 'black' }}>
-                We're building AOMIGO with love, care, and a deep commitment to empowering people everywhere. Whether you're a user, investor, or partner, you're part of this movement.
-              </p>
-              <p className="text-3xl font-black" style={{ color: '#F26522' }}>
-                We Empower People
-              </p>
-            </div>
           </div>
         </section>
       </main>
