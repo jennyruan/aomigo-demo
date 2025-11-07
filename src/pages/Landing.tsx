@@ -85,12 +85,8 @@ export function Landing() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [jennyAudioPlaying, setJennyAudioPlaying] = useState(false);
-  const [jessiAudioPlaying, setJessiAudioPlaying] = useState(false);
-
   const [contestFormData, setContestFormData] = useState<ContestFormState>(initialContestForm);
-
   const [authFormData, setAuthFormData] = useState<AuthFormState>(initialAuthForm);
-
   const [avatarConfig, setAvatarConfig] = useState<AvatarConfig>({
     animal: 'panda',
     eyes: 'normal',
@@ -1234,78 +1230,7 @@ export function Landing() {
                   </p>
                 </div>
               </div>
-
-              <div className="bg-white rounded-2xl p-6 sm:p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
-                <div className="flex items-start gap-4 sm:gap-6 mb-6">
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center flex-shrink-0 text-3xl sm:text-4xl font-black" style={{ backgroundColor: '#F26522', border: '4px solid black', color: 'white' }}>
-                    J
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-3xl sm:text-4xl font-black mb-2" style={{ color: 'black' }}>
-                      Jessi
-                    </h3>
-                    <p className="text-lg sm:text-xl font-bold" style={{ color: '#F26522' }}>
-                      Founding Engineer
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      if (jessiAudioPlaying) {
-                        window.speechSynthesis.cancel();
-                        setJessiAudioPlaying(false);
-                      } else {
-                        const text = "Hello, I'm Jessi, the oldest of five and a first-generation college student. In middle school, I ranked top 12 nationally in Math Olympiads and graduated with honors, though my family couldn't attend. I came to the U.S. chasing the American dream but ended up living on the streets for 30 days, with my ESL teacher as my only support. Later, I shifted from Math and Physics to Computer Science, won six hackathons, worked as a PM at PlayAI (acquired by Meta Superintelligence Labs), and now co-founded Aomigo — a platform helping people find the support they need when they need it most.";
-                        const speech = new SpeechSynthesisUtterance(text);
-                        speech.rate = 0.95;
-                        speech.pitch = 0.9;
-
-                        const voices = window.speechSynthesis.getVoices();
-                        const maleVoice =
-                          voices.find(voice =>
-                            voice.lang.startsWith('en') &&
-                            !voice.name.toLowerCase().includes('female') &&
-                            !voice.name.toLowerCase().includes('woman') &&
-                            (voice.name.includes('Male') ||
-                              voice.name.includes('Daniel') ||
-                              voice.name.includes('Alex') ||
-                              voice.name.includes('Thomas') ||
-                              voice.name.includes('Fred') ||
-                              voice.name.includes('Google UK English Male') ||
-                              voice.name.includes('Microsoft David') ||
-                              voice.name.includes('Microsoft Mark'))
-                          ) ||
-                          voices.find(voice => voice.lang.startsWith('en') && /male/i.test(voice.name)) ||
-                          voices[0];
-                        if (maleVoice) speech.voice = maleVoice;
-
-                        speech.onstart = () => setJessiAudioPlaying(true);
-                        speech.onend = () => setJessiAudioPlaying(false);
-                        speech.onerror = () => setJessiAudioPlaying(false);
-
-                        window.speechSynthesis.speak(speech);
-                      }
-                    }}
-                    className="p-3 rounded-lg hover:scale-110 transition-transform"
-                    style={{ backgroundColor: '#F26522', border: '3px solid black' }}
-                  >
-                    {jessiAudioPlaying ? (
-                      <Pause className="w-6 h-6" style={{ color: 'white' }} />
-                    ) : (
-                      <Volume2 className="w-6 h-6" style={{ color: 'white' }} />
-                    )}
-                  </button>
-                </div>
-                <div className="space-y-5">
-                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    Hello, I'm Jessi, the oldest of five and a first-generation college student. In middle school, I ranked top 12 nationally in Math Olympiads and graduated with honors, though my family couldn't attend. I came to the U.S. chasing the American dream but ended up living on the streets for 30 days, with my ESL teacher as my only support.
-                  </p>
-                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    Later, I shifted from Math and Physics to Computer Science, won six hackathons, worked as a PM at PlayAI (acquired by Meta Superintelligence Labs), and now co-founded Aomigo — a platform helping people find the support they need when they need it most.
-                  </p>
-                </div>
-              </div>
             </div>
-
           </div>
         </section>
       </main>
