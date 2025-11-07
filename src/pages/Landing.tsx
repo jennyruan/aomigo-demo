@@ -639,6 +639,29 @@ export function Landing() {
       <main>
         <section id="events" className="py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FADF0B' }}>
           <div className="max-w-5xl mx-auto">
+            <div className="bg-white rounded-2xl p-8 text-center mb-10" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
+              <h3 className="text-2xl sm:text-3xl font-black mb-6" style={{ color: 'black' }}>
+                Please help us design AOMIGO's logo! Submit your design by...
+              </h3>
+              <div className="grid grid-cols-4 gap-4">
+                <div className="p-6 rounded-xl" style={{ backgroundColor: '#00C8FF', border: '4px solid black' }}>
+                  <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.days}</div>
+                  <div className="text-base font-black" style={{ color: 'black' }}>DAYS</div>
+                </div>
+                <div className="p-6 rounded-xl" style={{ backgroundColor: '#F26522', border: '4px solid black' }}>
+                  <div className="text-5xl font-black mb-2" style={{ color: 'white' }}>{timeLeft.hours}</div>
+                  <div className="text-base font-black" style={{ color: 'white' }}>HOURS</div>
+                </div>
+                <div className="p-6 rounded-xl" style={{ backgroundColor: '#FF9F40', border: '4px solid black' }}>
+                  <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.minutes}</div>
+                  <div className="text-base font-black" style={{ color: 'black' }}>MIN</div>
+                </div>
+                <div className="p-6 rounded-xl" style={{ backgroundColor: '#B4FF39', border: '4px solid black' }}>
+                  <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.seconds}</div>
+                  <div className="text-base font-black" style={{ color: 'black' }}>SEC</div>
+                </div>
+              </div>
+            </div>
 
             <div className="bg-white rounded-2xl p-8 sm:p-10 mb-10 max-w-2xl mx-auto" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
               {isContestSubmitted ? (
@@ -780,12 +803,12 @@ export function Landing() {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
               <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#00C8FF', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
-                <div className="text-5xl mb-4">+</div>
+                <div className="text-5xl mb-4">A</div>
                 <h4 className="font-black text-2xl mb-3" style={{ color: 'black' }}>
-                  For Everyone
+                  Design Rules
                 </h4>
                 <p className="font-semibold text-lg" style={{ color: 'black' }}>
-                  All ages welcome!
+                  Use shapes from A-O-M-I-G-O letters only
                 </p>
               </div>
               <div className="p-8 rounded-2xl text-center" style={{ backgroundColor: '#F26523', border: '5px solid black', boxShadow: '5px 5px 0px 0px rgba(0,0,0,1)' }}>
@@ -805,31 +828,6 @@ export function Landing() {
                 <p className="font-semibold text-lg" style={{ color: 'black' }}>
                   Photo, drawing, or digital
                 </p>
-              </div>
-            </div>
-
-
-            <div className="bg-white rounded-2xl p-8 text-center" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-              <h3 className="text-3xl font-black mb-6" style={{ color: 'black' }}>
-                Contest Ends In:
-              </h3>
-              <div className="grid grid-cols-4 gap-4">
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#00C8FF', border: '4px solid black' }}>
-                  <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.days}</div>
-                  <div className="text-base font-black" style={{ color: 'black' }}>DAYS</div>
-                </div>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#F26522', border: '4px solid black' }}>
-                  <div className="text-5xl font-black mb-2" style={{ color: 'white' }}>{timeLeft.hours}</div>
-                  <div className="text-base font-black" style={{ color: 'white' }}>HOURS</div>
-                </div>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#FF9F40', border: '4px solid black' }}>
-                  <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.minutes}</div>
-                  <div className="text-base font-black" style={{ color: 'black' }}>MIN</div>
-                </div>
-                <div className="p-6 rounded-xl" style={{ backgroundColor: '#B4FF39', border: '4px solid black' }}>
-                  <div className="text-5xl font-black mb-2" style={{ color: 'black' }}>{timeLeft.seconds}</div>
-                  <div className="text-base font-black" style={{ color: 'black' }}>SEC</div>
-                </div>
               </div>
             </div>
           </div>
