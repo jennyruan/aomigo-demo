@@ -10,6 +10,9 @@ class ProfileBase(BaseModel):
     day_streak: int | None = Field(default=None)
     last_activity_date: date | None = Field(default=None)
     language_preference: str | None = Field(default=None)
+    display_name: str | None = Field(default=None)
+    organization_name: str | None = Field(default=None)
+    avatar_config: dict | None = Field(default=None)
 
 class ProfileRead(ProfileBase):
     id: str

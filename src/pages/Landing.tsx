@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Check, Mail, User, Users, Shield, Sparkles, ChevronRight, Phone, Linkedin, MessageSquare, ChevronDown, Menu, X, Eye, EyeOff, Heart, BookOpen, Volume2, Pause } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Check, Users, Shield, Sparkles, ChevronRight, Menu, X, Eye, EyeOff, Volume2, Pause } from 'lucide-react';
 import { toast } from 'sonner';
 import { apiClient } from '../lib/api/client';
+import { useStore } from '../hooks/useStore';
+import { signIn as firebaseSignIn, signUp as firebaseSignUp } from '../lib/firebase';
 
 interface AvatarConfig {
   animal: string;
@@ -12,9 +14,70 @@ interface AvatarConfig {
   pattern: string;
 }
 
+type InvestorInquiryType = 'Investor' | 'Collab' | 'Group' | 'Consumer' | 'Other';
+
+interface ContestFormState {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  isParent: boolean;
+  isOrganization: boolean;
+  wantsMoreEvents: boolean;
+}
+
+interface AuthFormState {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  organizationName: string;
+  rememberMe: boolean;
+}
+
+interface InvestorFormState {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  linkedinUrl: string;
+  message: string;
+  inquiryType: InvestorInquiryType;
+  customInquiryType: string;
+}
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const initialContestForm: ContestFormState = {
+  name: '',
+  email: '',
+  phoneNumber: '',
+  isParent: false,
+  isOrganization: false,
+  wantsMoreEvents: true,
+};
+
+const initialAuthForm: AuthFormState = {
+  name: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  organizationName: '',
+  rememberMe: false,
+};
+
+const initialInvestorForm: InvestorFormState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phoneNumber: '',
+  linkedinUrl: '',
+  message: '',
+  inquiryType: 'Investor',
+  customInquiryType: '',
+};
+
 export function Landing() {
   const [activeSection, setActiveSection] = useState('events');
-  const [showRules, setShowRules] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signup');
@@ -24,23 +87,9 @@ export function Landing() {
   const [jennyAudioPlaying, setJennyAudioPlaying] = useState(false);
   const [jessiAudioPlaying, setJessiAudioPlaying] = useState(false);
 
-  const [contestFormData, setContestFormData] = useState({
-    name: '',
-    email: '',
-    phoneNumber: '',
-    isParent: false,
-    isOrganization: false,
-    wantsMoreEvents: true,
-  });
+  const [contestFormData, setContestFormData] = useState<ContestFormState>(initialContestForm);
 
-  const [authFormData, setAuthFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    organizationName: '',
-    rememberMe: false,
-  });
+  const [authFormData, setAuthFormData] = useState<AuthFormState>(initialAuthForm);
 
   const [avatarConfig, setAvatarConfig] = useState<AvatarConfig>({
     animal: 'panda',
@@ -50,22 +99,39 @@ export function Landing() {
     pattern: 'solid',
   });
 
-  const [investorFormData, setInvestorFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    linkedinUrl: '',
-    message: '',
-    inquiryType: 'Investor' as 'Investor' | 'Collab' | 'Group' | 'Consumer' | 'Other',
-    customInquiryType: '',
-  });
+  const [investorFormData, setInvestorFormData] = useState<InvestorFormState>(initialInvestorForm);
 
   const [isContestSubmitting, setIsContestSubmitting] = useState(false);
   const [isContestSubmitted, setIsContestSubmitted] = useState(false);
   const [isInvestorSubmitting, setIsInvestorSubmitting] = useState(false);
   const [isInvestorSubmitted, setIsInvestorSubmitted] = useState(false);
   const [isAuthSubmitting, setIsAuthSubmitting] = useState(false);
+  const { createProfile, syncSession } = useStore();
+  const navigate = useNavigate();
+
+  const handleContestChange = useCallback(<T extends keyof ContestFormState>(field: T, value: ContestFormState[T]) => {
+    setContestFormData((prev) => ({ ...prev, [field]: value }));
+  }, []);
+
+  const resetContestForm = useCallback(() => {
+    setContestFormData({ ...initialContestForm });
+  }, []);
+
+  const handleAuthChange = useCallback(<T extends keyof AuthFormState>(field: T, value: AuthFormState[T]) => {
+    setAuthFormData((prev) => ({ ...prev, [field]: value }));
+  }, []);
+
+  const resetAuthForm = useCallback(() => {
+    setAuthFormData({ ...initialAuthForm });
+  }, []);
+
+  const handleInvestorChange = useCallback(<T extends keyof InvestorFormState>(field: T, value: InvestorFormState[T]) => {
+    setInvestorFormData((prev) => ({ ...prev, [field]: value }));
+  }, []);
+
+  const resetInvestorForm = useCallback(() => {
+    setInvestorFormData({ ...initialInvestorForm });
+  }, []);
 
   const animalNames: Record<string, string> = {
     panda: 'PANDA',
@@ -138,8 +204,7 @@ export function Landing() {
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(contestFormData.email)) {
+    if (!EMAIL_REGEX.test(contestFormData.email)) {
       toast.error('Please enter a valid email address');
       return;
     }
@@ -147,38 +212,22 @@ export function Landing() {
     setIsContestSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from('waitlist')
-        .insert([
-          {
-            first_name: contestFormData.name.trim(),
-            email: contestFormData.email.trim().toLowerCase(),
-            phone_number: contestFormData.phoneNumber.trim() || null,
-            is_parent_demo_user: contestFormData.isParent,
-            is_organization_user: contestFormData.isOrganization,
-            wants_more_events: contestFormData.wantsMoreEvents,
-            user_type: 'demo',
-          },
-        ]);
+      await apiClient.request('/api/v1/waitlist', {
+        method: 'POST',
+        body: {
+          first_name: contestFormData.name.trim(),
+          email: contestFormData.email.trim().toLowerCase(),
+          phone_number: contestFormData.phoneNumber.trim() || null,
+          is_parent_demo_user: contestFormData.isParent,
+          is_organization_user: contestFormData.isOrganization,
+          wants_more_events: contestFormData.wantsMoreEvents,
+          user_type: 'demo',
+        },
+      });
 
-      if (error) {
-        if (error.code === '23505') {
-          toast.error('This email is already registered!');
-        } else {
-          throw error;
-        }
-      } else {
-        setIsContestSubmitted(true);
-        toast.success('Successfully joined the contest!');
-        setContestFormData({
-          name: '',
-          email: '',
-          phoneNumber: '',
-          isParent: false,
-          isOrganization: false,
-          wantsMoreEvents: true,
-        });
-      }
+      setIsContestSubmitted(true);
+      toast.success('Successfully joined the contest!');
+      resetContestForm();
     } catch (error) {
       console.error('Error joining contest:', error);
       toast.error('Something went wrong. Please try again.');
@@ -195,8 +244,7 @@ export function Landing() {
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(investorFormData.email)) {
+    if (!EMAIL_REGEX.test(investorFormData.email)) {
       toast.error('Please enter a valid email address');
       return;
     }
@@ -214,19 +262,16 @@ export function Landing() {
           linkedin_url: investorFormData.linkedinUrl.trim() || null,
           message: investorFormData.message.trim() || null,
           user_type: 'investor',
+          inquiry_type:
+            investorFormData.inquiryType === 'Other'
+              ? investorFormData.customInquiryType.trim() || 'Other'
+              : investorFormData.inquiryType,
         },
       });
 
       setIsInvestorSubmitted(true);
       toast.success('Thank you for your interest! We will be in touch soon.');
-      setInvestorFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phoneNumber: '',
-        linkedinUrl: '',
-        message: '',
-      });
+      resetInvestorForm();
     } catch (error) {
       console.error('Error submitting investor info:', error);
       toast.error('Something went wrong. Please try again.');
@@ -255,8 +300,7 @@ export function Landing() {
       }
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(authFormData.email)) {
+    if (!EMAIL_REGEX.test(authFormData.email)) {
       toast.error('Please enter a valid email address');
       return;
     }
@@ -265,59 +309,68 @@ export function Landing() {
 
     try {
       if (authMode === 'signup') {
-        const { data, error } = await supabase.auth.signUp({
-          email: authFormData.email.trim().toLowerCase(),
-          password: authFormData.password,
-          options: {
-            data: {
-              name: authFormData.name.trim(),
-              organization_name: authFormData.organizationName.trim() || null,
-              avatar_config: avatarConfig,
-            },
-          },
+        const email = authFormData.email.trim().toLowerCase();
+        await firebaseSignUp(email, authFormData.password);
+        await syncSession();
+
+        const avatarPayload: Record<string, unknown> = { ...avatarConfig };
+
+        await createProfile({
+          display_name: authFormData.name.trim(),
+          organization_name: authFormData.organizationName.trim() || null,
+          avatar_config: avatarPayload,
         });
 
-        if (error) throw error;
-
-        toast.success('Account created successfully! Check your email to verify.');
+        // ensure store/session reflects new profile, then navigate home
+        await syncSession();
+        toast.success('Account created successfully!');
+        resetAuthForm();
         setShowAuthModal(false);
-        setAuthFormData({
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: '',
-          organizationName: '',
-          rememberMe: false,
-        });
+  navigate('/home');
       } else {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: authFormData.email.trim().toLowerCase(),
-          password: authFormData.password,
-        });
-
-        if (error) throw error;
-
+        const email = authFormData.email.trim().toLowerCase();
+        await firebaseSignIn(email, authFormData.password);
+        await syncSession();
         toast.success('Signed in successfully!');
-        setShowAuthModal(false);
+        // after sign-in, ensure profile loaded and navigate home
+  navigate('/home');
       }
+
+      setShowAuthModal(false);
+      resetAuthForm();
     } catch (error: any) {
       console.error('Auth error:', error);
-      toast.error(error.message || 'Authentication failed. Please try again.');
+      let errorMessage = 'Authentication failed. Please try again.';
+
+      if (error && typeof error === 'object') {
+        if ('code' in error && typeof error.code === 'string') {
+          switch (error.code) {
+            case 'auth/email-already-in-use':
+              errorMessage = 'This email is already registered.';
+              break;
+            case 'auth/invalid-email':
+              errorMessage = 'Invalid email address provided.';
+              break;
+            case 'auth/user-not-found':
+            case 'auth/wrong-password':
+              errorMessage = 'Incorrect email or password.';
+              break;
+            case 'auth/weak-password':
+              errorMessage = 'Password should be at least 6 characters.';
+              break;
+            default:
+              errorMessage = 'Authentication failed. Please try again.';
+          }
+        } else if ('message' in error && typeof error.message === 'string') {
+          errorMessage = error.message;
+        }
+      }
+
+      toast.error(errorMessage);
     } finally {
       setIsAuthSubmitting(false);
     }
   }
-
-  const LogoComponent = () => (
-    <div className="flex flex-col items-center justify-center gap-1" style={{ transform: 'rotate(-5deg)' }}>
-      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#00C8FF', border: '4px solid black', transform: 'rotate(8deg)' }}>A</div>
-      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#F26522', border: '4px solid black', transform: 'rotate(-5deg)' }}>O</div>
-      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#B4FF39', border: '4px solid black', transform: 'rotate(3deg)' }}>M</div>
-      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#FF9F40', border: '4px solid black', transform: 'rotate(-7deg)' }}>I</div>
-      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#B39DDB', border: '4px solid black', transform: 'rotate(4deg)' }}>G</div>
-      <div className="w-16 h-16 flex items-center justify-center font-black text-3xl" style={{ backgroundColor: '#FFA040', border: '4px solid black', transform: 'rotate(-3deg)' }}>O</div>
-    </div>
-  );
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#FADF0B' }} data-version="colorful-blocks-v3">
@@ -465,7 +518,7 @@ export function Landing() {
                       <input
                         type="text"
                         value={authFormData.name}
-                        onChange={(e) => setAuthFormData({ ...authFormData, name: e.target.value })}
+                        onChange={(e) => handleAuthChange('name', e.target.value)}
                         placeholder="Your name"
                         className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4"
                         style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -480,7 +533,7 @@ export function Landing() {
                       <input
                         type="text"
                         value={authFormData.organizationName}
-                        onChange={(e) => setAuthFormData({ ...authFormData, organizationName: e.target.value })}
+                        onChange={(e) => handleAuthChange('organizationName', e.target.value)}
                         placeholder="Your organization"
                         className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4"
                         style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -534,7 +587,7 @@ export function Landing() {
                   <input
                     type="email"
                     value={authFormData.email}
-                    onChange={(e) => setAuthFormData({ ...authFormData, email: e.target.value })}
+                    onChange={(e) => handleAuthChange('email', e.target.value)}
                     placeholder="your@email.com"
                     className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4"
                     style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -550,7 +603,7 @@ export function Landing() {
                     <input
                       type={showPassword ? 'text' : 'password'}
                       value={authFormData.password}
-                      onChange={(e) => setAuthFormData({ ...authFormData, password: e.target.value })}
+                      onChange={(e) => handleAuthChange('password', e.target.value)}
                       placeholder="Enter password"
                       className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4 pr-12"
                       style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -575,7 +628,7 @@ export function Landing() {
                       <input
                         type={showConfirmPassword ? 'text' : 'password'}
                         value={authFormData.confirmPassword}
-                        onChange={(e) => setAuthFormData({ ...authFormData, confirmPassword: e.target.value })}
+                        onChange={(e) => handleAuthChange('confirmPassword', e.target.value)}
                         placeholder="Confirm password"
                         className="w-full px-4 py-4 rounded-lg text-lg font-semibold focus:outline-none focus:ring-4 pr-12"
                         style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -598,7 +651,7 @@ export function Landing() {
                       type="checkbox"
                       id="rememberMe"
                       checked={authFormData.rememberMe}
-                      onChange={(e) => setAuthFormData({ ...authFormData, rememberMe: e.target.checked })}
+                      onChange={(e) => handleAuthChange('rememberMe', e.target.checked)}
                       className="w-5 h-5 rounded cursor-pointer"
                       style={{ border: '3px solid black' }}
                     />
@@ -695,7 +748,7 @@ export function Landing() {
                     <input
                       type="text"
                       value={contestFormData.name}
-                      onChange={(e) => setContestFormData({ ...contestFormData, name: e.target.value })}
+                      onChange={(e) => handleContestChange('name', e.target.value)}
                       placeholder="Your name"
                       className="w-full px-5 py-4 rounded-lg text-xl font-semibold focus:outline-none focus:ring-4"
                       style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -710,7 +763,7 @@ export function Landing() {
                     <input
                       type="email"
                       value={contestFormData.email}
-                      onChange={(e) => setContestFormData({ ...contestFormData, email: e.target.value })}
+                      onChange={(e) => handleContestChange('email', e.target.value)}
                       placeholder="your@email.com"
                       className="w-full px-5 py-4 rounded-lg text-xl font-semibold focus:outline-none focus:ring-4"
                       style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -725,7 +778,7 @@ export function Landing() {
                     <input
                       type="tel"
                       value={contestFormData.phoneNumber}
-                      onChange={(e) => setContestFormData({ ...contestFormData, phoneNumber: e.target.value })}
+                      onChange={(e) => handleContestChange('phoneNumber', e.target.value)}
                       placeholder="+1 (xxx) 867-5309"
                       className="w-full px-5 py-4 rounded-lg text-xl font-semibold focus:outline-none focus:ring-4"
                       style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -738,7 +791,7 @@ export function Landing() {
                         type="checkbox"
                         id="isParent"
                         checked={contestFormData.isParent}
-                        onChange={(e) => setContestFormData({ ...contestFormData, isParent: e.target.checked })}
+                        onChange={(e) => handleContestChange('isParent', e.target.checked)}
                         className="w-6 h-6 mt-1 rounded cursor-pointer flex-shrink-0"
                         style={{ border: '3px solid black' }}
                       />
@@ -752,7 +805,7 @@ export function Landing() {
                         type="checkbox"
                         id="isOrganization"
                         checked={contestFormData.isOrganization}
-                        onChange={(e) => setContestFormData({ ...contestFormData, isOrganization: e.target.checked })}
+                        onChange={(e) => handleContestChange('isOrganization', e.target.checked)}
                         className="w-6 h-6 mt-1 rounded cursor-pointer flex-shrink-0"
                         style={{ border: '3px solid black' }}
                       />
@@ -766,7 +819,7 @@ export function Landing() {
                         type="checkbox"
                         id="wantsMoreEvents"
                         checked={contestFormData.wantsMoreEvents}
-                        onChange={(e) => setContestFormData({ ...contestFormData, wantsMoreEvents: e.target.checked })}
+                        onChange={(e) => handleContestChange('wantsMoreEvents', e.target.checked)}
                         className="w-6 h-6 mt-1 rounded cursor-pointer flex-shrink-0"
                         style={{ border: '3px solid black' }}
                       />
@@ -885,7 +938,7 @@ export function Landing() {
                         <input
                           type="text"
                           value={investorFormData.firstName}
-                          onChange={(e) => setInvestorFormData({ ...investorFormData, firstName: e.target.value })}
+                          onChange={(e) => handleInvestorChange('firstName', e.target.value)}
                           placeholder="Slim"
                           className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
                           style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -900,7 +953,7 @@ export function Landing() {
                         <input
                           type="text"
                           value={investorFormData.lastName}
-                          onChange={(e) => setInvestorFormData({ ...investorFormData, lastName: e.target.value })}
+                          onChange={(e) => handleInvestorChange('lastName', e.target.value)}
                           placeholder="Shady"
                           className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
                           style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -915,7 +968,7 @@ export function Landing() {
                       <input
                         type="email"
                         value={investorFormData.email}
-                        onChange={(e) => setInvestorFormData({ ...investorFormData, email: e.target.value })}
+                        onChange={(e) => handleInvestorChange('email', e.target.value)}
                         placeholder="investor@example.com"
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
                         style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -930,7 +983,7 @@ export function Landing() {
                       <input
                         type="tel"
                         value={investorFormData.phoneNumber}
-                        onChange={(e) => setInvestorFormData({ ...investorFormData, phoneNumber: e.target.value })}
+                        onChange={(e) => handleInvestorChange('phoneNumber', e.target.value)}
                         placeholder="+1 (xxx) 867-5309"
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
                         style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -943,7 +996,7 @@ export function Landing() {
                       </label>
                       <select
                         value={investorFormData.inquiryType}
-                        onChange={(e) => setInvestorFormData({ ...investorFormData, inquiryType: e.target.value as any })}
+                        onChange={(e) => handleInvestorChange('inquiryType', e.target.value as InvestorInquiryType)}
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
                         style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
                         required
@@ -964,7 +1017,7 @@ export function Landing() {
                         <input
                           type="text"
                           value={investorFormData.customInquiryType}
-                          onChange={(e) => setInvestorFormData({ ...investorFormData, customInquiryType: e.target.value })}
+                          onChange={(e) => handleInvestorChange('customInquiryType', e.target.value)}
                           placeholder="Enter your inquiry type"
                           className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
                           style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -980,7 +1033,7 @@ export function Landing() {
                       <input
                         type="url"
                         value={investorFormData.linkedinUrl}
-                        onChange={(e) => setInvestorFormData({ ...investorFormData, linkedinUrl: e.target.value })}
+                        onChange={(e) => handleInvestorChange('linkedinUrl', e.target.value)}
                         placeholder="linkedin.com/in/yourprofile"
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4"
                         style={{ border: '4px solid black', backgroundColor: '#FADF0B' }}
@@ -993,7 +1046,7 @@ export function Landing() {
                       </label>
                       <textarea
                         value={investorFormData.message}
-                        onChange={(e) => setInvestorFormData({ ...investorFormData, message: e.target.value })}
+                        onChange={(e) => handleInvestorChange('message', e.target.value)}
                         placeholder="Tell us about your interest..."
                         rows={4}
                         className="w-full px-4 py-4 rounded-lg font-semibold text-lg focus:outline-none focus:ring-4 resize-none"
@@ -1207,22 +1260,22 @@ export function Landing() {
                         speech.pitch = 0.9;
 
                         const voices = window.speechSynthesis.getVoices();
-                        const maleVoice = voices.find(voice =>
-                          voice.lang.startsWith('en') &&
-                          !voice.name.toLowerCase().includes('female') &&
-                          !voice.name.toLowerCase().includes('woman') &&
-                          (voice.name.includes('Male') ||
-                          voice.name.includes('Daniel') ||
-                          voice.name.includes('Alex') ||
-                          voice.name.includes('Thomas') ||
-                          voice.name.includes('Fred') ||
-                          voice.name.includes('Google UK English Male') ||
-                          voice.name.includes('Microsoft David') ||
-                          voice.name.includes('Microsoft Mark'))
-                        ) || voices.find(voice =>
-                          voice.lang.startsWith('en') &&
-                          voice.gender === 'male'
-                        );
+                        const maleVoice =
+                          voices.find(voice =>
+                            voice.lang.startsWith('en') &&
+                            !voice.name.toLowerCase().includes('female') &&
+                            !voice.name.toLowerCase().includes('woman') &&
+                            (voice.name.includes('Male') ||
+                              voice.name.includes('Daniel') ||
+                              voice.name.includes('Alex') ||
+                              voice.name.includes('Thomas') ||
+                              voice.name.includes('Fred') ||
+                              voice.name.includes('Google UK English Male') ||
+                              voice.name.includes('Microsoft David') ||
+                              voice.name.includes('Microsoft Mark'))
+                          ) ||
+                          voices.find(voice => voice.lang.startsWith('en') && /male/i.test(voice.name)) ||
+                          voices[0];
                         if (maleVoice) speech.voice = maleVoice;
 
                         speech.onstart = () => setJessiAudioPlaying(true);

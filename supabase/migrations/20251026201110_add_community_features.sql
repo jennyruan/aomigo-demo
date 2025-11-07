@@ -106,12 +106,12 @@ CREATE POLICY "Anyone can view comments on public posts"
 CREATE POLICY "Users can create own comments"
   ON post_comments FOR INSERT
   TO authenticated
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK (auth.uid()::uuid = user_id);
 
 CREATE POLICY "Users can delete own comments"
   ON post_comments FOR DELETE
   TO authenticated
-  USING (auth.uid() = user_id);
+  USING (auth.uid()::uuid = user_id);
 
 -- Create post_likes table
 CREATE TABLE IF NOT EXISTS post_likes (
@@ -132,12 +132,12 @@ CREATE POLICY "Anyone can view likes"
 CREATE POLICY "Users can create own likes"
   ON post_likes FOR INSERT
   TO authenticated
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK (auth.uid()::uuid = user_id);
 
 CREATE POLICY "Users can delete own likes"
   ON post_likes FOR DELETE
   TO authenticated
-  USING (auth.uid() = user_id);
+  USING (auth.uid()::uuid = user_id);
 
 -- Create post_reactions table
 CREATE TABLE IF NOT EXISTS post_reactions (
@@ -159,12 +159,12 @@ CREATE POLICY "Anyone can view reactions"
 CREATE POLICY "Users can create own reactions"
   ON post_reactions FOR INSERT
   TO authenticated
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK (auth.uid()::uuid = user_id);
 
 CREATE POLICY "Users can delete own reactions"
   ON post_reactions FOR DELETE
   TO authenticated
-  USING (auth.uid() = user_id);
+  USING (auth.uid()::uuid = user_id);
 
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_post_comments_post_id ON post_comments(post_id);

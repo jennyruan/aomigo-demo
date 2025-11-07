@@ -38,6 +38,9 @@ function mapProfile(dto: any): UserProfile {
     language_preference: dto.language_preference ?? 'en',
     created_at: dto.created_at ?? new Date().toISOString(),
     updated_at: dto.updated_at ?? new Date().toISOString(),
+    display_name: dto.display_name ?? null,
+    organization_name: dto.organization_name ?? null,
+    avatar_config: dto.avatar_config ?? null,
   };
 }
 

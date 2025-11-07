@@ -85,20 +85,20 @@ CREATE POLICY "Users can read own profile"
   ON users
   FOR SELECT
   TO authenticated
-  USING (auth.uid() = id);
+  USING (auth.uid()::uuid = id);
 
 CREATE POLICY "Users can update own profile"
   ON users
   FOR UPDATE
   TO authenticated
-  USING (auth.uid() = id)
-  WITH CHECK (auth.uid() = id);
+  USING (auth.uid()::uuid = id)
+  WITH CHECK (auth.uid()::uuid = id);
 
 CREATE POLICY "Users can read own sessions"
   ON user_sessions
   FOR SELECT
   TO authenticated
-  USING (user_id = auth.uid());
+  USING (user_id = auth.uid()::uuid);
 
 CREATE POLICY "Anyone can create user"
   ON users
