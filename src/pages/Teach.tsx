@@ -88,8 +88,9 @@ export function Teach() {
         });
 
         if (createdSession) {
-          setSessionPrimaryId(createdSession.id ?? null);
-          setSessionId(createdSession.session_id ?? createdSession.id ?? fallbackSessionId);
+          const persistedSessionId = createdSession.session_id ?? createdSession.id ?? fallbackSessionId;
+          setSessionPrimaryId(persistedSessionId);
+          setSessionId(persistedSessionId);
         }
       } catch (sessionError) {
         console.error('[Teach] Failed to record teaching session', sessionError);
@@ -119,7 +120,7 @@ export function Teach() {
           await apiClient.request(`/api/v1/sessions/teaching/${identifier}`, {
             method: 'PATCH',
             body: {
-              user_answer: answer,
+              answer,
               quality_score: qualityScore,
             },
           });
@@ -128,7 +129,7 @@ export function Teach() {
           await apiClient.request(`/api/v1/sessions/teaching/${identifier}/answer`, {
             method: 'POST',
             body: {
-              user_answer: answer,
+              answer,
               quality_score: qualityScore,
             },
           });

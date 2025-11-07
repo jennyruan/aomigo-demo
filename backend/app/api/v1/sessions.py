@@ -50,3 +50,15 @@ async def update_teaching_answer(
     if record.user_id != current_user.uid:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     return record
+
+
+@router.patch("/teaching/{session_id}", response_model=TeachingSessionRecord)
+async def patch_teaching_session(
+    session_id: str,
+    payload: TeachingSessionAnswerUpdate,
+    current_user: CurrentUser,
+) -> TeachingSessionRecord:
+    record = await service.update_answer(current_user, session_id, payload)
+    if record.user_id != current_user.uid:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
+    return record
