@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, Users, Shield, Sparkles, ChevronRight, Menu, X, Eye, EyeOff, Volume2, Pause } from 'lucide-react';
+import { Check, Users, Shield, Sparkles, ChevronRight, Menu, X, Eye, EyeOff, Volume2, Pause, Twitter, Linkedin, Instagram } from 'lucide-react';
 import { toast } from 'sonner';
 import { apiClient } from '../lib/api/client';
 import { useStore } from '../hooks/useStore';
@@ -1205,7 +1205,7 @@ export function Landing() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div className="max-w-full">
               <div className="bg-white rounded-2xl p-6 sm:p-10" style={{ border: '6px solid black', boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)' }}>
                 <div className="flex items-start gap-4 sm:gap-6 mb-6">
                   <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center flex-shrink-0 text-3xl sm:text-4xl font-black" style={{ backgroundColor: '#00C8FF', border: '4px solid black', color: 'black' }}>
@@ -1215,8 +1215,11 @@ export function Landing() {
                     <h3 className="text-3xl sm:text-4xl font-black mb-2" style={{ color: 'black' }}>
                       Jenny
                     </h3>
-                    <p className="text-lg sm:text-xl font-bold" style={{ color: '#00C8FF' }}>
+                    <p className="text-lg sm:text-xl font-bold mb-2" style={{ color: '#00C8FF' }}>
                       Founder
+                    </p>
+                    <p className="text-base sm:text-lg font-semibold" style={{ color: 'black' }}>
+                      @jennyruanworks
                     </p>
                   </div>
                   <button
@@ -1225,7 +1228,7 @@ export function Landing() {
                         window.speechSynthesis.cancel();
                         setJennyAudioPlaying(false);
                       } else {
-                        const text = "Hi! This is Jenny Ruan, the founder of AOMIGO. I was raised by my grandparents after my parents separated when I was 5. My grandparents understood the importance of education and overfeeding a kid, but had no clue about a kid's curiosity and dreams. It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough guitar fund (could have been a DJ now, just saying). My grandparents could afford the purchase, but they didn't share my interests, thus they didn't support my dreams. We don't always get supports easily. That's why I founded AOMIGO. I want to build a modern community that can quickly and safely connect the needs and support. We are all people, people love helping people. We are AOMIGO, we empower people.";
+                        const text = "Hi! This is Jenny Ruan, the founder of AOMIGO. I was raised by my grandparents after my parents separated when I was 5. My grandparents understood the importance of education and overfeeding a kid, but had no clue about a kid's curiosity and dreams. It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough for a guitar (could have been a DJ now, just saying). My grandparents could afford the purchase, but they didn't share my interests, thus they didn't support my dreams. We don't always get support easily. That's why I founded AOMIGO. I want to build a modern community that can quickly and safely connect people's needs and provide support. We are all people, people love helping people. We are AOMIGO, we empower people.";
                         const speech = new SpeechSynthesisUtterance(text);
                         speech.rate = 0.95;
                         speech.pitch = 1.1;
@@ -1258,16 +1261,48 @@ export function Landing() {
                     )}
                   </button>
                 </div>
-                <div className="space-y-5">
+                <div className="space-y-5 mb-6">
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
                     Hi! This is Jenny Ruan, the founder of AOMIGO. I was raised by my grandparents after my parents separated when I was 5. My grandparents understood the importance of education and overfeeding a kid, but had no clue about a kid's curiosity and dreams.
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough guitar fund (could have been a DJ now, just saying). My grandparents could afford the purchase, but they didn't share my interests, thus they didn't support my dreams.
+                    It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough for a guitar (could have been a DJ now, just saying). My grandparents could afford the purchase, but they didn't share my interests, thus they didn't support my dreams.
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    We don't always get supports easily. That's why I founded AOMIGO. I want to build a modern community that can quickly and safely connect the needs and support. We are all people, people love helping people. We are AOMIGO, we empower people.
+                    We don't always get support easily. That's why I founded AOMIGO. I want to build a modern community that can quickly and safely connect people's needs and provide support. We are all people, people love helping people.
                   </p>
+                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
+                    We are AOMIGO, we empower people.
+                  </p>
+                </div>
+                <div className="flex gap-4 justify-start">
+                  <a
+                    href="https://x.com/jennyruanworks"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-lg hover:scale-110 transition-transform"
+                    style={{ backgroundColor: '#00C8FF', border: '3px solid black' }}
+                  >
+                    <Twitter className="w-6 h-6" style={{ color: 'black' }} />
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/jiani-ruan/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-lg hover:scale-110 transition-transform"
+                    style={{ backgroundColor: '#00C8FF', border: '3px solid black' }}
+                  >
+                    <Linkedin className="w-6 h-6" style={{ color: 'black' }} />
+                  </a>
+                  <a
+                    href="https://www.instagram.com/jennyruanworks/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-lg hover:scale-110 transition-transform"
+                    style={{ backgroundColor: '#00C8FF', border: '3px solid black' }}
+                  >
+                    <Instagram className="w-6 h-6" style={{ color: 'black' }} />
+                  </a>
                 </div>
               </div>
             </div>
