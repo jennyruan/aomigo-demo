@@ -375,10 +375,9 @@ export function Landing() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <img
-                src="/image copy.png"
+                src="/aomigo-logo-yellow.png"
                 alt="AOMIGO Logo"
-                className="h-12 w-12 rounded-lg"
-                style={{ border: '2px solid white', backgroundColor: '#FBDF09' }}
+                className="h-12 w-12"
               />
               <div className="text-2xl font-black" style={{ color: 'white' }}>AOMIGO</div>
             </div>
@@ -1239,10 +1238,9 @@ export function Landing() {
         <div className="max-w-7xl mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
             <img
-              src="/image copy.png"
+              src="/aomigo-logo-yellow.png"
               alt="AOMIGO Logo"
-              className="h-16 w-16 rounded-lg"
-              style={{ border: '3px solid white', backgroundColor: '#FBDF09' }}
+              className="h-16 w-16"
             />
             <div className="text-3xl font-black" style={{ color: 'white' }}>AOMIGO</div>
           </div>
