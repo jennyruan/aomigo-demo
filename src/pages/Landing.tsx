@@ -1231,7 +1231,7 @@ export function Landing() {
                         window.speechSynthesis.cancel();
                         setJennyAudioPlaying(false);
                       } else {
-                        const text = "Hi friends! I'm Jenny, and AOMIGO is my love letter to every dreamer out there. When I was 5, my grandparents became my world. They loved me deeply - maybe too much! They fed me plenty but forgot to feed my dreams. Remember being a kid with big dreams? I do. Three years of begging for a laptop. A whole year saving lunch money for a guitar. Not because we were poor - but because no one understood why it mattered. Every child deserves someone who says I believe in you. Every person needs a friend who truly gets them. That's why AOMIGO exists - to be that friend, that believer, that supporter you deserve. Available 24/7, because dreams don't wait. Together, we're building a world where no dream goes unsupported. Welcome to our family! We are AOMIGO, we empower people.";
+                        const text = "Hi! I'm Jenny Ruan, founder of AOMIGO. My grandparents raised me after my parents separated when I was 5. They understood the importance of education, but had no clue about a kid's curiosity and dreams. It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough for a guitar (could totally have been a DJ by now, just saying). My grandparents could afford these things, but they didn't share my interests, so they didn't support my dreams. We don't always get support easily. That's exactly why I founded AOMIGO. I want to build a modern community where people can support each other beyond friends and family. People want to help people; AOMIGO connects people. I also want to make our lives super fun and bring all the good childhood memories back. When I was a kid, I thought adults could do whatever they want. Now I'm an adult, so of course I can build a green and yellow and pink CRM. We are AOMIGO, we empower people.";
                         const speech = new SpeechSynthesisUtterance(text);
                         speech.rate = 0.95;
                         speech.pitch = 1.1;
@@ -1266,25 +1266,22 @@ export function Landing() {
                 </div>
                 <div className="space-y-5 mb-6">
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    Hi friends! I'm Jenny, and AOMIGO is my love letter to every dreamer out there. 💛
+                    Hi! I'm Jenny Ruan, founder of AOMIGO. 💛
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    When I was 5, my grandparents became my world. They loved me deeply - maybe too much! They fed me plenty but forgot to feed my dreams.
+                    My grandparents raised me after my parents separated when I was 5. They understood the importance of education, but had no clue about a kid's curiosity and dreams.
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    Remember being a kid with big dreams? I do. Three years of begging for a laptop. A whole year saving lunch money for a guitar. Not because we were poor - but because no one understood why it mattered.
+                    It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough for a guitar (could totally have been a DJ by now, just saying). My grandparents could afford these things, but they didn't share my interests, so they didn't support my dreams.
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    Every child deserves someone who says "I believe in you." Every person needs a friend who truly gets them.
+                    We don't always get support easily. That's exactly why I founded AOMIGO. I want to build a modern community where people can support each other beyond friends and family. People want to help people; AOMIGO connects people.
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    That's why AOMIGO exists - to be that friend, that believer, that supporter you deserve. Available 24/7, because dreams don't wait.
+                    I also want to make our lives super fun and bring all the good childhood memories back. When I was a kid, I thought adults could do whatever they want. Now I'm an adult, so of course I can build a green and yellow and pink CRM.
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    Together, we're building a world where no dream goes unsupported. Welcome to our family! 🌟
-                  </p>
-                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    We are AOMIGO, we empower people.
+                    We are AOMIGO, we empower people. 🌟
                   </p>
                 </div>
                 <div className="flex gap-4 justify-start">
