@@ -933,7 +933,7 @@ export function Landing() {
               VIBE CHECK
             </h2>
             <p className="text-xl sm:text-2xl font-semibold text-center mb-16" style={{ color: 'black' }}>
-              Fund us, ask us, tell us, let's vibe!
+              💰 Fund us, 💬 ask us, 📣 tell us, ✨ let's vibe!
             </p>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
