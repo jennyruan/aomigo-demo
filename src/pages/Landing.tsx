@@ -729,10 +729,10 @@ export function Landing() {
                 Help us design AOMIGO's logo!
               </h3>
               <div className="text-base sm:text-lg font-semibold leading-relaxed mb-8 max-w-3xl mx-auto" style={{ color: 'black' }}>
-                <p className="mb-4">AOMIGO is your AI-powered friend for life!</p>
-                <p className="mb-4"><span className="font-black">For kids & adults:</span> Get personal support, learn new things, and have fun.</p>
-                <p className="mb-4"><span className="font-black">For groups & businesses:</span> Unique solutions that keep you entertained even doing the most boring work.</p>
-                <p>We're building a friendly community where everyone helps each other to be happy!</p>
+                <p className="mb-4">AOMIGO is your AI-powered friend for life! 🌟</p>
+                <p className="mb-4"><span className="font-black">For kids & adults:</span> Get personal support, learn new things, and have fun. 🎓✨</p>
+                <p className="mb-4"><span className="font-black">For groups & businesses:</span> Unique solutions that keep you entertained even doing the most boring work. 💼🎉</p>
+                <p>We're building a friendly community where everyone helps each other to be happy! 💛</p>
               </div>
               <h3 className="text-2xl sm:text-3xl font-black mb-6" style={{ color: 'black' }}>
                 Submit your design in...
