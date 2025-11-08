@@ -728,9 +728,12 @@ export function Landing() {
               <h3 className="text-2xl sm:text-3xl font-black mb-6" style={{ color: 'black' }}>
                 Help us design AOMIGO's logo!
               </h3>
-              <p className="text-base sm:text-lg font-semibold leading-relaxed mb-8 max-w-3xl mx-auto" style={{ color: 'black' }}>
-                AOMIGO is your AI-powered playground where you learn, grow, and have fun with friends! Whether you're working on homework, playing games, or doing group projects, we're here to help. We're a friendly community where everyone - kids, parents, teachers, and teams - can connect and achieve amazing things together. We believe in making everyone's life easier and more fun!
-              </p>
+              <div className="text-base sm:text-lg font-semibold leading-relaxed mb-8 max-w-3xl mx-auto" style={{ color: 'black' }}>
+                <p className="mb-4">AOMIGO is your AI-powered friend for life!</p>
+                <p className="mb-4"><span className="font-black">For kids & adults:</span> Get personal support, learn new things, and have fun.</p>
+                <p className="mb-4"><span className="font-black">For groups & businesses:</span> Unique solutions that keep you entertained even doing the most boring work.</p>
+                <p>We're building a friendly community where everyone helps each other to be happy!</p>
+              </div>
               <h3 className="text-2xl sm:text-3xl font-black mb-6" style={{ color: 'black' }}>
                 Submit your design in...
               </h3>
@@ -1200,12 +1203,9 @@ export function Landing() {
         <section id="story" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FFA040' }}>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-14">
-              <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>
-                For A Good Cause, For A Noice Day
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-6" style={{ color: 'black', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>
+                For A Good Cause • For A Noice Day
               </h2>
-              <p className="text-2xl font-black" style={{ color: 'black' }}>
-                A Story of Love & Dreams
-              </p>
             </div>
 
             <div className="max-w-full">
