@@ -101,6 +101,7 @@ export function Landing() {
   const [isContestSubmitted, setIsContestSubmitted] = useState(false);
   const [isInvestorSubmitting, setIsInvestorSubmitting] = useState(false);
   const [isInvestorSubmitted, setIsInvestorSubmitted] = useState(false);
+  const [showDemoDropdown, setShowDemoDropdown] = useState(false);
   const [isAuthSubmitting, setIsAuthSubmitting] = useState(false);
   const { createProfile, syncSession } = useStore();
   const navigate = useNavigate();
@@ -407,24 +408,39 @@ export function Landing() {
                 STORY
               </button>
               <span className="text-white font-bold">|</span>
-              <a
-                href="https://demo.aomigo.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-2 font-bold text-sm rounded-lg transition-all hover:bg-opacity-90 whitespace-nowrap"
-                style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', color: 'black', backgroundColor: '#B4FF39' }}
-              >
-                USER DEMO
-              </a>
-              <a
-                href="https://groupdemo.aomigo.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-2 font-bold text-sm rounded-lg transition-all hover:bg-opacity-90 whitespace-nowrap"
-                style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', color: 'black', backgroundColor: '#B4FF39' }}
-              >
-                GROUP DEMO
-              </a>
+              <div className="relative">
+                <button
+                  onClick={() => setShowDemoDropdown(!showDemoDropdown)}
+                  className="px-3 py-2 font-bold text-sm rounded-lg transition-all hover:bg-opacity-90 whitespace-nowrap flex items-center gap-1"
+                  style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', color: 'black', backgroundColor: '#B4FF39' }}
+                >
+                  DEMO
+                  <ChevronRight className={`w-4 h-4 transition-transform ${showDemoDropdown ? 'rotate-90' : ''}`} />
+                </button>
+                {showDemoDropdown && (
+                  <div className="absolute top-full mt-2 right-0 rounded-lg overflow-hidden" style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', backgroundColor: '#B4FF39', minWidth: '160px' }}>
+                    <a
+                      href="https://demo.aomigo.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-3 font-bold text-sm hover:bg-white hover:bg-opacity-30 transition-all"
+                      style={{ color: 'black' }}
+                    >
+                      USER DEMO
+                    </a>
+                    <div className="border-t-2 border-black"></div>
+                    <a
+                      href="https://groupdemo.aomigo.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-3 font-bold text-sm hover:bg-white hover:bg-opacity-30 transition-all"
+                      style={{ color: 'black' }}
+                    >
+                      GROUP DEMO
+                    </a>
+                  </div>
+                )}
+              </div>
               <span className="text-white font-bold">|</span>
               <button
                 onClick={() => setShowAuthModal(true)}
