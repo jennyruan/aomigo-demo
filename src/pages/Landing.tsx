@@ -1231,7 +1231,7 @@ export function Landing() {
                         window.speechSynthesis.cancel();
                         setJennyAudioPlaying(false);
                       } else {
-                        const text = "Hi! I'm Jenny Ruan, founder of AOMIGO. My grandparents raised me after my parents separated when I was 5. They understood the importance of education, but had no clue about a kid's curiosity and dreams. It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough for a guitar (could totally have been a DJ by now, just saying). My grandparents could afford these things, but they didn't share my interests, so they didn't support my dreams. We don't always get support easily. That's exactly why I founded AOMIGO. I want to build a modern community where people can support each other beyond friends and family. People want to help people; AOMIGO connects people. I also want to make our lives super fun and bring all the good childhood memories back. When I was a kid, I thought adults could do whatever they want. Now I'm an adult, so of course I can build a green and yellow and pink CRM. We are AOMIGO, we empower people.";
+                        const text = "Hi everybody, this is Jenny Ruan. When I was a child, I planned to make tons of money and donate them to people. Now I am an adult with almost no money, I decided to connect people and let themselves figure it out. I talked and met with a lot of people - kid needing accompany, adult needing mentorship, elderly needing IT support - they can all be connected on AOMIGO. We are AOMIGO, fun and helpful.";
                         const speech = new SpeechSynthesisUtterance(text);
                         speech.rate = 0.95;
                         speech.pitch = 1.1;
@@ -1266,22 +1266,19 @@ export function Landing() {
                 </div>
                 <div className="space-y-5 mb-6">
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    Hi! I'm Jenny Ruan, founder of AOMIGO. 💛
+                    Hi everybody, this is Jenny Ruan💛
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    My grandparents raised me after my parents separated when I was 5. They understood the importance of education, but had no clue about a kid's curiosity and dreams.
+                    When I was a child, I planned to make tons of 💰 and donate them to people.
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough for a guitar (could totally have been a DJ by now, just saying). My grandparents could afford these things, but they didn't share my interests, so they didn't support my dreams.
+                    Now I am an adult with almost no 💰, I decided to connect people and let themselves figure it out.
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    We don't always get support easily. That's exactly why I founded AOMIGO. I want to build a modern community where people can support each other beyond friends and family. People want to help people; AOMIGO connects people.
+                    I talked and met with a lot of people - kid needing accompany, adult needing mentorship, elderly needing IT support - they can all be connected on AOMIGO.
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    I also want to make our lives super fun and bring all the good childhood memories back. When I was a kid, I thought adults could do whatever they want. Now I'm an adult, so of course I can build a green and yellow and pink CRM.
-                  </p>
-                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    We are AOMIGO, we empower people. 🌟
+                    We are AOMIGO, fun & helpful🌟
                   </p>
                 </div>
                 <div className="flex gap-4 justify-start">
