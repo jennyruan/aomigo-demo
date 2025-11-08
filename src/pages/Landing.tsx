@@ -1169,7 +1169,7 @@ export function Landing() {
                 rel="noopener noreferrer"
                 className="w-full text-white px-6 py-4 rounded-xl font-black text-xl transition-all flex items-center justify-center gap-2 hover:translate-y-[-2px]"
                 style={{
-                  backgroundColor: '#FDE047',
+                  backgroundColor: '#FFA13F',
                   border: '4px solid black',
                   boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                 }}
