@@ -385,15 +385,15 @@ export function Landing() {
             <nav className="hidden lg:flex items-center gap-2">
               <button
                 onClick={() => scrollToSection('events')}
-                className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
+                className="px-3 py-2 font-bold text-sm rounded-lg transition-all hover:bg-white hover:bg-opacity-20 whitespace-nowrap"
                 style={{ color: activeSection === 'events' ? 'black' : 'white', textShadow: '2px 4px 4px rgba(255,255,255,0.5)', backgroundColor: activeSection === 'events' ? '#B4FF39' : 'transparent' }}
               >
-                DOPE EVENTS
+                EVENTS
               </button>
               <span className="text-white font-bold" style={{ textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>|</span>
               <button
                 onClick={() => scrollToSection('collab')}
-                className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
+                className="px-3 py-2 font-bold text-sm rounded-lg transition-all hover:bg-white hover:bg-opacity-20 whitespace-nowrap"
                 style={{ color: activeSection === 'collab' ? 'black' : 'white', textShadow: '2px 4px 4px rgba(255,255,255,0.5)', backgroundColor: activeSection === 'collab' ? '#B4FF39' : 'transparent' }}
               >
                 VIBE CHECK
@@ -401,15 +401,34 @@ export function Landing() {
               <span className="text-white font-bold" style={{ textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>|</span>
               <button
                 onClick={() => scrollToSection('story')}
-                className="px-4 py-2 font-bold text-base rounded-lg transition-all hover:bg-white hover:bg-opacity-20"
+                className="px-3 py-2 font-bold text-sm rounded-lg transition-all hover:bg-white hover:bg-opacity-20 whitespace-nowrap"
                 style={{ color: activeSection === 'story' ? 'black' : 'white', textShadow: '2px 4px 4px rgba(255,255,255,0.5)', backgroundColor: activeSection === 'story' ? '#B4FF39' : 'transparent' }}
               >
-                AOMIGO STORY
+                STORY
               </button>
+              <span className="text-white font-bold">|</span>
+              <a
+                href="https://demo.aomigo.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-2 font-bold text-sm rounded-lg transition-all hover:bg-opacity-90 whitespace-nowrap"
+                style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', color: 'black', backgroundColor: '#B4FF39' }}
+              >
+                USER DEMO
+              </a>
+              <a
+                href="https://groupdemo.aomigo.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-2 font-bold text-sm rounded-lg transition-all hover:bg-opacity-90 whitespace-nowrap"
+                style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', color: 'black', backgroundColor: '#B4FF39' }}
+              >
+                GROUP DEMO
+              </a>
               <span className="text-white font-bold">|</span>
               <button
                 onClick={() => setShowAuthModal(true)}
-                className="px-4 py-2 font-bold text-base bg-white rounded-lg transition-all hover:bg-opacity-90"
+                className="px-3 py-2 font-bold text-sm bg-white rounded-lg transition-all hover:bg-opacity-90 whitespace-nowrap"
                 style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', color: 'black', backgroundColor: '#B4FF39' }}
               >
                 SIGN IN/UP
@@ -433,7 +452,7 @@ export function Landing() {
                   className="px-4 py-3 font-bold text-lg text-left rounded-lg"
                   style={{ border: '3px solid black', backgroundColor: activeSection === 'events' ? '#B4FF39' : 'white', color: 'black' }}
                 >
-                  DOPE EVENTS
+                  EVENTS
                 </button>
                 <button
                   onClick={() => scrollToSection('collab')}
@@ -447,8 +466,26 @@ export function Landing() {
                   className="px-4 py-3 font-bold text-lg text-left rounded-lg"
                   style={{ border: '3px solid black', backgroundColor: activeSection === 'story' ? '#B4FF39' : 'white', color: 'black' }}
                 >
-                  AOMIGO STORY
+                  STORY
                 </button>
+                <a
+                  href="https://demo.aomigo.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-3 font-bold text-lg text-left rounded-lg"
+                  style={{ border: '3px solid black', backgroundColor: '#B4FF39', color: 'black' }}
+                >
+                  INDIVIDUAL USER DEMO
+                </a>
+                <a
+                  href="https://groupdemo.aomigo.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-3 font-bold text-lg text-left rounded-lg"
+                  style={{ border: '3px solid black', backgroundColor: '#B4FF39', color: 'black' }}
+                >
+                  GROUP USER DEMO
+                </a>
                 <button
                   onClick={() => {
                     setShowAuthModal(true);
