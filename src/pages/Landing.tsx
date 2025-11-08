@@ -690,7 +690,7 @@ export function Landing() {
           <div className="max-w-5xl mx-auto">
             <div className="bg-white rounded-2xl p-8 text-center mb-10" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
               <h3 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: 'black' }}>
-                Please help us design AOMIGO's logo!
+                Help us design AOMIGO's logo!
               </h3>
               <h3 className="text-2xl sm:text-3xl font-black mb-6" style={{ color: 'black' }}>
                 Submit your design in...
