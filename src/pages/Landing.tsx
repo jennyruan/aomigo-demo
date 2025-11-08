@@ -375,7 +375,7 @@ export function Landing() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <img
-                src="/ios-appstore-1024x1024.png"
+                src="/image copy.png"
                 alt="AOMIGO Logo"
                 className="h-12 w-12 rounded-lg"
                 style={{ border: '2px solid white', backgroundColor: '#FBDF09' }}
@@ -1239,7 +1239,7 @@ export function Landing() {
         <div className="max-w-7xl mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
             <img
-              src="/ios-appstore-1024x1024.png"
+              src="/image copy.png"
               alt="AOMIGO Logo"
               className="h-16 w-16 rounded-lg"
               style={{ border: '3px solid white', backgroundColor: '#FBDF09' }}
