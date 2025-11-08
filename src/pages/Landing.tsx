@@ -469,17 +469,27 @@ export function Landing() {
                       className="block px-4 py-3 font-bold text-sm hover:bg-white hover:bg-opacity-30 transition-all"
                       style={{ color: 'black' }}
                     >
-                      INDIVIDUAL USER DEMO
+                      FUN DEMO
                     </a>
                     <div className="border-t-2 border-black"></div>
                     <a
-                      href="https://groupdemo.aomigo.com"
+                      href="https://teamdemo.aomigo.com"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block px-4 py-3 font-bold text-sm hover:bg-white hover:bg-opacity-30 transition-all"
                       style={{ color: 'black' }}
                     >
-                      GROUP USER DEMO
+                      TEAM DEMO
+                    </a>
+                    <div className="border-t-2 border-black"></div>
+                    <a
+                      href="https://marketdemo.aomigo.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-3 font-bold text-sm hover:bg-white hover:bg-opacity-30 transition-all"
+                      style={{ color: 'black' }}
+                    >
+                      MARKET DEMO
                     </a>
                   </div>
                 )}
@@ -1197,7 +1207,7 @@ export function Landing() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10 max-w-6xl mx-auto">
               <a
                 href="https://demo.aomigo.com"
                 target="_blank"
@@ -1209,10 +1219,10 @@ export function Landing() {
                   boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                 }}
               >
-                INDIVIDUAL USER DEMO
+                FUN DEMO
               </a>
               <a
-                href="https://groupdemo.aomigo.com"
+                href="https://teamdemo.aomigo.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full text-white px-6 py-4 rounded-xl font-black text-xl transition-all flex items-center justify-center gap-2 hover:translate-y-[-2px]"
@@ -1222,7 +1232,20 @@ export function Landing() {
                   boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                 }}
               >
-                GROUP USER DEMO
+                TEAM DEMO
+              </a>
+              <a
+                href="https://marketdemo.aomigo.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-white px-6 py-4 rounded-xl font-black text-xl transition-all flex items-center justify-center gap-2 hover:translate-y-[-2px]"
+                style={{
+                  backgroundColor: '#FF999A',
+                  border: '4px solid black',
+                  boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
+                }}
+              >
+                MARKET DEMO
               </a>
             </div>
           </div>
