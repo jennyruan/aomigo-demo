@@ -1201,10 +1201,10 @@ export function Landing() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-14">
               <h2 className="text-5xl sm:text-6xl font-black mb-6" style={{ color: 'black', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>
-                AOMIGO STORY
+                For A Good Cause, For A Noice Day
               </h2>
               <p className="text-2xl font-black" style={{ color: 'black' }}>
-                The hearts behind AOMIGO
+                A Story of Love & Dreams
               </p>
             </div>
 
@@ -1231,7 +1231,7 @@ export function Landing() {
                         window.speechSynthesis.cancel();
                         setJennyAudioPlaying(false);
                       } else {
-                        const text = "Hi! This is Jenny Ruan, the founder of AOMIGO. I was raised by my grandparents after my parents separated when I was 5. My grandparents understood the importance of education and overfeeding a kid, but had no clue about a kid's curiosity and dreams. It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough for a guitar (could have been a DJ now, just saying). My grandparents could afford the purchase, but they didn't share my interests, thus they didn't support my dreams. We don't always get support easily. That's why I founded AOMIGO. I want to build a modern community that can quickly and safely connect people's needs and provide support. We are all people, people love helping people. We are AOMIGO, we empower people.";
+                        const text = "Hi friends! I'm Jenny, and AOMIGO is my love letter to every dreamer out there. When I was 5, my grandparents became my world. They loved me deeply - maybe too much! They fed me plenty but forgot to feed my dreams. Remember being a kid with big dreams? I do. Three years of begging for a laptop. A whole year saving lunch money for a guitar. Not because we were poor - but because no one understood why it mattered. Every child deserves someone who says I believe in you. Every person needs a friend who truly gets them. That's why AOMIGO exists - to be that friend, that believer, that supporter you deserve. Available 24/7, because dreams don't wait. Together, we're building a world where no dream goes unsupported. Welcome to our family! We are AOMIGO, we empower people.";
                         const speech = new SpeechSynthesisUtterance(text);
                         speech.rate = 0.95;
                         speech.pitch = 1.1;
@@ -1266,13 +1266,22 @@ export function Landing() {
                 </div>
                 <div className="space-y-5 mb-6">
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    Hi! This is Jenny Ruan, the founder of AOMIGO. I was raised by my grandparents after my parents separated when I was 5. My grandparents understood the importance of education and overfeeding a kid, but had no clue about a kid's curiosity and dreams.
+                    Hi friends! I'm Jenny, and AOMIGO is my love letter to every dreamer out there. 💛
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    It took me 3 years to convince them to buy me a laptop, and a whole year in elementary school to save enough for a guitar (could have been a DJ now, just saying). My grandparents could afford the purchase, but they didn't share my interests, thus they didn't support my dreams.
+                    When I was 5, my grandparents became my world. They loved me deeply - maybe too much! They fed me plenty but forgot to feed my dreams.
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    We don't always get support easily. That's why I founded AOMIGO. I want to build a modern community that can quickly and safely connect people's needs and provide support. We are all people, people love helping people.
+                    Remember being a kid with big dreams? I do. Three years of begging for a laptop. A whole year saving lunch money for a guitar. Not because we were poor - but because no one understood why it mattered.
+                  </p>
+                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
+                    Every child deserves someone who says "I believe in you." Every person needs a friend who truly gets them.
+                  </p>
+                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
+                    That's why AOMIGO exists - to be that friend, that believer, that supporter you deserve. Available 24/7, because dreams don't wait.
+                  </p>
+                  <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
+                    Together, we're building a world where no dream goes unsupported. Welcome to our family! 🌟
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
                     We are AOMIGO, we empower people.
