@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, Users, Shield, Sparkles, ChevronRight, Menu, X, Eye, EyeOff, Volume2, Pause, Twitter, Linkedin, Instagram } from 'lucide-react';
+import { Check, Users, Shield, Sparkles, ChevronRight, Menu, X, Eye, EyeOff, Volume2, Pause, Linkedin, Instagram, Star, Heart } from 'lucide-react';
 import { toast } from 'sonner';
 import { apiClient } from '../lib/api/client';
 import { useStore } from '../hooks/useStore';
@@ -1125,31 +1125,31 @@ export function Landing() {
                 <div className="space-y-6">
                   <div className="p-6 rounded-xl" style={{ backgroundColor: '#FADF0B', border: '4px solid black' }}>
                     <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: 'black' }}>
-                      <Users className="w-7 h-7" />
-                      Friends Online
+                      <Star className="w-7 h-7" />
+                      Good Cause
                     </h4>
                     <p className="font-semibold text-lg leading-relaxed" style={{ color: 'black' }}>
-                      AOMIGO keeps you safe online with real verified people. Like having a trusted friend always there!
+                      We help everyone do good things together! When you help someone, they help others too. Making the world better, one friend at a time.
                     </p>
                   </div>
 
                   <div className="p-6 rounded-xl" style={{ backgroundColor: '#FADF0B', border: '4px solid black' }}>
                     <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: 'black' }}>
                       <Shield className="w-7 h-7" />
-                      Always Here for You
+                      Clean Community
                     </h4>
                     <p className="font-semibold text-lg leading-relaxed" style={{ color: 'black' }}>
-                      We help you ask for what you need and find the right help - 24/7. Real friends first, digital backup second.
+                      No annoying ads here! We check everything to keep AOMIGO friendly and kind. Like a playground where everyone plays nice.
                     </p>
                   </div>
 
                   <div className="p-6 rounded-xl" style={{ backgroundColor: '#FADF0B', border: '4px solid black' }}>
                     <h4 className="text-2xl font-black mb-4 flex items-center gap-3" style={{ color: 'black' }}>
-                      <Sparkles className="w-7 h-7" />
-                      Our Vision
+                      <Heart className="w-7 h-7" />
+                      Effective Support
                     </h4>
                     <p className="font-semibold text-lg leading-relaxed" style={{ color: 'black' }}>
-                      Making schools and communities safer and more connected with smart tech.
+                      Your AI pet friend is always with you! We help you find the right friends and get help super fast. Like having a best friend in your pocket 24/7.
                     </p>
                   </div>
 
@@ -1283,7 +1283,7 @@ export function Landing() {
                     className="p-3 rounded-lg hover:scale-110 transition-transform"
                     style={{ backgroundColor: '#00C8FF', border: '3px solid black' }}
                   >
-                    <Twitter className="w-6 h-6" style={{ color: 'black' }} />
+                    <X className="w-6 h-6" style={{ color: 'black' }} />
                   </a>
                   <a
                     href="https://www.linkedin.com/in/jiani-ruan/"
