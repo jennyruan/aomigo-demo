@@ -1204,7 +1204,7 @@ export function Landing() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-14">
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-6" style={{ color: 'black', textShadow: '2px 4px 4px rgba(255,255,255,0.5)' }}>
-                For A Good Cause • For A Noice Day
+                FUN & HELPFUL
               </h2>
             </div>
 
