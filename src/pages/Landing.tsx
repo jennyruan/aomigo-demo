@@ -1163,28 +1163,32 @@ export function Landing() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10 max-w-4xl mx-auto">
-              <button
-                type="button"
+              <a
+                href="https://demo.aomigo.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full text-white px-6 py-4 rounded-xl font-black text-xl transition-all flex items-center justify-center gap-2 hover:translate-y-[-2px]"
                 style={{
-                  backgroundColor: '#F16523',
+                  backgroundColor: '#FDE047',
                   border: '4px solid black',
                   boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                 }}
               >
                 INDIVIDUAL USER DEMO
-              </button>
-              <button
-                type="button"
+              </a>
+              <a
+                href="https://groupdemo.aomigo.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full text-white px-6 py-4 rounded-xl font-black text-xl transition-all flex items-center justify-center gap-2 hover:translate-y-[-2px]"
                 style={{
-                  backgroundColor: '#F16523',
+                  backgroundColor: '#00B4AC',
                   border: '4px solid black',
                   boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
                 }}
               >
                 GROUP USER DEMO
-              </button>
+              </a>
             </div>
           </div>
         </section>
