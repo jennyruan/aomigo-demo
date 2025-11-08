@@ -725,9 +725,12 @@ export function Landing() {
         <section id="events" className="py-16 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#FADF0B' }}>
           <div className="max-w-5xl mx-auto">
             <div className="bg-white rounded-2xl p-8 text-center mb-10" style={{ border: '6px solid black', boxShadow: '6px 6px 0px 0px rgba(0,0,0,1)' }}>
-              <h3 className="text-2xl sm:text-3xl font-black mb-2" style={{ color: 'black' }}>
+              <h3 className="text-2xl sm:text-3xl font-black mb-6" style={{ color: 'black' }}>
                 Help us design AOMIGO's logo!
               </h3>
+              <p className="text-base sm:text-lg font-semibold leading-relaxed mb-8 max-w-3xl mx-auto" style={{ color: 'black' }}>
+                AOMIGO is your AI-powered playground where you learn, grow, and have fun with friends! Whether you're working on homework, playing games, or doing group projects, we're here to help. We're a friendly community where everyone - kids, parents, teachers, and teams - can connect and achieve amazing things together. We believe in making everyone's life easier and more fun!
+              </p>
               <h3 className="text-2xl sm:text-3xl font-black mb-6" style={{ color: 'black' }}>
                 Submit your design in...
               </h3>
@@ -879,7 +882,7 @@ export function Landing() {
                         </>
                       ) : (
                         <>
-                          SIGN UP & JOIN CONTEST
+                          SIGN UP & SUBMIT LOGO
                           <ChevronRight className="w-7 h-7" />
                         </>
                       )}
