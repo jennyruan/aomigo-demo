@@ -27,10 +27,16 @@
   }
 
   @media (max-width: 768px) {
-    body, p, span, div, h1, h2, h3, h4, h5, h6, button, input, textarea, label {
+    body, p, span, div, h1, h2, h3, h4, h5, h6, button, input, textarea, label, a {
       font-family: 'Lexend Mega', sans-serif;
       font-weight: 100 !important;
       color: #000000 !important;
+      text-shadow: none !important;
+    }
+
+    body *, p *, span *, div *, h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
+      color: #000000 !important;
+      text-shadow: none !important;
     }
   }
 }

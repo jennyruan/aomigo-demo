@@ -451,13 +451,47 @@ export function Landing() {
               </button>
             </nav>
 
-            <button
-              onClick={() => setShowMobileMenu(!showMobileMenu)}
-              className="lg:hidden p-2 rounded-lg bg-white"
-              style={{ border: '3px solid black' }}
-            >
-              {showMobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            <div className="lg:hidden flex items-center gap-2">
+              <div className="relative">
+                <button
+                  onClick={() => setShowDemoDropdown(!showDemoDropdown)}
+                  className="p-2 rounded-lg font-bold text-sm flex items-center gap-1"
+                  style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', color: 'black', backgroundColor: '#B4FF39' }}
+                >
+                  DEMO
+                </button>
+                {showDemoDropdown && (
+                  <div className="absolute top-full mt-2 right-0 rounded-lg overflow-hidden z-50" style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', backgroundColor: '#B4FF39', minWidth: '200px' }}>
+                    <a
+                      href="https://demo.aomigo.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-3 font-bold text-sm hover:bg-white hover:bg-opacity-30 transition-all"
+                      style={{ color: 'black' }}
+                    >
+                      INDIVIDUAL USER DEMO
+                    </a>
+                    <div className="border-t-2 border-black"></div>
+                    <a
+                      href="https://groupdemo.aomigo.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-3 font-bold text-sm hover:bg-white hover:bg-opacity-30 transition-all"
+                      style={{ color: 'black' }}
+                    >
+                      GROUP USER DEMO
+                    </a>
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={() => setShowMobileMenu(!showMobileMenu)}
+                className="p-2 rounded-lg bg-white"
+                style={{ border: '3px solid black' }}
+              >
+                {showMobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
 
           {showMobileMenu && (
@@ -484,31 +518,13 @@ export function Landing() {
                 >
                   STORY
                 </button>
-                <a
-                  href="https://demo.aomigo.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-3 font-bold text-lg text-left rounded-lg"
-                  style={{ border: '3px solid black', backgroundColor: '#B4FF39', color: 'black' }}
-                >
-                  INDIVIDUAL USER DEMO
-                </a>
-                <a
-                  href="https://groupdemo.aomigo.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-3 font-bold text-lg text-left rounded-lg"
-                  style={{ border: '3px solid black', backgroundColor: '#B4FF39', color: 'black' }}
-                >
-                  GROUP USER DEMO
-                </a>
                 <button
                   onClick={() => {
                     setShowAuthModal(true);
                     setShowMobileMenu(false);
                   }}
-                  className="px-4 py-3 font-bold text-lg text-left bg-white rounded-lg"
-                  style={{ border: '3px solid black' }}
+                  className="px-4 py-3 font-bold text-lg text-left rounded-lg"
+                  style={{ border: '3px solid black', backgroundColor: '#B4FF39', color: 'black' }}
                 >
                   SIGN IN/UP
                 </button>
