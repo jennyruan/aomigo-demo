@@ -418,7 +418,7 @@ export function Landing() {
                   <ChevronRight className={`w-4 h-4 transition-transform ${showDemoDropdown ? 'rotate-90' : ''}`} />
                 </button>
                 {showDemoDropdown && (
-                  <div className="absolute top-full mt-2 right-0 rounded-lg overflow-hidden" style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', backgroundColor: '#B4FF39', minWidth: '160px' }}>
+                  <div className="absolute top-full mt-2 right-0 rounded-lg overflow-hidden z-50" style={{ border: '3px solid black', boxShadow: '3px 3px 0px 0px rgba(0,0,0,1)', backgroundColor: '#B4FF39', minWidth: '200px' }}>
                     <a
                       href="https://demo.aomigo.com"
                       target="_blank"
@@ -426,17 +426,27 @@ export function Landing() {
                       className="block px-4 py-3 font-bold text-sm hover:bg-white hover:bg-opacity-30 transition-all"
                       style={{ color: 'black' }}
                     >
-                      USER DEMO
+                      FUN DEMO
                     </a>
                     <div className="border-t-2 border-black"></div>
                     <a
-                      href="https://groupdemo.aomigo.com"
+                      href="https://teamdemo.aomigo.com"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block px-4 py-3 font-bold text-sm hover:bg-white hover:bg-opacity-30 transition-all"
                       style={{ color: 'black' }}
                     >
-                      GROUP DEMO
+                      TEAM DEMO
+                    </a>
+                    <div className="border-t-2 border-black"></div>
+                    <a
+                      href="https://marketdemo.aomigo.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block px-4 py-3 font-bold text-sm hover:bg-white hover:bg-opacity-30 transition-all"
+                      style={{ color: 'black' }}
+                    >
+                      MARKET DEMO
                     </a>
                   </div>
                 )}
