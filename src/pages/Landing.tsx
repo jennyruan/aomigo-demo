@@ -1293,7 +1293,7 @@ export function Landing() {
                         window.speechSynthesis.cancel();
                         setJennyAudioPlaying(false);
                       } else {
-                        const text = "Hi everybody, this is Jenny Ruan. When I was a child, I planned to make tons of money and donate them to people. Now I am finally an adult, I found out that making money is very easy. I also learned that money, cannot effectively help everyone. I talked and met with a lot of people - kid needing accompany, adult needing mentorship, elderly needing IT support - they can all be connected on AOMIGO. We are AOMIGO, fun and helpful.";
+                        const text = "Hi everybody, this is Jenny Ruan. When I was a child, I planned to make tons of money and donate them to people. Now I am finally an adult, I found out that making money is very easy. I also learned that money, cannot effectively help everyone. I met and talked with people at all stages of life - kids needing accompany, adults needing mentorship, elderlys needing IT support - their struggles can all be eased through community support. So I founded AOMIGO, with the mission of serving personal development and community growth. We are AOMIGO, fun and helpful.";
                         const speech = new SpeechSynthesisUtterance(text);
                         speech.rate = 0.95;
                         speech.pitch = 1.1;
@@ -1337,7 +1337,7 @@ export function Landing() {
                     Now I am finally an adult, I found out that making 💵 is very easy. I also learned that money, cannot effectively help everyone.
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
-                    I talked and met with a lot of people - kid needing accompany, adult needing mentorship, elderly needing IT support - they can all be connected on AOMIGO.
+                    I met and talked with people at all stages of life - kids needing accompany, adults needing mentorship, elderly's needing IT support - their struggles can all be eased through community support. So I founded AOMIGO, with the mission of serving personal development and community growth 🫶
                   </p>
                   <p className="text-base sm:text-xl font-semibold leading-loose" style={{ color: 'black' }}>
                     We are AOMIGO, fun & helpful🌟
